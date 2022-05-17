@@ -2,12 +2,12 @@ import Phaser, { Game } from 'phaser'
 import GameScene from './scenes/GameScene'
 
 import MainMenuScene from './scenes/MainMenuScene'
-import { HEIGHT, WIDTH } from './util/constants'
+import { FULLHEIGHT, FULLWIDTH } from './util/scaleConstants';
 
 const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
-	width: WIDTH,
-	height: HEIGHT,
+	width: FULLWIDTH,
+	height: FULLHEIGHT,
 	physics: {
 		default: 'arcade',
 		arcade: {
@@ -17,5 +17,4 @@ const config: Phaser.Types.Core.GameConfig = {
 	scene: [MainMenuScene, GameScene]
 }
 
-console.log(WIDTH, HEIGHT);
 export default new Phaser.Game(config)

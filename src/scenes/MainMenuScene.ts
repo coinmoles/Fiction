@@ -1,5 +1,5 @@
 import Phaser from 'phaser'
-import { HEIGHT, WIDTH } from '~/util/constants';
+import { FULLHEIGHT, FULLWIDTH } from '~/util/scaleConstants';
 
 const MAXCHOICE = 3;
 
@@ -23,10 +23,10 @@ export default class MainMenuScene extends Phaser.Scene {
         this.downKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
-        this.title = this.add.text(WIDTH / 2, HEIGHT * 1/3, "마법 나라의 왕 이야기").setOrigin(0.5)
-        this.choices[0] = this.add.text(WIDTH * 4/5, HEIGHT * 4/6, "새 게임").setFill("#ffff00");
-        this.choices[1] = this.add.text(WIDTH * 4/5, HEIGHT * 9/12, "이어하기");
-        this.choices[2] = this.add.text(WIDTH * 4/5, HEIGHT * 5/6, "트리비아");
+        this.title = this.add.text(FULLWIDTH / 2, FULLHEIGHT * 1/3, "마법 나라의 왕 이야기").setOrigin(0.5)
+        this.choices[0] = this.add.text(FULLWIDTH * 4/5, FULLHEIGHT * 4/6, "새 게임").setFill("#ffff00");
+        this.choices[1] = this.add.text(FULLWIDTH * 4/5, FULLHEIGHT * 9/12, "이어하기");
+        this.choices[2] = this.add.text(FULLWIDTH * 4/5, FULLHEIGHT * 5/6, "트리비아");
     }
 
     update(time: number, delta: number): void {
@@ -40,7 +40,6 @@ export default class MainMenuScene extends Phaser.Scene {
                 this.choice %= this.choices.length;
                 this.timer = 0;
                 for (let i = 0; i < this.choices.length; i++) {
-                    console.log(i, this.choice);
                     if (i === this.choice)
                         this.choices[i]?.setFill("#ffff00");
                     else
