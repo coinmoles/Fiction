@@ -1,74 +1,117 @@
 import Phaser from 'phaser';
-import { MapObject } from '~/objects/Character';
+import { MapObject } from '~/objects/MapObject';
 import { map1 } from '~/assets/map/map1';
 import { vector } from '~/util/interface/vector';
 import { COLUMNS, ROWS } from '~/util/scaleConstants';
-import { TextArea } from '~/scenes/TextArea';
+import { TextArea } from '~/objects/TextArea';
+import { GLOBALTIME } from '~/util/constants';
 
+interface GameComponentsNull {
+    created: false
+    player: null
+    mapObjects: null
+    map: null
+    textArea: null
+    keyW: null
+    keyS: null
+    keyA: null
+    keyD: null
+}
+
+interface GameComponentsLoaded {
+    created: true
+    player: MapObject
+    mapObjects: MapObject[]
+    map: MapObject[][]
+    textArea: TextArea
+    keyW: Phaser.Input.Keyboard.Key
+    keyS: Phaser.Input.Keyboard.Key
+    keyA: Phaser.Input.Keyboard.Key
+    keyD: Phaser.Input.Keyboard.Key
+}
 
 export default class GameScene extends Phaser.Scene {
-    private character: MapObject | null = null;
-    private map = map1
-    private textArea: TextArea | null = new TextArea(this);
-
-   // 방향키를 감지할 키를 추가하기!
-    private upKey: Phaser.Input.Keyboard.Key | null = null;
-    private downKey: Phaser.Input.Keyboard.Key | null = null;
-    private leftKey: Phaser.Input.Keyboard.Key | null = null;
-    private rightKey: Phaser.Input.Keyboard.Key | null = null;
+    private mapData = map1;
+    private gameComponents: GameComponentsLoaded | GameComponentsNull = {
+        created: false,
+        player: null,
+        mapObjects: null,
+        map: null,
+        textArea: null,
+        keyW: null,
+        keyS: null,
+        keyA: null,
+        keyD: null            
+    }
     
-    private movementTimer: number = 0;
+    private movementTimer = 0;
+    private emitter = new Phaser.Events.EventEmitter();
 
     constructor() {
         super({ key: "game" })
-    }
+        }
 
     init(data) {
     }
 
     preload() {
-        this.load.image('mi', 'characters/crazy.png');
-
-        this.map.preload(this);
-        this.textArea?.preload();
+        this.mapData.textureMap.forEach((value, key) => {
+            this.load.image(key, value);
+        })
     }
 
     create() {
-        this.upKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
-        this.downKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
-        this.leftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        this.rightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        const player = new MapObject(this, 0, 0, "mi");
+        const mapObjects: MapObject[] = []
+        const map: MapObject[][] = []
+        for (let i = 0; i < ROWS; i++) {
+            let blockRow: MapObject[] = []
+            for (let j = 0; j < COLUMNS; j++) {
+                blockRow.push(new MapObject(this, j, i, this.mapData.mapData[i][j].texture).setDepth(1));
+            }
+            map.push(blockRow);
+        }
+        const textArea = new TextArea(this);
+        textArea.create();
 
-        this.character = (new MapObject(this, 0, 0, "mi")).setDepth(2);
-        this.textArea?.create();
+        const keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        const keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        const keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        const keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        
+        this.gameComponents = {
+            created: true,
+            player,
+            mapObjects,
+            map,
+            textArea,
+            keyW,
+            keyS,
+            keyA,
+            keyD
+        } 
 
-        this.map.create(this);
+        this.setUpEmitter();
     }
 
     update(time: number, delta: number): void {
-        if (this.character) {
-            if (this.movementTimer <= 0) {
-                if (this.upKey?.isDown || this.downKey?.isDown || this.leftKey?.isDown || this.rightKey?.isDown) {
-                    let movement: vector = { mapX: 0, mapY: 0 };
+        if (!this.gameComponents.created)
+            return;
 
-                    if (this.upKey?.isDown)
-                        movement.mapY = -1;
-                    else if (this.downKey?.isDown)
-                        movement.mapY = 1;
-                    else if (this.leftKey?.isDown)
-                        movement.mapX = -1;
-                    else if (this.rightKey?.isDown)
-                        movement.mapX = 1;
-                    
-                    if (this.canGo(this.character, movement)) {
-                        this.character.moveMapPosition(movement);
-                    }
-                }
-                this.movementTimer = 300;
-            }
-        }
+        if (this.movementTimer > 0)
+            this.movementTimer -= delta
 
-        this.textArea?.update(time, delta);
+        if (this.gameComponents.keyW.isDown && this.movementTimer <= 0)
+            this.emitter.emit("movement", { mapX: 0, mapY: -1 });
+        else if (this.gameComponents.keyS.isDown && this.movementTimer <= 0)
+            this.emitter.emit("movement", { mapX: 0, mapY: 1 });
+        else if (this.gameComponents.keyA.isDown && this.movementTimer <= 0)
+            this.emitter.emit("movement", { mapX: -1, mapY: 0 });
+        else if (this.gameComponents.keyD.isDown && this.movementTimer <= 0)
+            this.emitter.emit("movement", { mapX: 1, mapY: 0 });
+
+        this.gameComponents.player.update();
+        this.gameComponents.textArea.update(time, delta);
     }
 
     canGo(char: vector, movement: vector): boolean {
@@ -76,15 +119,25 @@ export default class GameScene extends Phaser.Scene {
             mapX: char.mapX + movement.mapX,
             mapY: char.mapY + movement.mapY
         }
-    
+
         if (newVector.mapX < 0 || newVector.mapX >= COLUMNS)
             return false;
         else if (newVector.mapY < 0 || newVector.mapY >= ROWS)
             return false;
-        else if (!this.map.map[newVector.mapY][newVector.mapX].passable)
+        else if (!this.mapData.mapData[newVector.mapY][newVector.mapX].passable)
             return false;
         else
             return true;
     }
-    
+
+    setUpEmitter() {
+        this.emitter.on("movement", (movement: vector) => {
+            if (this.gameComponents.created) {
+                if (this.canGo(this.gameComponents.player, movement)) {
+                    this.gameComponents.player.addMovement(movement);
+                }
+            }
+            this.movementTimer = GLOBALTIME;
+        })
+    }
 }
