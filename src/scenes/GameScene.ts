@@ -1,36 +1,23 @@
 import Phaser from 'phaser';
-import { MapObject } from '~/character/Character';
+import { MapObject } from '~/objects/Character';
+import { map1 } from '~/assets/map/map1';
 import { vector } from '~/util/interface/vector';
-import { map1 } from '~/util/maps/map1';
 import { COLUMNS, ROWS } from '~/util/scaleConstants';
+import { TextArea } from '~/scenes/TextArea';
 
-const canGo = (char: vector, movement: vector, mapnum: number): boolean => {
-    const newVector: vector = {
-        mapX: char.mapX + movement.mapX,
-        mapY: char.mapY + movement.mapY
-    }
-
-    console.log(newVector);
-    if (newVector.mapX < 0 || newVector.mapX >= COLUMNS)
-        return false;
-    else if (newVector.mapY < 0 || newVector.mapY >= ROWS)
-        return false;
-    else if (map1[newVector.mapY][newVector.mapX] === "#")
-        return false;
-    else
-        return true;
-}
 
 export default class GameScene extends Phaser.Scene {
     private character: MapObject | null = null;
-    private blocks: MapObject[][] = [];
+    private map = map1
+    private textArea: TextArea | null = new TextArea(this);
+
    // 방향키를 감지할 키를 추가하기!
     private upKey: Phaser.Input.Keyboard.Key | null = null;
     private downKey: Phaser.Input.Keyboard.Key | null = null;
     private leftKey: Phaser.Input.Keyboard.Key | null = null;
     private rightKey: Phaser.Input.Keyboard.Key | null = null;
     
-    private timer: number = 0;
+    private movementTimer: number = 0;
 
     constructor() {
         super({ key: "game" })
@@ -41,8 +28,9 @@ export default class GameScene extends Phaser.Scene {
 
     preload() {
         this.load.image('mi', 'characters/crazy.png');
-        this.load.image("fuck", 'objects/bloakcs.png');
-        this.load.image("grass", 'objects/graas.png');
+
+        this.map.preload(this);
+        this.textArea?.preload();
     }
 
     create() {
@@ -51,24 +39,15 @@ export default class GameScene extends Phaser.Scene {
         this.leftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         this.rightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
-        for (let i = 0; i < ROWS; i++) {
-            let blockRow: MapObject[] = []
-            for (let j = 0; j < COLUMNS; j++) {
-                if (map1[i][j] === "#"){
-                    blockRow.push(new MapObject(this, j, i, "fuck").setDepth(1));
-                } else {
-                    blockRow.push(new MapObject(this, j, i, "grass").setDepth(1));
-                }
-            }
-        }
         this.character = (new MapObject(this, 0, 0, "mi")).setDepth(2);
+        this.textArea?.create();
 
+        this.map.create(this);
     }
 
     update(time: number, delta: number): void {
-        this.timer += delta;
         if (this.character) {
-            if (this.timer > 300) {
+            if (this.movementTimer <= 0) {
                 if (this.upKey?.isDown || this.downKey?.isDown || this.leftKey?.isDown || this.rightKey?.isDown) {
                     let movement: vector = { mapX: 0, mapY: 0 };
 
@@ -81,13 +60,31 @@ export default class GameScene extends Phaser.Scene {
                     else if (this.rightKey?.isDown)
                         movement.mapX = 1;
                     
-                    console.log(canGo(this.character, movement, 0))
-                    if (canGo(this.character, movement, 0)) {
+                    if (this.canGo(this.character, movement)) {
                         this.character.moveMapPosition(movement);
                     }
                 }
-                this.timer = 0;
+                this.movementTimer = 300;
             }
         }
+
+        this.textArea?.update(time, delta);
     }
+
+    canGo(char: vector, movement: vector): boolean {
+        const newVector: vector = {
+            mapX: char.mapX + movement.mapX,
+            mapY: char.mapY + movement.mapY
+        }
+    
+        if (newVector.mapX < 0 || newVector.mapX >= COLUMNS)
+            return false;
+        else if (newVector.mapY < 0 || newVector.mapY >= ROWS)
+            return false;
+        else if (!this.map.map[newVector.mapY][newVector.mapX].passable)
+            return false;
+        else
+            return true;
+    }
+    
 }

@@ -3,6 +3,7 @@ const calcScale = (width: number, height: number) => {
         return {
             FULLWIDTH: width,
             FULLHEIGHT: height,
+            GAMEHEIGHT: width * 9/8,
             GAMEWIDTH: height * 8/9,
             HEIGHT: height,
             ORIGINX: (width - height * 8/9) / 2,
@@ -24,5 +25,5 @@ const calcScale = (width: number, height: number) => {
 }
 
 export const { FULLWIDTH, FULLHEIGHT, GAMEWIDTH, GAMEHEIGHT, ORIGINX, ORIGINY, TILESIZE } = calcScale(window.innerWidth, window.innerHeight);
-export const ROWS = 6;
+export const ROWS = 7;
 export const COLUMNS = 8;
