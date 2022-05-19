@@ -10,7 +10,10 @@ export interface TileData {
 }
 
 export interface CreatureData {
-    dir: vector
+    movement: vector
+    mapX: number
+    mapY: number
+    texture: string
     onWall: "bounce" | "rotate"
 }
 

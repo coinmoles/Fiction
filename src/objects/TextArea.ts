@@ -40,10 +40,6 @@ export class TextArea extends Phaser.GameObjects.Group {
         });
     }
 
-    update(time: number, delta: number) {
-        
-    }
-
     clearTexts () {
         while (this.texts.length > 0)
             this.texts.dequeue();
@@ -68,6 +64,7 @@ export class TextArea extends Phaser.GameObjects.Group {
 
     nextTexts () {
         const text = this.texts.dequeue();
+        console.log(text);
         if (text === undefined) {
             this.currentText = null;
             this.textObject?.setText("...");
@@ -83,8 +80,10 @@ export class TextArea extends Phaser.GameObjects.Group {
             callback: () => {
                 if (this.currentText !== text)
                     return;
-
-                this.textObject?.setText(this.textObject.text + text[i]);
+                if (i == 0)
+                    this.textObject?.setText(this.textObject.text + text[0])    
+                else
+                    this.textObject?.setText(this.textObject.text + text[i]);
                 ++i
             },
             repeat: length - 1,

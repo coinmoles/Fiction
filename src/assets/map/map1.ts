@@ -3,6 +3,7 @@ import { MapData } from "../../util/interface/MapData";
 export const map1: MapData = {
     textureMap: new Map([
         ["mi", "characters/crazy.png"],
+        ["fa", "creatures/par.png"],
         ["textArea", "ui/text.png"],
         ["bl", "objects/bloakcs.png"],
         ["gr", "objects/graas.png"]
@@ -80,5 +81,62 @@ export const map1: MapData = {
         ],
     ],
     textData: [],
-    creatureData: []
+    creatureData: [
+        {
+            movement: { mapX: -2, mapY: 0 },
+            mapX: 7,
+            mapY: 0,
+            texture: "fa",
+            onWall: "bounce"
+        },
+        {
+            movement: { mapX: -2, mapY: 0 },
+            mapX: 7,
+            mapY: 2,
+            texture: "fa",
+            onWall: "bounce"
+        },
+        {
+            movement: { mapX: -2, mapY: 0 },
+            mapX: 7,
+            mapY: 4,
+            texture: "fa",
+            onWall: "bounce"
+        },
+        {
+            movement: { mapX: -2, mapY: 0 },
+            mapX: 7,
+            mapY: 6,
+            texture: "fa",
+            onWall: "bounce"
+        },
+        {
+            movement: { mapX: -1, mapY: 0 },
+            mapX: 7,
+            mapY: 0,
+            texture: "fa",
+            onWall: "bounce"
+        },
+        {
+            movement: { mapX: -1, mapY: 0 },
+            mapX: 7,
+            mapY: 2,
+            texture: "fa",
+            onWall: "bounce"
+        },
+        {
+            movement: { mapX: -1, mapY: 0 },
+            mapX: 7,
+            mapY: 4,
+            texture: "fa",
+            onWall: "bounce"
+        },
+        {
+            movement: { mapX: -1, mapY: 0 },
+            mapX: 7,
+            mapY: 6,
+            texture: "fa",
+            onWall: "bounce"
+        }
+    ]
 };
