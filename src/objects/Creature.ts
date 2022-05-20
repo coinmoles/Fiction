@@ -1,8 +1,8 @@
 import { Queue } from "queue-typescript";
 import { createMovement } from "~/movement/createMovement";
-import { MovementData } from "~/movement/MovementData";
 import { MovementType } from "~/movement/MovementType";
 import GameScene from "~/scenes/GameScene";
+import { MovementData } from "~/util/interface/MovementData";
 import { vector } from "~/util/interface/vector";
 import { MapObject } from "./MapObject";
 

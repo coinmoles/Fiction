@@ -1,9 +1,9 @@
 import { Creature } from "~/objects/Creature"
 import GameScene from "~/scenes/GameScene"
+import { MovementData } from "../util/interface/MovementData"
 import { ConstantMovementType } from "./ConstantMovement"
 import { CycleMovementType } from "./CycleMovementType"
-import { MovementData } from "./MovementData"
-import { Duration, MovementType } from "./MovementType"
+import { MovementType } from "./MovementType"
 import { RotateMoveMentType } from "./RotateMovementType"
 
 export const createMovement = (mapObject: Creature, scene: GameScene, movementData: MovementData): MovementType | null => {

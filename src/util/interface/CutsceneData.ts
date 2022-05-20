@@ -1,5 +1,7 @@
 import { Queue } from "queue-typescript"
-import { CreatureData, TextData, TileData } from "./MapData"
+import { TextData } from "./TextData"
+import { CreatureData } from "./CreatureData"
+import { TileData } from "./TileData"
 
 export interface CutsceneData {
     textureMap: Map<string, string>

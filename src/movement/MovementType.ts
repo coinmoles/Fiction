@@ -1,17 +1,13 @@
 import { Creature } from "~/objects/Creature";
 import GameScene from "~/scenes/GameScene";
-
-export interface Duration {
-    start: number
-    end: number
-}
+import { Duration } from "../util/interface/Duration";
 
 export class MovementType {
     protected mapObject: Creature
     protected scene: GameScene
-    protected dur: Duration | null
+    protected dur: Duration
 
-    constructor(mapObject: Creature, scene: GameScene, dur: Duration | null) {
+    constructor(mapObject: Creature, scene: GameScene, dur: Duration) {
         this.mapObject = mapObject
         this.scene = scene
         this.dur = dur

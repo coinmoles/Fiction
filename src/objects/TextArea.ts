@@ -1,6 +1,6 @@
 import { GAMEHEIGHT, GAMEWIDTH, ORIGINX, ORIGINY, ROWS, TILESIZE } from "../util/scaleConstants";
 import { Queue } from "queue-typescript";
-import { TextData } from "~/util/interface/MapData";
+import { TextData } from "~/util/interface/TextData";
 import { CutsceneTextData } from "~/util/interface/CutsceneData";
 
 export class TextArea<T extends TextData> extends Phaser.GameObjects.Group {

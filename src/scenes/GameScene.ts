@@ -7,7 +7,7 @@ import { TextArea } from '~/objects/TextArea';
 import { GLOBALTIME } from '~/util/constants';
 import { Player } from '~/objects/Player';
 import { Creature } from '~/objects/Creature';
-import { TextData } from '~/util/interface/MapData';
+import { TextData } from "~/util/interface/TextData";
 
 interface GameComponentsNull {
     created: false

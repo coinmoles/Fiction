@@ -1,9 +1,9 @@
 import { vector } from "~/util/interface/vector";
-import { Duration } from "./MovementType";
+import { Duration } from "./Duration";
 
 interface BaseMovementData {
     type: string
-    dur: Duration | null
+    dur: Duration
 }
 
 interface ConstantMovementData extends BaseMovementData {
