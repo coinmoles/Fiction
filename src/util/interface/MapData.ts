@@ -1,6 +1,7 @@
-import { MapObject } from "~/objects/MapObject";
+import { Queue } from "queue-typescript";
+import { MovementData } from "~/movement/MovementData";
+import { MovementType } from "~/movement/MovementType";
 import { vector } from "~/util/interface/vector";
-import { COLUMNS, ROWS } from "~/util/scaleConstants";
 
 export interface TileData {
     texture: string
@@ -10,16 +11,20 @@ export interface TileData {
 }
 
 export interface CreatureData {
-    movement: vector
+    movements: MovementData[]
     mapX: number
     mapY: number
     texture: string
-    onWall: "bounce" | "rotate"
+}
+
+export interface TextData {
+    text: string
+    stopTime: boolean
 }
 
 export interface MapData {
     textureMap: Map<string, string>
     mapData: TileData[][]
     creatureData: CreatureData[]
-    textData: string[]
+    textData: TextData[]
 }

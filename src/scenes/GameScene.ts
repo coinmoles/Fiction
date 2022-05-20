@@ -7,6 +7,7 @@ import { TextArea } from '~/objects/TextArea';
 import { GLOBALTIME } from '~/util/constants';
 import { Player } from '~/objects/Player';
 import { Creature } from '~/objects/Creature';
+import { TextData } from '~/util/interface/MapData';
 
 interface GameComponentsNull {
     created: false
@@ -25,7 +26,7 @@ interface GameComponentsLoaded {
     player: Player
     mapObjects: MapObject[]
     map: MapObject[][]
-    textArea: TextArea
+    textArea: TextArea<TextData>
     keyW: Phaser.Input.Keyboard.Key
     keyS: Phaser.Input.Keyboard.Key
     keyA: Phaser.Input.Keyboard.Key
@@ -49,6 +50,7 @@ export default class GameScene extends Phaser.Scene {
 
     private playerMovementTimer = 0;
     private creatureMovementTimer = 0;
+    private _moveCounter = 0;
     private emitter = new Phaser.Events.EventEmitter();
 
     constructor() {
@@ -68,7 +70,7 @@ export default class GameScene extends Phaser.Scene {
         const player = new Player(this, 0, 0, "mi");
         const mapObjects: MapObject[] = []
         for (let creatureData of this.mapData.creatureData) {
-            mapObjects.push(new Creature(this, creatureData.mapX, creatureData.mapY, creatureData.texture, creatureData.movement));
+            mapObjects.push(new Creature(this, creatureData.mapX, creatureData.mapY, creatureData.texture, creatureData.movements));
         }
         const map: MapObject[][] = []
         for (let i = 0; i < ROWS; i++) {
@@ -78,7 +80,7 @@ export default class GameScene extends Phaser.Scene {
             }
             map.push(blockRow);
         }
-        const textArea = new TextArea(this);
+        const textArea = new TextArea(this, this.mapData.textData);
 
         const keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         const keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
@@ -103,6 +105,8 @@ export default class GameScene extends Phaser.Scene {
     update(time: number, delta: number): void {
         if (!this.gameComponents.created)
             return;
+        if (this.timeStopped())
+            return;
 
         if (this.playerMovementTimer > 0)
             this.playerMovementTimer -= delta;
@@ -122,7 +126,7 @@ export default class GameScene extends Phaser.Scene {
             for (let mapObject of this.gameComponents.mapObjects) {
                 if (this.gameComponents.player.collide(mapObject)) {
                     this.gameComponents.textArea.clearTexts();
-                    this.gameComponents.textArea.appendTexts("Game Over");
+                    this.gameComponents.textArea.appendTexts({ text: "Game Over", stopTime: true });
                     this.gameComponents.textArea.nextTexts();
                     this.isRunning = false;
                 }
@@ -132,7 +136,7 @@ export default class GameScene extends Phaser.Scene {
         if (this.creatureMovementTimer <= 0) {
             for (let mapObject of this.gameComponents.mapObjects)
                 if (mapObject !== this.gameComponents.player)
-                    mapObject.addMovement({ mapX: 0, mapY: 0 });
+                    mapObject.turnAction({ mapX: 0, mapY: 0 });
             
             this.creatureMovementTimer = GLOBALTIME;
         }
@@ -161,9 +165,19 @@ export default class GameScene extends Phaser.Scene {
         this.emitter.on("movement", (movement: vector) => {
             if (this.gameComponents.created)
                 if (this.canGo(this.gameComponents.player, movement))
-                    this.gameComponents.player.addMovement(movement);
+                    this.gameComponents.player.turnAction(movement);
 
             this.playerMovementTimer = GLOBALTIME;
         })
+    }
+
+    timeStopped(): boolean { 
+        if (this.gameComponents.created === false)
+            return true; 
+        return this.gameComponents.textArea.stopTime;
+    }
+
+    get moveCounter() {
+        return this._moveCounter;
     }
 }

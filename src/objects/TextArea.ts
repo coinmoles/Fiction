@@ -1,17 +1,21 @@
 import { GAMEHEIGHT, GAMEWIDTH, ORIGINX, ORIGINY, ROWS, TILESIZE } from "../util/scaleConstants";
 import { Queue } from "queue-typescript";
+import { TextData } from "~/util/interface/MapData";
+import { CutsceneTextData } from "~/util/interface/CutsceneData";
 
-export class TextArea extends Phaser.GameObjects.Group {
-    private texts: Queue<string> = new Queue();
-    private currentText: string | null = null;
-    private textArea: Phaser.GameObjects.Image | null = null;
-    private textObject: Phaser.GameObjects.Text | null = null;
-    private timer: number = 0;
+export class TextArea<T extends TextData> extends Phaser.GameObjects.Group {
+    protected textDataQueue: Queue<T>;
+    public currentText: T | null = null;
+    protected textArea: Phaser.GameObjects.Image | null = null;
+    protected textObject: Phaser.GameObjects.Text | null = null;
 
-    constructor(scene: Phaser.Scene) {
+    public stopTime: boolean = false
+
+    constructor(scene: Phaser.Scene, textDataList: T[]) {
         super(scene);
-        this.texts.enqueue("먼 옛날에,\n아름드리라는 나라가 있었습니다. 다른 나라와 마찬가지로,");
-        this.texts.enqueue("이 나라에도 왕이 있었어요");
+
+        this.textDataQueue = new Queue(...textDataList);
+        console.log(textDataList);
 
         this.textArea = new Phaser.GameObjects.Image(this.scene, ORIGINX, TILESIZE * ROWS + ORIGINY, "textArea").setOrigin(0, 0);
         this.textArea.setScale(GAMEWIDTH / this.textArea.width);
@@ -41,55 +45,54 @@ export class TextArea extends Phaser.GameObjects.Group {
     }
 
     clearTexts () {
-        while (this.texts.length > 0)
-            this.texts.dequeue();
+        while (this.textDataQueue.length > 0)
+            this.textDataQueue.dequeue();
     }
 
-    appendTexts (text: string)
-    appendTexts (text: string) 
-    appendTexts (text: string | string[]) {
-        if (typeof text === "string")
-            this.texts.enqueue(text)
+    appendTexts (textData: T)
+    appendTexts (textData: T[]) 
+    appendTexts (textData: T | T[]) {
+        if (!Array.isArray(textData))
+            this.textDataQueue.enqueue(textData)
         else 
-            for (let te of text)            
-                this.texts.enqueue(te);
+            for (let td of textData)            
+                this.textDataQueue.enqueue(td);
     }
 
     skipTexts () {
         if (this.currentText === null)
             return;
-        this.textObject?.setText(this.currentText);
+        this.textObject?.setText(this.currentText.text);
         this.currentText = null;
     }
 
     nextTexts () {
-        const text = this.texts.dequeue();
-        console.log(text);
-        if (text === undefined) {
+        const textData = this.textDataQueue.dequeue();
+        if (textData === undefined) {
             this.currentText = null;
             this.textObject?.setText("...");
+            this.stopTime = false;
             return;
         }
         
-        this.currentText = text
-        let length = text.length;
+        this.currentText = textData;
+        this.stopTime = textData.stopTime;
+        let length = textData.text.length;
         let i = 0;
 
         this.textObject?.setText("");
         this.scene.time.addEvent({
             callback: () => {
-                if (this.currentText !== text)
+                if (this.currentText !== textData)
                     return;
                 if (i == 0)
-                    this.textObject?.setText(this.textObject.text + text[0])    
+                    this.textObject?.setText(this.textObject.text + textData.text[0])    
                 else
-                    this.textObject?.setText(this.textObject.text + text[i]);
+                    this.textObject?.setText(this.textObject.text + textData.text[i]);
                 ++i
             },
             repeat: length - 1,
             delay: 100
         });
     }
-
-
 }

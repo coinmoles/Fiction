@@ -3,7 +3,7 @@ import { vector } from "~/util/interface/vector";
 import { MapObject } from "./MapObject";
 
 export class Player extends MapObject {
-    addMovement(movement: vector): void {
+    turnAction(movement: vector): void {
         const mapX = this._mapX;
         const mapY = this._mapY;
         let i = 0;

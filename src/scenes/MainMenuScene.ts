@@ -52,6 +52,9 @@ export default class MainMenuScene extends Phaser.Scene {
             if (this.choice === 0) {
                 this.scene.start("game");
             }
+            if (this.choice === 1) {
+                this.scene.start("cutscene")
+            }
         }
     }
 }
