@@ -1,5 +1,3 @@
-import { Queue } from "queue-typescript";
-import { ConstantMovementType } from "~/movement/ConstantMovement";
 import { MapData } from "../../util/interface/MapData";
 
 export const map1: MapData = {
@@ -89,25 +87,25 @@ export const map1: MapData = {
     creatureData: [
         {
             movements: [
-                { type: "rot", dur: null, initialDir: { mapX: -1, mapY: 0 }, freq: 2, cycleType: "ccl" }
+                { type: "rot", dur: { start: 5, end: 10}, initialDir: { mapX: -1, mapY: 0 }, freq: 2, cycleType: "ccl" }
             ],
             mapX: 7, mapY: 0, texture: "fa",
         },
         {
             movements: [
-                { type: "cnst", dur: null, dir: { mapX: -1, mapY: 0 } }
+                { type: "cnst", dur: { start: null, end: 3}, dir: { mapX: -1, mapY: 0 } }
             ],
             mapX: 7, mapY: 2, texture: "fa",
         },
         {
             movements: [
-                { type: "cnst", dur: null, dir: { mapX: -1, mapY: 0 } }
+                { type: "cnst", dur: { start: 1, end: 3 }, dir: { mapX: -1, mapY: 0 } }
             ],
             mapX: 7, mapY: 4, texture: "fa",
         },
         {
             movements: [
-                { type: "cnst", dur: null, dir: { mapX: -1, mapY: 0 } }
+                { type: "cnst", dur: { start: 2, end: 4 }, dir: { mapX: -1, mapY: 0 } }
             ],
             mapX: 7, mapY: 6, texture: "fa",
         }

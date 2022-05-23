@@ -133,13 +133,8 @@ export default class GameScene extends Phaser.Scene {
             }
         }
 
-        if (this.creatureMovementTimer <= 0) {
-            for (let mapObject of this.gameComponents.mapObjects)
-                if (mapObject !== this.gameComponents.player)
-                    mapObject.turnAction({ mapX: 0, mapY: 0 });
-            
-            this.creatureMovementTimer = GLOBALTIME;
-        }
+        if (this.creatureMovementTimer <= 0)
+            this.turnAction()
 
 
         this.gameComponents.player.update();
@@ -179,5 +174,18 @@ export default class GameScene extends Phaser.Scene {
 
     get moveCounter() {
         return this._moveCounter;
+    }
+
+    turnAction(): void {
+        if (this.gameComponents.created === false)
+            return;
+        
+        for (let mapObject of this.gameComponents.mapObjects){
+            if (mapObject !== this.gameComponents.player)
+                mapObject.turnAction({ mapX: 0, mapY: 0 });
+        }
+
+        this._moveCounter += 1;
+        this.creatureMovementTimer = GLOBALTIME;
     }
 }

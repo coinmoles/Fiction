@@ -86,25 +86,25 @@ export const cutscene1: CutsceneData = {
     creatureData: [
         {
             movements: [
-                { type: "cnst", dur: null, dir: { mapX: -1, mapY: 0 } }
+                { type: "cnst", dur: { start: 1, end: 3 }, dir: { mapX: -1, mapY: 0 } }
             ],
             mapX: 7, mapY: 0, texture: "fa",
         },
         {
             movements: [
-                { type: "cnst", dur: null, dir: { mapX: -1, mapY: 0 } }
+                { type: "cnst", dur: { start: 1, end: 3 }, dir: { mapX: -1, mapY: 0 } }
             ],
             mapX: 7, mapY: 2, texture: "fa",
         },
         {
             movements: [
-                { type: "cnst", dur: null, dir: { mapX: -1, mapY: 0 } }
+                { type: "cnst", dur: { start: 1, end: 3 }, dir: { mapX: -1, mapY: 0 } }
             ],
             mapX: 7, mapY: 4, texture: "fa",
         },
         {
             movements: [
-                { type: "cnst", dur: null, dir: { mapX: -1, mapY: 0 } }
+                { type: "cnst", dur: { start: 1, end: 3 }, dir: { mapX: -1, mapY: 0 } }
             ],
             mapX: 7, mapY: 6, texture: "fa",
         }

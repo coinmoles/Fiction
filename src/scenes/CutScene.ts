@@ -15,7 +15,7 @@ interface CutsceneComponentsNull {
 
 interface CutsceneComponentsLoaded {
     created: true
-    mapObjects: MapObject[]
+    creatures: Creature[]
     map: MapObject[][]
     textArea: TextArea<CutsceneTextData>
 }
@@ -30,7 +30,7 @@ export default class CutScene extends Phaser.Scene {
     }
 
     private movementTimer = 0;
-    private moveCounter = 0;
+    private _moveCounter = 0;
     private emitter = new Phaser.Events.EventEmitter();
 
     constructor() {
@@ -47,9 +47,9 @@ export default class CutScene extends Phaser.Scene {
     }
 
     create() {
-        const mapObjects: MapObject[] = []
+        const creatures: Creature[] = []
         for (let creatureData of this.cutSceneData.creatureData) 
-            mapObjects.push(new Creature(this, creatureData.mapX, creatureData.mapY, creatureData.texture, creatureData.movements));
+            creatures.push(new Creature(this, creatureData.mapX, creatureData.mapY, creatureData.texture, creatureData.movements));
         
         const map: MapObject[][] = []
         for (let i = 0; i < ROWS; i++) {
@@ -64,7 +64,7 @@ export default class CutScene extends Phaser.Scene {
 
         this.gameComponents = {
             created: true,
-            mapObjects,
+            creatures: creatures,
             map,
             textArea
         }
@@ -80,37 +80,41 @@ export default class CutScene extends Phaser.Scene {
             this.movementTimer -= delta;
 
         if (this.movementTimer <= 0)
-            this.move();
+            this.turnAction();
     }
 
-    move(): void {
+    turnAction(): void {
         if (!this.gameComponents.created)
             return;
 
         for (let textData of this.cutSceneData.textData) {
-            if (textData.appearsAt === this.moveCounter) {
+            if (textData.appearsAt === this._moveCounter) {
                 this.gameComponents.textArea.appendTexts(textData);
                 if (this.gameComponents.textArea.currentText === null)
                     this.gameComponents.textArea.nextTexts();
             }
         }
         
-        for (let mapObject of this.gameComponents.mapObjects)
-            mapObject.turnAction({ mapX: 0, mapY: 0 });
+        for (let creature of this.gameComponents.creatures) {
+            creature.turnAction({ mapX: 0, mapY: 0 });
+        }
 
         this.movementTimer = GLOBALTIME;
-        this.moveCounter += 1;
+        this._moveCounter += 1;
     }
 
     timeStopped(): boolean {
-
         if (this.gameComponents.created === false)
             return true;
         else if (this.gameComponents.textArea.currentText === null)
             return this.gameComponents.textArea.stopTime;
-        else if (this.moveCounter >= this.gameComponents.textArea.currentText.limits)
+        else if (this._moveCounter >= this.gameComponents.textArea.currentText.limits)
             return true;
         else
             return false
+    }
+
+    get moveCounter() {
+        return this.movementTimer
     }
 }

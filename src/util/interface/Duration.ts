@@ -1,6 +1,4 @@
-interface Duration_ {
-    start: number;
-    end: number;
+export interface Duration {
+    start: number | null;
+    end: number | null;
 }
-
-export type Duration = Duration_ | null

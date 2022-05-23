@@ -15,7 +15,6 @@ export class TextArea<T extends TextData> extends Phaser.GameObjects.Group {
         super(scene);
 
         this.textDataQueue = new Queue(...textDataList);
-        console.log(textDataList);
 
         this.textArea = new Phaser.GameObjects.Image(this.scene, ORIGINX, TILESIZE * ROWS + ORIGINY, "textArea").setOrigin(0, 0);
         this.textArea.setScale(GAMEWIDTH / this.textArea.width);

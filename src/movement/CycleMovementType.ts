@@ -4,6 +4,7 @@ import { GLOBALTIME } from "~/util/constants";
 import { vector } from "~/util/interface/vector";
 import { MovementType } from "./MovementType";
 import { Duration } from "../util/interface/Duration";
+import CutScene from "~/scenes/CutScene";
 
 export class CycleMovementType extends MovementType {
     protected dirs: vector[];
@@ -11,7 +12,7 @@ export class CycleMovementType extends MovementType {
     protected dirsLength: number;
     protected dirNum: number;
 
-    constructor(mapObject: Creature, scene: GameScene, dur: Duration,
+    constructor(mapObject: Creature, scene: GameScene | CutScene, dur: Duration,
         dirs: vector[], freq: number) {
         super(mapObject, scene, dur);
         this.dirs = dirs;
@@ -23,8 +24,7 @@ export class CycleMovementType extends MovementType {
 
     moveObject(): void {
         this.dirNum %= this.dirsLength;
-
-        console.log(this.dirs, this.dirNum);
+        
         this.mapObject.move(this.dirs[this.dirNum]);
         
         this.dirNum += 1;
