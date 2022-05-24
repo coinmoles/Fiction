@@ -1,4 +1,6 @@
 import Phaser from 'phaser'
+import { map2 } from '~/assets/map/map2/map';
+import { map5 } from '~/assets/map/map5/map';
 import { FULLHEIGHT, FULLWIDTH } from '~/util/scaleConstants';
 
 const MAXCHOICE = 3;
@@ -50,7 +52,10 @@ export default class MainMenuScene extends Phaser.Scene {
 
         if (this.enterKey?.isDown) {
             if (this.choice === 0) {
-                this.scene.start("game");
+                this.scene.start("game", {
+                    mapData: map5,
+                    playerInitLoc: {mapX: 4, mapY: 4}
+                });
             }
             if (this.choice === 1) {
                 this.scene.start("cutscene")

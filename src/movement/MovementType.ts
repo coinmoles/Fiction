@@ -15,7 +15,6 @@ export class MovementType {
     }
 
     turnAction(): void {
-        console.log(this.dur);
         if (this.dur.start !== null && this.scene.moveCounter < this.dur.start)
             return;
         if (this.dur.end !== null && this.scene.moveCounter >= this.dur.end) 

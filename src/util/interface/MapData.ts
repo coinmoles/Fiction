@@ -1,10 +1,17 @@
 import { CreatureData } from "./CreatureData";
 import { TextData } from "./TextData";
-import { TileData } from "./TileData";
+
+interface DistantMaps {
+    n?: string
+    s?: string
+    w?: string
+    e?: string
+}
 
 export interface MapData {
     textureMap: Map<string, string>
-    mapData: TileData[][]
+    mapData: string[][]
     creatureData: CreatureData[]
     textData: TextData[]
+    distantMaps: DistantMaps
 }

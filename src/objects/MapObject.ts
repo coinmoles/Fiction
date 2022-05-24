@@ -49,8 +49,7 @@ export class MapObject extends Phaser.GameObjects.Sprite {
         const mapX = this.mapX;
         const mapY = this.mapY;
         let i = 0;
-        console.log(dir);
-
+        
         this.scene.time.addEvent({
             callback: () => {
                 this.setMapPosition(
