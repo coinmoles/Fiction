@@ -67,7 +67,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
-        const player = new Player(this, 0, 0, "mi");
+        const player = new Player(this, 4, 4, "mi");
         const mapObjects: MapObject[] = []
         for (let creatureData of this.mapData.creatureData) {
             mapObjects.push(new Creature(this, creatureData.mapX, creatureData.mapY, creatureData.texture, creatureData.movements));
