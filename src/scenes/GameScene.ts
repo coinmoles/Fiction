@@ -75,7 +75,7 @@ export default class GameScene extends Phaser.Scene {
             return;
         this.mapData.textureMap.forEach((value, key) => {
             this.load.image(key, value);
-        })
+        });
     }
 
     create() {
@@ -97,6 +97,7 @@ export default class GameScene extends Phaser.Scene {
         for (let i = 0; i < ROWS; i++) {
             let blockRow: MapObject[] = []
             for (let j = 0; j < COLUMNS; j++) {
+                console.log(tileData[i][j].texture)
                 blockRow.push(new MapObject(this, j, i, tileData[i][j].texture).setDepth(1));
             }
             map.push(blockRow);
@@ -160,59 +161,18 @@ export default class GameScene extends Phaser.Scene {
         this.gameComponents.player.update();
     }
 
-    getFlag(char: vector, movement: vector): "t" | "f" | "n" | "s" | "w" | "e" {
+    handleMovement(movement: vector): void {
         if (!this.gameComponents.created)
-            return "f";
-
-        const newVector: vector = {
-            mapX: char.mapX + movement.mapX,
-            mapY: char.mapY + movement.mapY
-        }
-
-        if (newVector.mapX < 0)
-            return "w"
-        else if (newVector.mapX >= COLUMNS)
-            return "e";
-        else if (newVector.mapY < 0)
-            return "n"
-        else if (newVector.mapY >= ROWS)
-            return "s";
-        else if (!this.gameComponents.tileData[newVector.mapY][newVector.mapX].passable)
-            return "f";
-        else
-            return "t";
-    }
-
-    handleMovement(movement: vector) {
+            return;
         if (!this.mapData)
             return;
 
-        if (!this.gameComponents.created)
-            return;
-
-        const flag = this.getFlag(this.gameComponents.player, movement)
-
-        if (flag === "t") {
-            this.gameComponents.player.turnAction(movement);
-            this.playerMovementTimer = GLOBALTIME;
+        const newVector: vector = {
+            mapX: this.gameComponents.player.mapX + movement.mapX,
+            mapY: this.gameComponents.player.mapY + movement.mapY
         }
-        else if (flag === "n") {
-            let newMapData = this.mapData.distantMaps.n ? mapMap.get(this.mapData.distantMaps.n) : undefined
-            if (newMapData)
-                this.scene.start("game", {
-                    mapData: newMapData,
-                    playerInitLoc: { mapX: this.gameComponents.player.mapX, mapY: ROWS - 1 }
-                });
-        }
-        else if (flag === "s") {
-            let newMapData = this.mapData.distantMaps.s ? mapMap.get(this.mapData.distantMaps.s) : undefined
-            if (newMapData)
-                this.scene.start("game", {
-                    mapData: newMapData,
-                    playerInitLoc: { mapX: this.gameComponents.player.mapX, mapY: 0 }
-                });
-        }
-        else if (flag === "w") {
+        
+        if (newVector.mapX < 0) { // 왼쪽 맵으로 이동
             let newMapData = this.mapData.distantMaps.w ? mapMap.get(this.mapData.distantMaps.w) : undefined
             if (newMapData)
                 this.scene.start("game", {
@@ -220,13 +180,48 @@ export default class GameScene extends Phaser.Scene {
                     playerInitLoc: { mapX: COLUMNS - 1, mapY: this.gameComponents.player.mapY }
                 });
         }
-        else if (flag === "e") {
+        else if (newVector.mapX >= COLUMNS) { // 오른쪽 맵으로 이동
             let newMapData = this.mapData.distantMaps.e ? mapMap.get(this.mapData.distantMaps.e) : undefined;
             if (newMapData)
                 this.scene.start("game", {
                     mapData: newMapData,
                     playerInitLoc: { mapX: 0, mapY: this.gameComponents.player.mapY }
                 });
+        }
+        else if (newVector.mapY < 0) { // 위쪽 맵으로 이동
+            let newMapData = this.mapData.distantMaps.n ? mapMap.get(this.mapData.distantMaps.n) : undefined
+            if (newMapData)
+                this.scene.start("game", {
+                    mapData: newMapData,
+                    playerInitLoc: { mapX: this.gameComponents.player.mapX, mapY: ROWS - 1 }
+                });
+        }
+        else if (newVector.mapY >= ROWS) { // 아래쪽 맵으로 이동
+            let newMapData = this.mapData.distantMaps.s ? mapMap.get(this.mapData.distantMaps.s) : undefined
+            if (newMapData)
+                this.scene.start("game", {
+                    mapData: newMapData,
+                    playerInitLoc: { mapX: this.gameComponents.player.mapX, mapY: 0 }
+                });
+        }
+        else if (!this.gameComponents.tileData[newVector.mapY][newVector.mapX].passable) // 이동 불가능한 경우
+            return;
+        else { // 정상 이동 경우
+            const w = this.gameComponents.tileData[newVector.mapY][newVector.mapX].warp;
+
+            if (w !== null) {
+                let newMapData = mapMap.get(w.mapId)
+                if (newMapData)
+                    setTimeout(() => {
+                        this.scene.start("game", {
+                            mapData: newMapData,
+                            playerInitLoc: w.initialLoc
+                        });
+                    }, GLOBALTIME);
+            }
+            
+            this.gameComponents.player.turnAction(movement);
+            this.playerMovementTimer = GLOBALTIME;
         }
     }
 

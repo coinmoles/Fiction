@@ -18,6 +18,7 @@ export const map5: MapData = {
         
     ],
     distantMaps: {
-        n: "map3"
+        n: "map3",
+        s: "map7"
     }
 };
