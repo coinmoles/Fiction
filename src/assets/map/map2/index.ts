@@ -1,16 +1,13 @@
 import { MapData } from "../../../util/interface/MapData";
 import tiles from "./tiles";
 import story from "./story";
-import { textureMapLoader } from "../mapHelper";
+import { mapTextureLoader } from "../textureMap";
 
-export const map2: MapData = {
+export default {
     textureMap: new Map([
         ["mi", "characters/crazy.png"],
-        ["fa", "creatures/par.png"],
         ["textArea", "ui/text.png"],
-        ["bl", "objects/bloakcs.png"],
-        ["gr", "objects/graas.png"],
-        ...textureMapLoader(tiles)
+        ...mapTextureLoader(tiles)
     ]),
     mapData: tiles,
     textData: story,
@@ -20,4 +17,4 @@ export const map2: MapData = {
         w: "map3",
         e: "map4"
     }
-};
+} as MapData;

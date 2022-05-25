@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { mapMap } from '~/assets/map/mapMap';
-import { mapLoader } from '~/assets/map/mapHelper';
+import { mapLoader } from '~/assets/map/mapLoader';
 import { Creature } from '~/objects/Creature';
 import { MapObject } from '~/objects/MapObject';
 import { Player } from '~/objects/Player';
@@ -97,7 +97,6 @@ export default class GameScene extends Phaser.Scene {
         for (let i = 0; i < ROWS; i++) {
             let blockRow: MapObject[] = []
             for (let j = 0; j < COLUMNS; j++) {
-                console.log(tileData[i][j].texture)
                 blockRow.push(new MapObject(this, j, i, tileData[i][j].texture).setDepth(1));
             }
             map.push(blockRow);

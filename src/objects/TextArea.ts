@@ -27,10 +27,10 @@ export class TextArea<T extends TextData> extends Phaser.GameObjects.Group {
             "...", 
             { 
                 color: "000000",
-                fontSize: `${TILESIZE * 1 / 4}pt`,
-                wordWrap: { width: GAMEWIDTH - TILESIZE * 2/3 }
+                fontSize: `${TILESIZE * 1 / 4 - 2}pt`,
+                wordWrap: { width: GAMEWIDTH - TILESIZE * 2/3 - 10 }
             }
-        ).setDepth(5);
+        ).setDepth(5).setPadding(3, 3, 3, 3);
         this.textObject.setLineSpacing(TILESIZE / 6)
         this.add(this.textObject, true);
         this.nextTexts();
