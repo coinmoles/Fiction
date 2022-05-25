@@ -11,13 +11,16 @@ import { TextData } from "~/util/interface/TextData";
 import { TileData } from '~/util/interface/TileData';
 import { vector } from '~/util/interface/vector';
 import { COLUMNS, ROWS } from '~/util/scaleConstants';
+import { WillPower } from '~/objects/WillPower';
+import { globals } from '~/globals';
 
 interface GameComponentsNull {
     created: false
     player: null
-    mapObjects: null
+    creatures: null
     map: null
     textArea: null
+    willPower: null
     tileData: null
     keyW: null
     keyS: null
@@ -28,9 +31,10 @@ interface GameComponentsNull {
 interface GameComponentsLoaded {
     created: true
     player: Player
-    mapObjects: MapObject[]
+    creatures: MapObject[]
     map: MapObject[][]
     textArea: TextArea<TextData>
+    willPower: WillPower
     tileData: TileData[][]
     keyW: Phaser.Input.Keyboard.Key
     keyS: Phaser.Input.Keyboard.Key
@@ -43,26 +47,27 @@ export default class GameScene extends Phaser.Scene {
     private gameComponents: GameComponentsLoaded | GameComponentsNull = {
         created: false,
         player: null,
-        mapObjects: null,
+        creatures: null,
         map: null,
         textArea: null,
+        willPower: null,
         tileData: null,
         keyW: null,
         keyS: null,
         keyA: null,
         keyD: null
     }
-    private isRunning = true;
 
     private playerInitLoc: vector | null = null;
 
     private playerMovementTimer = 0;
     private creatureMovementTimer = 0;
+    private damageTimer = 0;
     private _moveCounter = 0;
-    private emitter = new Phaser.Events.EventEmitter();
 
     constructor() {
         super({ key: "game" })
+        
     }
 
     init(data: { mapData: MapData, playerInitLoc: vector }) {
@@ -89,9 +94,9 @@ export default class GameScene extends Phaser.Scene {
         )
 
         const player = new Player(this, this.playerInitLoc.mapX, this.playerInitLoc.mapY, "mi");
-        const mapObjects: MapObject[] = []
+        const creatures: MapObject[] = []
         for (let creatureData of this.mapData.creatureData) {
-            mapObjects.push(new Creature(this, creatureData.mapX, creatureData.mapY, creatureData.texture, creatureData.movements));
+            creatures.push(new Creature(this, creatureData.mapX, creatureData.mapY, creatureData.texture, creatureData.movements));
         }
         const map: MapObject[][] = []
         for (let i = 0; i < ROWS; i++) {
@@ -102,6 +107,7 @@ export default class GameScene extends Phaser.Scene {
             map.push(blockRow);
         }
         const textArea = new TextArea(this, this.mapData.textData);
+        const willPower = new WillPower(this);
 
         const keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         const keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
@@ -111,9 +117,10 @@ export default class GameScene extends Phaser.Scene {
         this.gameComponents = {
             created: true,
             player,
-            mapObjects,
+            creatures,
             map,
             textArea,
+            willPower,
             tileData,
             keyW,
             keyS,
@@ -132,32 +139,36 @@ export default class GameScene extends Phaser.Scene {
             this.playerMovementTimer -= delta;
         if (this.creatureMovementTimer > 0)
             this.creatureMovementTimer -= delta;
-
-        if (this.gameComponents.keyW.isDown && this.playerMovementTimer <= 0)
-            this.handleMovement({ mapX: 0, mapY: -1 });
-        else if (this.gameComponents.keyS.isDown && this.playerMovementTimer <= 0)
-            this.handleMovement({ mapX: 0, mapY: 1 });
-        else if (this.gameComponents.keyA.isDown && this.playerMovementTimer <= 0)
-            this.handleMovement({ mapX: -1, mapY: 0 });
-        else if (this.gameComponents.keyD.isDown && this.playerMovementTimer <= 0)
-            this.handleMovement({ mapX: 1, mapY: 0 });
-
-        if (this.isRunning) {
-            for (let mapObject of this.gameComponents.mapObjects) {
-                if (this.gameComponents.player.collide(mapObject)) {
-                    this.gameComponents.textArea.clearTexts();
-                    this.gameComponents.textArea.appendTexts({ text: "Game Over", stopTime: true });
-                    this.gameComponents.textArea.nextTexts();
-                    this.isRunning = false;
-                }
-            }
+        if (this.damageTimer > 0) {
+            this.gameComponents.player.setAlpha((this.gameComponents.player.alpha + 0.05) % 1)
+            this.damageTimer -= delta;
         }
+        
+        if (this.playerMovementTimer <= 0)
+            if (this.gameComponents.keyW.isDown)
+                this.handleMovement({ mapX: 0, mapY: -1 });
+            else if (this.gameComponents.keyS.isDown)
+                this.handleMovement({ mapX: 0, mapY: 1 });
+            else if (this.gameComponents.keyA.isDown)
+                this.handleMovement({ mapX: -1, mapY: 0 });
+            else if (this.gameComponents.keyD.isDown)
+                this.handleMovement({ mapX: 1, mapY: 0 });
 
         if (this.creatureMovementTimer <= 0)
             this.turnAction()
 
+        if (this.damageTimer <= 0) {
+            this.gameComponents.player.setAlpha(1)
+            for (let creature of this.gameComponents.creatures) {
+                if (this.gameComponents.player.collide(creature)) {
+                    globals.playerWill -= 1;
+                    this.gameComponents.willPower.updateWillPower();
+                    this.damageTimer = GLOBALTIME * 5;
+                    break;
+                }
+            }
+        }
 
-        this.gameComponents.player.update();
     }
 
     handleMovement(movement: vector): void {
@@ -238,7 +249,7 @@ export default class GameScene extends Phaser.Scene {
         if (this.gameComponents.created === false)
             return;
 
-        for (let mapObject of this.gameComponents.mapObjects) {
+        for (let mapObject of this.gameComponents.creatures) {
             if (mapObject !== this.gameComponents.player)
                 mapObject.turnAction({ mapX: 0, mapY: 0 });
         }

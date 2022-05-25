@@ -8,6 +8,8 @@ export default {
     textureMap: new Map([
         ["mi", "characters/crazy.png"],
         ["textArea", "ui/text.png"],
+        ["wpEmpty", "ui/wpEmpty.png"],
+        ["wpFull", "ui/wpFull.png"],
         ...textureLoader(creatures.map(v => v.texture)),
         ...mapTextureLoader(tiles)
     ]),

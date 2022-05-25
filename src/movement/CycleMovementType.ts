@@ -11,6 +11,7 @@ export class CycleMovementType extends MovementType {
     protected freq: number;
     protected dirsLength: number;
     protected dirNum: number;
+    protected count: number;
 
     constructor(mapObject: Creature, scene: GameScene | CutScene, dur: Duration,
         dirs: vector[], freq: number) {
@@ -20,13 +21,17 @@ export class CycleMovementType extends MovementType {
 
         this.dirsLength = dirs.length;
         this.dirNum = 0;
+        this.count = 0;
     }
 
     moveObject(): void {
-        this.dirNum %= this.dirsLength;
-        
         this.mapObject.move(this.dirs[this.dirNum]);
-        
-        this.dirNum += 1;
+
+        this.count++;
+        if (this.count >= this.freq) {
+            this.count = 0;
+            this.dirNum += 1;
+            this.dirNum %= this.dirsLength;
+        }
     }
 }

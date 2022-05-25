@@ -8,7 +8,6 @@ import { FULLHEIGHT, FULLWIDTH } from '~/util/scaleConstants';
 const MAXCHOICE = 3;
 
 export default class MainMenuScene extends Phaser.Scene {
-    // 방향키를 감지할 키를 추가하기!
     private upKey: Phaser.Input.Keyboard.Key | null = null;
     private downKey: Phaser.Input.Keyboard.Key | null = null;
     private enterKey: Phaser.Input.Keyboard.Key | null = null;

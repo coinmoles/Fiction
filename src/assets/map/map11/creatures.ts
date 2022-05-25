@@ -5,4 +5,5 @@ export default [
     { movements: [], mapX: 6, mapY: 6, texture: 'fa' },
     { movements: [], mapX: 2, mapY: 5, texture: 'fa' },
     { movements: [], mapX: 7, mapY: 3, texture: 'fa' },
+    { movements: [], mapX: 5, mapY: 1, texture: 'fa' },
 ] as CreatureData[];

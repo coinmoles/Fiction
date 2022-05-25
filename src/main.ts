@@ -1,4 +1,4 @@
-import Phaser, { Game } from 'phaser'
+import Phaser from 'phaser';
 import CutScene from './scenes/CutScene';
 import GameScene from './scenes/GameScene'
 
@@ -18,4 +18,4 @@ const config: Phaser.Types.Core.GameConfig = {
 	scene: [MainMenuScene, GameScene, CutScene]
 }
 
-export default new Phaser.Game(config)
+export default new Phaser.Game(config);
