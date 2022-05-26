@@ -1,9 +1,9 @@
 import { GLOBALTIME } from "~/util/constants";
 import { vector } from "~/util/interface/vector";
-import { MapObject } from "./MapObject";
+import { Creature } from "./Creature";
 
-export class Player extends MapObject {
-    turnAction(movement: vector): void {
+export class Player extends Creature {
+    move(movement: vector): void {
         const mapX = this._mapX;
         const mapY = this._mapY;
         let i = 0;

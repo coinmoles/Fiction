@@ -1,14 +1,15 @@
 import { MapData } from "../../../util/interface/MapData";
 import { mapTextureLoader, normalTextures } from "../textureMap";
 import story from "./story";
-import tiles from "./tiles";
+import tiles, { map16NewTiles } from "./tiles";
 
 export default {
     textureMap: new Map([
         ...normalTextures,
-        ...mapTextureLoader(tiles)
+        ...mapTextureLoader(tiles),
+        ...mapTextureLoader(map16NewTiles),
     ]),
-    mapData: tiles,
+    tiles: tiles,
     textData: story,
     creatureData: [],
     distantMaps: {

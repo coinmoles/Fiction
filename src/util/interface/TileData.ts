@@ -1,13 +1,15 @@
+import { EventId } from "./EventId";
+import { MapId } from "./MapId";
 import { vector } from "./vector";
 
 interface WarpData {
-    mapId: string
+    mapId: MapId
     initialLoc: vector
 }
 
 export interface TileData {
     texture: string;
     passable: boolean;
-    event: string[];
+    event: EventId[];
     warp: WarpData | null;
 }

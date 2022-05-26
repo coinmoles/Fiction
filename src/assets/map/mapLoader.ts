@@ -30,15 +30,23 @@ tileDataMap.set("cic03", { texture: "cic03", passable: true, event: [], warp: nu
 tileDataMap.set("cic04", { texture: "cic04", passable: true, event: [], warp: null });
 tileDataMap.set("cic13", { texture: "cic13", passable: true, event: [], warp: null });
 tileDataMap.set("cic14", { texture: "cic14", passable: true, event: [], warp: null });
-tileDataMap.set("cicw0", { texture: "cicw0", passable: true, event: [], warp: {
-    mapId: "map10", initialLoc: { mapX: 4, mapY: 4 }
-} });
-tileDataMap.set("cicw1", { texture: "cicw1", passable: true, event: [], warp: {
-    mapId: "map10", initialLoc: { mapX: 4, mapY: 4 }
-} });
-tileDataMap.set("cicw2", { texture: "cicw2", passable: true, event: [], warp: {
-    mapId: "map10", initialLoc: { mapX: 4, mapY: 4 }
-} });
+
+// Castle Interior Carpet Warp
+tileDataMap.set("cicw0", {
+    texture: "cicw0", passable: true, event: [], warp: {
+        mapId: "map10", initialLoc: { mapX: 4, mapY: 4 }
+    }
+});
+tileDataMap.set("cicw1", {
+    texture: "cicw1", passable: true, event: [], warp: {
+        mapId: "map10", initialLoc: { mapX: 4, mapY: 4 }
+    }
+});
+tileDataMap.set("cicw2", {
+    texture: "cicw2", passable: true, event: [], warp: {
+        mapId: "map10", initialLoc: { mapX: 4, mapY: 4 }
+    }
+});
 
 // castle exterior wall
 tileDataMap.set("cw00 ", { texture: "cw00 ", passable: false, event: [], warp: null });
@@ -64,10 +72,12 @@ tileDataMap.set("cd10 ", { texture: "cd10 ", passable: false, event: [], warp: n
 tileDataMap.set("cd11 ", { texture: "cd11 ", passable: false, event: [], warp: null });
 tileDataMap.set("cd12 ", { texture: "cd12 ", passable: false, event: [], warp: null });
 tileDataMap.set("cd20 ", { texture: "cd20 ", passable: false, event: [], warp: null });
-tileDataMap.set("cd21 ", { texture: "cd21 ", passable: true, event: [], warp: {
-    mapId: "map8",
-    initialLoc: { mapX:3, mapY: 6 }
-} });
+tileDataMap.set("cd21 ", {
+    texture: "cd21 ", passable: true, event: [], warp: {
+        mapId: "map8",
+        initialLoc: { mapX: 3, mapY: 6 }
+    }
+});
 tileDataMap.set("cd22 ", { texture: "cd22 ", passable: false, event: [], warp: null });
 
 // grass floor
@@ -97,7 +107,7 @@ tileDataMap.set("rd04 ", { texture: "rd04 ", passable: true, event: [], warp: nu
 tileDataMap.set("rd13 ", { texture: "rd13 ", passable: true, event: [], warp: null });
 tileDataMap.set("rd14 ", { texture: "rd14 ", passable: true, event: [], warp: null });
 
-// castle celing
+// castle ceiling
 tileDataMap.set("cc00 ", { texture: "cc00 ", passable: false, event: [], warp: null });
 tileDataMap.set("cc01 ", { texture: "cc01 ", passable: false, event: [], warp: null });
 tileDataMap.set("cc02 ", { texture: "cc02 ", passable: false, event: [], warp: null });
@@ -112,13 +122,22 @@ tileDataMap.set("cc_21", { texture: "cc_21", passable: false, event: [], warp: n
 tileDataMap.set("tw00 ", { texture: "tw00 ", passable: false, event: [], warp: null });
 tileDataMap.set("tw01 ", { texture: "tw01 ", passable: false, event: [], warp: null });
 tileDataMap.set("tw10 ", { texture: "tw10 ", passable: false, event: [], warp: null });
-tileDataMap.set("tw11 ", { texture: "tw11 ", passable: true, event: [], warp: {
-    mapId: "map17",
-    initialLoc: { mapX: 4, mapY: 6 }
-} });
+tileDataMap.set("tw11 ", {
+    texture: "tw11 ", passable: true, event: [], warp: {
+        mapId: "map17",
+        initialLoc: { mapX: 4, mapY: 6 }
+    }
+});
 tileDataMap.set("tw12 ", { texture: "tw12 ", passable: false, event: [], warp: null });
 tileDataMap.set("tw13 ", { texture: "tw13 ", passable: false, event: [], warp: null });
 tileDataMap.set("twfl ", { texture: "twfl ", passable: true, event: [], warp: null });
+
+// open sesame
+tileDataMap.set("gf21o", { texture: "gf21o", passable: true, event: ["towerOpenSesame"], warp: null });
+tileDataMap.set("rd00o", { texture: "rd00o", passable: true, event: ["towerOpenSesame"], warp: null });
+tileDataMap.set("rd01o", { texture: "rd01o", passable: true, event: ["towerOpenSesame"], warp: null });
+tileDataMap.set("rd02o", { texture: "rd02o", passable: true, event: ["towerOpenSesame"], warp: null });
+    
 
 export const mapLoader = (key: string): TileData => {
     const tileData = tileDataMap.get(key);

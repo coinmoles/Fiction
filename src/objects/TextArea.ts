@@ -1,19 +1,19 @@
 import { GAMEHEIGHT, GAMEWIDTH, ORIGINX, ORIGINY, ROWS, TILESIZE } from "../util/scaleConstants";
 import { Queue } from "queue-typescript";
-import { TextData } from "~/util/interface/TextData";
-import { CutsceneTextData } from "~/util/interface/CutsceneData";
+import { AnyTextData, TextData } from "~/util/interface/TextData";
 
-export class TextArea<T extends TextData> extends Phaser.GameObjects.Group {
-    protected textDataQueue: Queue<T>;
-    public currentText: T | null = null;
+export class TextArea extends Phaser.GameObjects.Group {
+    protected textDataQueue: Queue<AnyTextData>;
+    public currentText: AnyTextData | null = null;
     protected textArea: Phaser.GameObjects.Image | null = null;
     protected textObject: Phaser.GameObjects.Text | null = null;
 
-    public stopTime: boolean = false
+    public lastStopTime: boolean = true;
+    public lastLimits: number = 0;
 
-    constructor(scene: Phaser.Scene, textDataList: T[]) {
+    constructor(scene: Phaser.Scene, textDataList: AnyTextData[]) {
         super(scene);
-
+        
         this.textDataQueue = new Queue(...textDataList);
 
         this.textArea = new Phaser.GameObjects.Image(this.scene, ORIGINX, TILESIZE * ROWS + ORIGINY, "textArea").setOrigin(0, 0);
@@ -48,14 +48,17 @@ export class TextArea<T extends TextData> extends Phaser.GameObjects.Group {
             this.textDataQueue.dequeue();
     }
 
-    appendTexts (textData: T)
-    appendTexts (textData: T[]) 
-    appendTexts (textData: T | T[]) {
+    appendTexts (textData: AnyTextData)
+    appendTexts (textData: AnyTextData[]) 
+    appendTexts (textData: AnyTextData | AnyTextData[]) {
         if (!Array.isArray(textData))
             this.textDataQueue.enqueue(textData)
         else 
             for (let td of textData)            
                 this.textDataQueue.enqueue(td);
+        
+        if (this.currentText === null && this.textDataQueue.length !== 0)
+            this.nextTexts();
     }
 
     skipTexts () {
@@ -67,19 +70,27 @@ export class TextArea<T extends TextData> extends Phaser.GameObjects.Group {
 
     nextTexts () {
         const textData = this.textDataQueue.dequeue();
-        if (textData === undefined) {
+        if (this.textObject === null) {
+            setInterval(() => this.nextTexts(), 1000);
+            this.lastLimits = -1;
+            this.lastStopTime = true;
+            return
+        }
+        if (textData === undefined || textData === null) {
             this.currentText = null;
             this.textObject?.setText("...");
-            this.stopTime = false;
+            this.lastLimits = 0;
+            this.lastStopTime = false;
             return;
         }
         
         this.currentText = textData;
-        this.stopTime = textData.stopTime;
+        this.lastLimits = "limits" in textData ? textData.limits : 0;
+        this.lastStopTime = true;
         let length = textData.text.length;
         let i = 0;
 
-        this.textObject?.setText("");
+        this.textObject.setText("");
         this.scene.time.addEvent({
             callback: () => {
                 if (this.currentText !== textData)

@@ -9,11 +9,11 @@ export default {
         ...textureLoader(creatures.map(v => v.texture)),
         ...mapTextureLoader(tiles)
     ]),
-    mapData: tiles,
+    tiles: tiles,
     textData: [],
     creatureData: creatures,
     distantMaps: {
         w: "map13",
-        e: "map15aw"
+        e: "map15"
     }
 } as MapData;

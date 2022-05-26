@@ -1,5 +1,7 @@
 import { MapData } from "../../../util/interface/MapData";
 import { mapTextureLoader, normalTextures } from "../textureMap";
+import cutscene from "./cutscene";
+import story from "./story";
 import tiles from "./tiles";
 
 export default {
@@ -7,10 +9,10 @@ export default {
         ...normalTextures,
         ...mapTextureLoader(tiles)
     ]),
-    mapData: tiles,
-    textData: [],
+    tiles,
+    textData: story,
     creatureData: [],
     distantMaps: {
-        s: "map15"
-    }
+    },
+    cutscene
 } as MapData;

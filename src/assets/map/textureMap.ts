@@ -1,4 +1,5 @@
 const textureDataMap = new Map<string, string>([
+    // Castle Interior Carpet
     ["cic00", "map/castleInterior/castleInCarpet00.png"],
     ["cic01", "map/castleInterior/castleInCarpet01.png"],
     ["cic02", "map/castleInterior/castleInCarpet02.png"],
@@ -12,10 +13,16 @@ const textureDataMap = new Map<string, string>([
     ["cic04", "map/castleInterior/castleInCarpet04.png"],
     ["cic13", "map/castleInterior/castleInCarpet13.png"],
     ["cic14", "map/castleInterior/castleInCarpet14.png"],
+
+    // Castle Interior Carpet Warp
     ["cicw0", "map/castleInterior/castleInCarpet10.png"],
     ["cicw1", "map/castleInterior/castleInCarpet11.png"],
     ["cicw2", "map/castleInterior/castleInCarpet12.png"],
+
+    // Castle Floor
     ["cf   ", "map/castleInterior/castleInFloor00.png"],
+
+    // Castle Interior Wall
     ["ciw00", "map/castleInterior/castleInWall00.png"],
     ["ciw01", "map/castleInterior/castleInWall01.png"],
     ["ciw02", "map/castleInterior/castleInWall02.png"],
@@ -25,6 +32,8 @@ const textureDataMap = new Map<string, string>([
     ["ciw20", "map/castleInterior/castleInWall20.png"],
     ["ciw21", "map/castleInterior/castleInWall21.png"],
     ["ciw22", "map/castleInterior/castleInWall22.png"],
+
+    // Castle Ceiling
     ["cc00 ", "map/castleInterior/castleCeiling00.png"],
     ["cc01 ", "map/castleInterior/castleCeiling01.png"],
     ["cc02 ", "map/castleInterior/castleCeiling02.png"],
@@ -34,6 +43,8 @@ const textureDataMap = new Map<string, string>([
     ["cc_11", "map/castleInterior/castleCeiling_11.png"],
     ["cc_20", "map/castleInterior/castleCeiling_20.png"],
     ["cc_21", "map/castleInterior/castleCeiling_21.png"],
+
+    // Castle Door
     ["cd00 ", "map/castle/castleDoor00.png"],
     ["cd01 ", "map/castle/castleDoor01.png"],
     ["cd02 ", "map/castle/castleDoor02.png"],
@@ -44,6 +55,8 @@ const textureDataMap = new Map<string, string>([
     ["cd21 ", "map/castle/castleDoor21.png"],
     ["cd22 ", "map/castle/castleDoor22.png"],
     ["cd_s ", "map/castle/castleDoor_s.png"],
+
+    // Castle Slope
     ["cs00 ", "map/castle/castleSlope00.png"],
     ["cs10 ", "map/castle/castleSlope10.png"],
     ["cs20 ", "map/castle/castleSlope20.png"],
@@ -55,6 +68,8 @@ const textureDataMap = new Map<string, string>([
     ["cw00 ", "map/castle/castleWall00.png"],
     ["cw01 ", "map/castle/castleWall01.png"],
     ["cw02 ", "map/castle/castleWall02.png"],
+
+    // Grass Floor
     ["gf00 ", "map/floor/grassFloor00.png"],
     ["gf01 ", "map/floor/grassFloor01.png"],
     ["gf02 ", "map/floor/grassFloor02.png"],
@@ -65,6 +80,8 @@ const textureDataMap = new Map<string, string>([
     ["gf21 ", "map/floor/grassFloor21.png"],
     ["gf22 ", "map/floor/grassFloor22.png"],
     ["gf_s ", "map/floor/grassFloor_s.png"],
+
+    // Road
     ["rd00 ", "map/road/road00.png"],
     ["rd01 ", "map/road/road01.png"],
     ["rd02 ", "map/road/road02.png"],
@@ -78,6 +95,8 @@ const textureDataMap = new Map<string, string>([
     ["rd04 ", "map/road/road_01.png"],
     ["rd13 ", "map/road/road_10.png"],
     ["rd14 ", "map/road/road_11.png"],
+
+    // Tower
     ["tw00 ", "map/tower/tower00.png"],
     ["tw01 ", "map/tower/tower01.png"],
     ["tw10 ", "map/tower/tower10.png"],
@@ -85,6 +104,13 @@ const textureDataMap = new Map<string, string>([
     ["tw12 ", "map/tower/tower12.png"],
     ["tw13 ", "map/tower/tower13.png"],
     ["twfl ", "map/tower/towerFloor.png"],
+
+    ["gf21o", "map/floor/grassFloor21.png"],
+    ["rd00o", "map/road/road00.png"],
+    ["rd01o", "map/road/road01.png"],
+    ["rd02o", "map/road/road02.png"],
+
+    // Creatures
     ["fa", "creatures/par.png"]
 ]);
 
@@ -111,8 +137,7 @@ export const textureLoader = (keys: string[]): Map<string, string> => {
 
 export const mapTextureLoader = (keys: string[][]): Map<string, string> => {
     const keySet = new Set(flatten(keys));
-
-    console.log(keySet);
+    
     return new Map(
         [...textureDataMap]
             .filter(([k, v]) => keySet.has(k))

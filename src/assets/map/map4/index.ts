@@ -7,7 +7,7 @@ export default {
         ...normalTextures,
         ...mapTextureLoader(tiles)
     ]),
-    mapData: tiles,
+    tiles: tiles,
     textData: [
     ],
     creatureData: [

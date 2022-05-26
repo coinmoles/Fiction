@@ -1,5 +1,10 @@
-
 export interface TextData {
     text: string;
-    stopTime: boolean;
-}
+};
+
+export interface CutsceneTextData extends TextData {
+    appearsAt: number
+    limits: number
+};
+
+export type AnyTextData = TextData | CutsceneTextData;

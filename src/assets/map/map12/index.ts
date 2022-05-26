@@ -9,7 +9,7 @@ export default {
         ...textureLoader(creatures.map(v => v.texture)),
         ...mapTextureLoader(tiles)
     ]),
-    mapData: tiles,
+    tiles: tiles,
     textData: [],
     creatureData: creatures,
     distantMaps: {

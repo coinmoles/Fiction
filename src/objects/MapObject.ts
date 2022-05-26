@@ -1,6 +1,3 @@
-import { Queue } from "queue-typescript";
-import { MovementType } from "~/movement/MovementType";
-import CutScene from "~/scenes/CutScene";
 import GameScene from "~/scenes/GameScene";
 import { GLOBALTIME } from "~/util/constants";
 import { vector } from "~/util/interface/vector";
@@ -10,14 +7,14 @@ export class MapObject extends Phaser.GameObjects.Sprite {
     protected _mapX: number = 0
     protected _mapY: number = 0
 
-    constructor(scene: GameScene | CutScene, mapX: number, mapY: number, texture: string | Phaser.Textures.Texture) {
+    constructor(scene: GameScene, mapX: number, mapY: number, 
+        texture: string | Phaser.Textures.Texture) {
         super(scene, 0, 0, texture);
         scene.add.existing(this);
         this.setDepth(5);
 
         this._mapX = mapX;
         this._mapY = mapY;
-
 
         this.setOrigin(0, 0);
         this.setScale(TILESIZE / this.displayWidth, TILESIZE / this.displayHeight);
@@ -42,7 +39,7 @@ export class MapObject extends Phaser.GameObjects.Sprite {
         this.setPosition(TILESIZE * this._mapX + ORIGINX, TILESIZE * this._mapY + ORIGINY)
     }
 
-    turnAction(movement: vector) {
+    turnAction() {
     }
 
     move(dir: vector) {
