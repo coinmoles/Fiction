@@ -14,13 +14,13 @@ interface ConstantMovementData extends BaseMovementData {
 interface CycleMovementData extends BaseMovementData {
     type: "cyc"
     dirs: vector[]
-    freq: number
+    freq: number | number[]
 }
 
 interface RotateMoveMentData extends BaseMovementData {
     type: "rot"
     initialDir: vector
-    freq: number
+    freq: number | number[]
     cycleType: "cl" | "ccl"
 }
 

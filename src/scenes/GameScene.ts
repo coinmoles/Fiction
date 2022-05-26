@@ -73,6 +73,7 @@ export default class GameScene extends Phaser.Scene {
     init(data: { mapData: MapData, playerInitLoc: vector }) {
         this.mapData = data.mapData;
         this.playerInitLoc = data.playerInitLoc;
+        this._moveCounter = 0;
     }
 
     preload() {

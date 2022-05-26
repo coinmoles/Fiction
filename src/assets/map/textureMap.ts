@@ -78,8 +78,22 @@ const textureDataMap = new Map<string, string>([
     ["rd04 ", "map/road/road_01.png"],
     ["rd13 ", "map/road/road_10.png"],
     ["rd14 ", "map/road/road_11.png"],
+    ["tw00 ", "map/tower/tower00.png"],
+    ["tw01 ", "map/tower/tower01.png"],
+    ["tw10 ", "map/tower/tower10.png"],
+    ["tw11 ", "map/tower/tower11.png"],
+    ["tw12 ", "map/tower/tower12.png"],
+    ["tw13 ", "map/tower/tower13.png"],
+    ["twfl ", "map/tower/towerFloor.png"],
     ["fa", "creatures/par.png"]
 ]);
+
+export const normalTextures = new Map([
+    ["mi", "characters/crazy.png"],
+    ["textArea", "ui/text.png"],
+    ["wpEmpty", "ui/wpEmpty.png"],
+    ["wpFull", "ui/wpFull.png"],
+])
 
 const flatten = (keys: string[][]) => {
     let x: string[] = [];
@@ -98,6 +112,7 @@ export const textureLoader = (keys: string[]): Map<string, string> => {
 export const mapTextureLoader = (keys: string[][]): Map<string, string> => {
     const keySet = new Set(flatten(keys));
 
+    console.log(keySet);
     return new Map(
         [...textureDataMap]
             .filter(([k, v]) => keySet.has(k))

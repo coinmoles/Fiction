@@ -13,7 +13,7 @@ export default {
     textData: [],
     creatureData: creatures,
     distantMaps: {
-        n: "map11",
-        e: "map13"
+        w: "map14",
+        n: "map16"
     }
 } as MapData;

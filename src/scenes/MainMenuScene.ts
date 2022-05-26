@@ -1,5 +1,7 @@
 import Phaser from 'phaser'
 import map11 from '~/assets/map/map11';
+import map13 from '~/assets/map/map13';
+import map15 from '~/assets/map/map15';
 import map2 from '~/assets/map/map2';
 import map8 from '~/assets/map/map8';
 import map9 from '~/assets/map/map9';
@@ -54,7 +56,7 @@ export default class MainMenuScene extends Phaser.Scene {
         if (this.enterKey?.isDown) {
             if (this.choice === 0) {
                 this.scene.start("game", {
-                    mapData: map11,
+                    mapData: map15,
                     playerInitLoc: {mapX: 4, mapY: 4}
                 });
             }

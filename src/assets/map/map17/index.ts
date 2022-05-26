@@ -8,13 +8,9 @@ export default {
         ...mapTextureLoader(tiles)
     ]),
     mapData: tiles,
-    textData: [
-    ],
-    creatureData: [
-        
-    ],
+    textData: [],
+    creatureData: [],
     distantMaps: {
-        n: "map5",
-        e: "map8"
+        s: "map15"
     }
 } as MapData;

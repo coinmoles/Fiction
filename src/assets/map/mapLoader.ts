@@ -108,6 +108,17 @@ tileDataMap.set("cc_11", { texture: "cc_11", passable: false, event: [], warp: n
 tileDataMap.set("cc_20", { texture: "cc_20", passable: false, event: [], warp: null });
 tileDataMap.set("cc_21", { texture: "cc_21", passable: false, event: [], warp: null });
 
+// tower
+tileDataMap.set("tw00 ", { texture: "tw00 ", passable: false, event: [], warp: null });
+tileDataMap.set("tw01 ", { texture: "tw01 ", passable: false, event: [], warp: null });
+tileDataMap.set("tw10 ", { texture: "tw10 ", passable: false, event: [], warp: null });
+tileDataMap.set("tw11 ", { texture: "tw11 ", passable: true, event: [], warp: {
+    mapId: "map17",
+    initialLoc: { mapX: 4, mapY: 6 }
+} });
+tileDataMap.set("tw12 ", { texture: "tw12 ", passable: false, event: [], warp: null });
+tileDataMap.set("tw13 ", { texture: "tw13 ", passable: false, event: [], warp: null });
+tileDataMap.set("twfl ", { texture: "twfl ", passable: true, event: [], warp: null });
 
 export const mapLoader = (key: string): TileData => {
     const tileData = tileDataMap.get(key);

@@ -1,14 +1,11 @@
 import { MapData } from "../../../util/interface/MapData";
-import { mapTextureLoader } from "../textureMap";
+import { mapTextureLoader, normalTextures } from "../textureMap";
 import story from "./story";
 import tiles from "./tiles";
 
 export default {
     textureMap: new Map([
-        ["mi", "characters/crazy.png"],
-        ["textArea", "ui/text.png"],
-        ["wpEmpty", "ui/wpEmpty.png"],
-        ["wpFull", "ui/wpFull.png"],
+        ...normalTextures,
         ...mapTextureLoader(tiles)
     ]),
     mapData: tiles,

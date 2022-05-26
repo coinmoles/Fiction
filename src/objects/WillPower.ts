@@ -26,9 +26,7 @@ export class WillPower extends Phaser.GameObjects.Group {
     updateWillPower() {
         if (this.wills === null)
             return;
-
-        console.log(this.wills);
-        
+            
         for (let i = 0; i < 3; i++){
             if (i < globals.playerWill)
                 this.wills[i].setTexture("wpFull")
