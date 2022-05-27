@@ -3,14 +3,13 @@ import { mapTextureLoader, normalTextures, textureLoader } from "../textureMap";
 import creatures from "./creatures";
 import tiles from "./tiles";
 
-export default {
+export const map15: MapData = {
     textureMap: new Map([
         ...normalTextures,
         ...textureLoader(creatures.map(v => v.texture)),
         ...mapTextureLoader(tiles)
     ]),
-    tiles: tiles,
-    textData: [],
+    tiles,
     creatureData: creatures,
     distantMaps: {
         w: "map14",

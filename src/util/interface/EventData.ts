@@ -1,13 +1,12 @@
-import { Creature } from "~/objects/Creature"
 import { CreatureData } from "./CreatureData"
-import { EventId } from "./EventId"
 import { MovementData } from "./MovementData"
-import { CutsceneTextData } from "./TextData"
+import { TextData } from "./TextData"
 
-export interface CutsceneData {
+export interface EventData {
+    mapId: string
     endsAt: number
     playerMovement: MovementData[]
-    textData: CutsceneTextData[]
+    textData: TextData[]
     mapChange: { appearsAt: number }[]
     creatures: { creatureData: CreatureData, appearsAt: number }[]
 }

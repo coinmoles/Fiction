@@ -2,19 +2,15 @@ import { MapData } from "../../../util/interface/MapData";
 import { mapTextureLoader, normalTextures } from "../textureMap";
 import tiles from "./tiles";
 
-export default {
+export const map3: MapData = {
     textureMap: new Map([
         ...normalTextures,
         ...mapTextureLoader(tiles)
     ]),
-    tiles: tiles,
-    textData: [
-    ],
-    creatureData: [
-        
-    ],
+    tiles,
+    creatureData: [],
     distantMaps: {
         e: "map2",
         s: "map5"
     }
-} as MapData;
+};

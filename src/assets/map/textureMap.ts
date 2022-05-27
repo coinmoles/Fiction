@@ -104,6 +104,7 @@ const textureDataMap = new Map<string, string>([
     ["tw12 ", "map/tower/tower12.png"],
     ["tw13 ", "map/tower/tower13.png"],
     ["twfl ", "map/tower/towerFloor.png"],
+    ["twfll", "map/tower/towerFloor.png"],
     ["twpt ", "map/tower/towerPortal.png"],
     ["twst ", "map/tower/towerStairs.png"],
 

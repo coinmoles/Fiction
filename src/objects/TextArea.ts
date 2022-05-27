@@ -1,17 +1,17 @@
 import { GAMEHEIGHT, GAMEWIDTH, ORIGINX, ORIGINY, ROWS, TILESIZE } from "../util/scaleConstants";
 import { Queue } from "queue-typescript";
-import { AnyTextData, TextData } from "~/util/interface/TextData";
+import { TextData } from "~/util/interface/TextData";
 
 export class TextArea extends Phaser.GameObjects.Group {
-    protected textDataQueue: Queue<AnyTextData>;
-    public currentText: AnyTextData | null = null;
+    protected textDataQueue: Queue<TextData>;
+    public currentText: TextData | null = null;
     protected textArea: Phaser.GameObjects.Image | null = null;
     protected textObject: Phaser.GameObjects.Text | null = null;
 
     public lastStopTime: boolean = true;
     public lastLimits: number = 0;
 
-    constructor(scene: Phaser.Scene, textDataList: AnyTextData[]) {
+    constructor(scene: Phaser.Scene, textDataList: TextData[]) {
         super(scene);
         
         this.textDataQueue = new Queue(...textDataList);
@@ -48,9 +48,9 @@ export class TextArea extends Phaser.GameObjects.Group {
             this.textDataQueue.dequeue();
     }
 
-    appendTexts (textData: AnyTextData)
-    appendTexts (textData: AnyTextData[]) 
-    appendTexts (textData: AnyTextData | AnyTextData[]) {
+    appendTexts (textData: TextData)
+    appendTexts (textData: TextData[]) 
+    appendTexts (textData: TextData | TextData[]) {
         if (!Array.isArray(textData))
             this.textDataQueue.enqueue(textData)
         else 
@@ -85,7 +85,7 @@ export class TextArea extends Phaser.GameObjects.Group {
         }
         
         this.currentText = textData;
-        this.lastLimits = "limits" in textData ? textData.limits : 0;
+        this.lastLimits = textData.limits ? textData.limits : 0;
         this.lastStopTime = true;
         let length = textData.text.length;
         let i = 0;

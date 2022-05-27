@@ -3,11 +3,10 @@ import GameScene from "~/scenes/GameScene";
 import { vector } from "../util/interface/vector";
 import { CycleMovementType } from "./CycleMovementType";
 import { Duration } from "../util/interface/Duration";
-import CutScene from "~/scenes/CutScene";
 
 export class RotateMoveMentType extends CycleMovementType {
-    constructor(mapObject: Creature, scene: GameScene | CutScene, dur: Duration,
-        initialDir: vector, freq: number, cycleType: "cl" | "ccl"
+    constructor(mapObject: Creature, scene: GameScene, dur: Duration,
+        initialDir: vector, freq: number | number[], cycleType: "cl" | "ccl"
     ) {
         let dir = initialDir;
         const dirs: vector[] = [];

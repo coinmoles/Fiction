@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
-import { portal } from '~/assets/events/portal';
-import { towerOpenSesame } from '~/assets/events/towerOpenSesame';
+import { eventMap } from '~/assets/event/eventMap';
+import { portal } from '~/assets/mapChange/portal';
+import { towerOpenSesame } from '~/assets/mapChange/towerOpenSesame';
 import { mapLoader } from '~/assets/map/mapLoader';
 import { mapMap } from '~/assets/map/mapMap';
 import { mapChanger } from '~/functions/mapChanger';
@@ -11,6 +12,7 @@ import { Player } from '~/objects/Player';
 import { TextArea } from '~/objects/TextArea';
 import { WillPower } from '~/objects/WillPower';
 import { GLOBALTIME } from '~/util/constants';
+import { EventData } from '~/util/interface/EventData';
 import { EventId } from '~/util/interface/EventId';
 import { MapData } from '~/util/interface/MapData';
 import { MapId } from '~/util/interface/MapId';
@@ -18,11 +20,22 @@ import { TileData } from '~/util/interface/TileData';
 import { vector } from '~/util/interface/vector';
 import { COLUMNS, ROWS, TILESIZE } from '~/util/scaleConstants';
 
-interface GameComponentsNull {
+interface PropsNull {
+    initiated: false
+}
+
+interface PropsInitiated {
+    initiated: true
+    mapId: MapId
+    mapData: MapData
+    playerInitLoc: vector
+}
+
+interface GameStuffNull {
     created: false
 }
 
-interface GameComponentsLoaded {
+interface GameStuffLoaded {
     created: true
     player: Player
     creatures: MapObject[]
@@ -36,53 +49,69 @@ interface GameComponentsLoaded {
     keyD: Phaser.Input.Keyboard.Key
 }
 
+
+interface EventStuffNull {
+    eventRunning: false
+}
+
+interface EventStuffRunning {
+    eventRunning: true
+    startTime: number
+    eventData: EventData
+}
+
 export default class GameScene extends Phaser.Scene {
-    private mapId: MapId | null = null;
-    private mapData: MapData | null = null;
-    private gameComponents: GameComponentsLoaded | GameComponentsNull = {
+    private props: PropsInitiated | PropsNull = {
+        initiated: false
+    }
+    private gameStuff: GameStuffLoaded | GameStuffNull = {
         created: false
     }
-
-    private playerInitLoc: vector | null = null;
+    private eventStuff: EventStuffNull | EventStuffRunning = {
+        eventRunning: false
+    }
 
     private playerMovementTimer = 0;
     private creatureMovementTimer = 0;
     private damageTimer = 0;
-    private _moveCounter = 0;
 
-    private cutsceneRunning = false;
-    private cutsceneStartTime: number = 0;
+    private _moveCounter = 0;
 
     constructor() {
         super({ key: "game" });
     }
 
     init(data: { mapId: MapId, playerInitLoc: vector }) {
-        this.mapId = data.mapId;
-        this.mapData = mapMap.get(data.mapId)!;
-        this.playerInitLoc = data.playerInitLoc;
+        const { mapId, playerInitLoc } = data;
+        const mapData = mapMap.get(mapId);
+        if (!mapData)
+            return;
+
+        this.props = { initiated: true, mapId, mapData, playerInitLoc };
+
         this._moveCounter = 0;
     }
 
     preload() {
-        if (!this.mapData)
+        if (!this.props.initiated)
             return;
-        this.mapData.textureMap.forEach((value, key) => {
+
+        this.props.mapData.textureMap.forEach((value, key) => {
             this.load.image(key, value);
         });
     }
 
     create() {
-        if (!this.mapId || !this.mapData || !this.playerInitLoc)
+        if (!this.props.initiated)
             return;
 
-        let tileData = this.mapData.tiles.map((tileRow) =>
+        let tileData = this.props.mapData.tiles.map((tileRow) =>
             tileRow.map(tile => mapLoader(tile))
         );
 
-        const player = new Player(this, this.playerInitLoc.mapX, this.playerInitLoc.mapY, "mi", []);
+        const player = new Player(this, this.props.playerInitLoc, "mi", []);
         const creatures: MapObject[] = []
-        for (let creatureData of this.mapData.creatureData) {
+        for (let creatureData of this.props.mapData.creatureData) {
             creatures.push(new Creature(this, creatureData.mapX, creatureData.mapY, creatureData.texture, creatureData.movements));
         }
         const map: MapObject[][] = []
@@ -101,20 +130,15 @@ export default class GameScene extends Phaser.Scene {
         const keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         const keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
-        this.gameComponents = {
+        this.gameStuff = {
             created: true, player, creatures, map, textArea, willPower, tileData, keyW, keyS, keyA, keyD
         }
 
-        if (this.mapData.cutscene) {
-            this.handleWorldEvent(`${this.mapId}cutscene`)
-        }
-        else {
-            this.handleWorldEvent(`${this.mapId}story`);
-        }
+        this.handleWorldEvent(`${this.props.mapId}story`);
     }
 
     update(time: number, delta: number): void {
-        if (!this.gameComponents.created || !this.mapData)
+        if (!this.gameStuff.created || !this.props.initiated)
             return;
 
         const timeStopped = this.timeStopped();
@@ -132,27 +156,27 @@ export default class GameScene extends Phaser.Scene {
                 this.playerMovementTimer -= delta;
 
             if (this.playerMovementTimer <= 0)
-                if (this.gameComponents.keyW.isDown)
+                if (this.gameStuff.keyW.isDown)
                     this.handleMovement({ mapX: 0, mapY: -1 });
-                else if (this.gameComponents.keyS.isDown)
+                else if (this.gameStuff.keyS.isDown)
                     this.handleMovement({ mapX: 0, mapY: 1 });
-                else if (this.gameComponents.keyA.isDown)
+                else if (this.gameStuff.keyA.isDown)
                     this.handleMovement({ mapX: -1, mapY: 0 });
-                else if (this.gameComponents.keyD.isDown)
+                else if (this.gameStuff.keyD.isDown)
                     this.handleMovement({ mapX: 1, mapY: 0 });
 
 
             if (this.damageTimer > 0) {
-                this.gameComponents.player.setAlpha((this.gameComponents.player.alpha + 0.05) % 1)
+                this.gameStuff.player.setAlpha((this.gameStuff.player.alpha + 0.05) % 1)
                 this.damageTimer -= delta;
             }
 
             if (this.damageTimer <= 0) {
-                this.gameComponents.player.setAlpha(1)
-                for (let creature of this.gameComponents.creatures) {
-                    if (this.gameComponents.player.collide(creature)) {
+                this.gameStuff.player.setAlpha(1)
+                for (let creature of this.gameStuff.creatures) {
+                    if (this.gameStuff.player.collide(creature)) {
                         globals.playerWill -= 1;
-                        this.gameComponents.willPower.updateWillPower();
+                        this.gameStuff.willPower.updateWillPower();
                         this.damageTimer = GLOBALTIME * 5;
                         break;
                     }
@@ -162,71 +186,69 @@ export default class GameScene extends Phaser.Scene {
     }
 
     reloadMap() {
-        if (!this.gameComponents.created)
+        if (!this.gameStuff.created)
             return;
-        if (!this.mapId)
+        if (!this.props.initiated)
             return;
-        if (!this.mapData)
-            return;
-        
-        this.gameComponents.tileData = this.mapData.tiles.map((tileRow) =>
+
+        this.gameStuff.tileData = this.props.mapData.tiles.map((tileRow) =>
             tileRow.map(tile => mapLoader(tile))
         )
 
         for (let i = 0; i < ROWS; i++)
             for (let j = 0; j < COLUMNS; j++)
-                if (this.gameComponents.map[i][j].texture.key !== this.gameComponents.tileData[i][j].texture) {
-                    this.gameComponents.map[i][j].setTexture(this.gameComponents.tileData[i][j].texture);
-                    this.gameComponents.map[i][j].setScale(TILESIZE / this.gameComponents.map[i][j].width);
+                if (this.gameStuff.map[i][j].texture.key !== this.gameStuff.tileData[i][j].texture) {
+                    this.gameStuff.map[i][j].setTexture(this.gameStuff.tileData[i][j].texture);
+                    this.gameStuff.map[i][j].setScale(TILESIZE / this.gameStuff.map[i][j].width);
                 }
     }
 
     handleMovement(movement: vector): void {
-        if (!this.gameComponents.created)
+        if (!this.gameStuff.created)
             return;
-        if (!this.mapData)
+        if (!this.props.initiated)
             return;
 
         const newVector: vector = {
-            mapX: this.gameComponents.player.mapX + movement.mapX,
-            mapY: this.gameComponents.player.mapY + movement.mapY
+            mapX: this.gameStuff.player.mapX + movement.mapX,
+            mapY: this.gameStuff.player.mapY + movement.mapY
         }
         if (newVector.mapX < 0) { // 왼쪽 맵으로 이동
-            let mapId = this.mapData.distantMaps.w;
+            let mapId = this.props.mapData.distantMaps.w;
             if (mapId && mapMap.get(mapId))
                 this.scene.start("game", {
                     mapId,
-                    playerInitLoc: { mapX: COLUMNS - 1, mapY: this.gameComponents.player.mapY }
+                    playerInitLoc: { mapX: COLUMNS - 1, mapY: this.gameStuff.player.mapY }
                 });
         }
         else if (newVector.mapX >= COLUMNS) { // 오른쪽 맵으로 이동
-            let mapId = this.mapData.distantMaps.e;
+            let mapId = this.props.mapData.distantMaps.e;
             if (mapId && mapMap.get(mapId))
                 this.scene.start("game", {
                     mapId,
-                    playerInitLoc: { mapX: 0, mapY: this.gameComponents.player.mapY }
+                    playerInitLoc: { mapX: 0, mapY: this.gameStuff.player.mapY }
                 });
         }
         else if (newVector.mapY < 0) { // 위쪽 맵으로 이동
-            let mapId = this.mapData.distantMaps.n;
+            let mapId = this.props.mapData.distantMaps.n;
             if (mapId && mapMap.get(mapId))
                 this.scene.start("game", {
                     mapId,
-                    playerInitLoc: { mapX: this.gameComponents.player.mapX, mapY: ROWS - 1 }
+                    playerInitLoc: { mapX: this.gameStuff.player.mapX, mapY: ROWS - 1 }
                 });
         }
         else if (newVector.mapY >= ROWS) { // 아래쪽 맵으로 이동
-            let mapId = this.mapData.distantMaps.s;
+            let mapId = this.props.mapData.distantMaps.s;
             if (mapId && mapMap.get(mapId))
                 this.scene.start("game", {
                     mapId,
-                    playerInitLoc: { mapX: this.gameComponents.player.mapX, mapY: 0 }
+                    playerInitLoc: { mapX: this.gameStuff.player.mapX, mapY: 0 }
                 });
         }
-        else if (!this.gameComponents.tileData[newVector.mapY][newVector.mapX].passable) // 이동 불가능한 경우
+        else if (!this.gameStuff.tileData[newVector.mapY][newVector.mapX].passable) // 이동 불가능한 경우
             return;
         else { // 정상 이동 경우
-            const newTile = this.gameComponents.tileData[newVector.mapY][newVector.mapX];
+            const newTile = this.gameStuff.tileData[newVector.mapY][newVector.mapX];
             const w = newTile.warp;
 
             if (w && mapMap.get(w.mapId)) {
@@ -238,58 +260,63 @@ export default class GameScene extends Phaser.Scene {
                 }, GLOBALTIME);
             }
 
+            console.log(newTile.event);
             for (const e of newTile.event)
                 setTimeout(() =>
                     this.handleWorldEvent(e)
                     , GLOBALTIME);
-            this.gameComponents.player.move(movement);
+            this.gameStuff.player.move(movement);
             this.playerMovementTimer = GLOBALTIME;
         }
     }
 
     handleWorldEvent(eventId: EventId) {
-        if (!this.gameComponents.created)
+        if (!this.gameStuff.created)
             return;
-        if (!this.mapData)
+        if (!this.props.initiated)
             return;
         if (globals.eventsTriggered.includes(eventId))
             return;
 
         globals.eventsTriggered.push(eventId);
 
+        const eventData = eventMap.get(eventId)
 
-        const regex = /^map[0-9]+story$/g;
-        const regex2 = /^map[0-9]+cutscene$/g;
-        if (regex.test(eventId))
-            this.gameComponents.textArea.appendTexts(this.mapData.textData);
-        else if (regex2.test(eventId) && this.mapData.cutscene) {
-            this.cutsceneRunning = true;
-            this.gameComponents.player.addMovement(this, this.mapData.cutscene.playerMovement);
-            this.cutsceneStartTime = 0;
-        }
-        if (eventId === "towerOpenSesame") {
-            towerOpenSesame(this.gameComponents.textArea);
-            this.reloadMap();
-        }
-        if (eventId === "portal") {
-            portal(this.gameComponents.textArea);
-            this.reloadMap();
-        }
+        if (!eventData)
+            return;
+
+        this.eventStuff = {
+            eventRunning: true,
+            eventData,
+            startTime: this._moveCounter
+        };
+
+        this.gameStuff.textArea.appendTexts
+        this.gameStuff.player.addMovement(this, eventData.playerMovement);
+        
+        // if (eventId === "towerOpenSesame") {
+        //     towerOpenSesame(this.gameStuff.textArea);
+        //     this.reloadMap();
+        // }
+        // if (eventId === "portal") {
+        //     portal(this.gameStuff.textArea);
+        //     this.reloadMap();
+        // }
     };
 
-    timeStopped(): "stop" | "cutscene" | "running" {
+    timeStopped(): "stop" | "event" | "running" {
 
-        if (this.gameComponents.created === false)
+        if (this.gameStuff.created === false)
             return "stop";
 
-        const textArea = this.gameComponents.textArea;
+        const textArea = this.gameStuff.textArea;
 
-        if (this.cutsceneRunning)
-            if (this._moveCounter - this.cutsceneStartTime >= textArea.lastLimits
+        if (this.eventStuff.eventRunning)
+            if (this._moveCounter - this.eventStuff.startTime >= textArea.lastLimits
                 && textArea.lastStopTime)
                 return "stop";
             else
-                return "cutscene";
+                return "event";
         else if (textArea.lastStopTime)
             return "stop";
         else
@@ -300,44 +327,48 @@ export default class GameScene extends Phaser.Scene {
         return this._moveCounter;
     }
 
-    turnAction(timeStopped: "cutscene" | "running"): void {
-        if (this.gameComponents.created === false)
+    turnAction(timeStopped: "event" | "running"): void {
+        if (this.gameStuff.created === false)
             return;
-        if (!this.mapData)
+        if (!this.props.initiated)
             return;
 
-        if (timeStopped === "cutscene" && this.mapData.cutscene) {
-            const cutscene = this.mapData.cutscene;
+        if (timeStopped === "event" && this.eventStuff.eventRunning) {
+            const eventData = this.eventStuff.eventData;
+            const startTime = this.eventStuff.startTime;
 
-            const filteredScenes = cutscene.textData.filter(textData =>
-                textData.appearsAt === this._moveCounter - this.cutsceneStartTime);
-            cutscene.textData = cutscene.textData.filter(textData =>
-                textData.appearsAt !== this._moveCounter - this.cutsceneStartTime);
+            const filteredScenes = eventData.textData.filter(textData =>
+                !textData.appearsAt || textData.appearsAt === this._moveCounter - startTime);
+            eventData.textData = eventData.textData.filter(textData =>
+                textData.appearsAt && textData.appearsAt !== this._moveCounter - startTime);
+            console.log(this.eventStuff.eventData.textData);
             let added = filteredScenes.length > 0
 
             for (let textData of filteredScenes)
-                this.gameComponents.textArea.appendTexts(textData);
+                this.gameStuff.textArea.appendTexts(textData);
 
-            const filteredMapChange = cutscene.mapChange.filter(mapChange =>
-                mapChange.appearsAt === this._moveCounter - this.cutsceneStartTime)
-            cutscene.mapChange = cutscene.mapChange.filter(mapChange => 
-                mapChange.appearsAt !== this._moveCounter - this.cutsceneStartTime)
-            for (let i = 0; i < filteredMapChange.len; i++)
-                mapChanger(this.mapData);
+            const filteredMapChange = eventData.mapChange.filter(mapChange =>
+                mapChange.appearsAt === this._moveCounter - startTime
+            )
+            eventData.mapChange = eventData.mapChange.filter(mapChange =>
+                mapChange.appearsAt !== this._moveCounter - startTime)
+            for (let i = 0; i < filteredMapChange.length; i++)
+                mapChanger(this.props.mapData);
             this.reloadMap();
 
             if (added)
                 return;
 
-            this.gameComponents.player.turnAction();
+            this.gameStuff.player.turnAction();
         }
 
-        if (this.cutsceneRunning && this._moveCounter - this.cutsceneStartTime >= (this.mapData.cutscene?.endsAt ?? 0)) {
-            this.cutsceneRunning = false;
+        if (this.eventStuff.eventRunning &&
+            this._moveCounter - this.eventStuff.startTime >= (this.eventStuff.eventData.endsAt ?? 0)) {
+            this.eventStuff = { eventRunning: false };
         }
 
-        for (let mapObject of this.gameComponents.creatures) {
-            if (mapObject !== this.gameComponents.player)
+        for (let mapObject of this.gameStuff.creatures) {
+            if (mapObject !== this.gameStuff.player)
                 mapObject.turnAction();
         }
 

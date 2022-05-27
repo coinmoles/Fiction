@@ -34,17 +34,17 @@ tileDataMap.set("cic14", { texture: "cic14", passable: true, event: [], warp: nu
 // Castle Interior Carpet Warp
 tileDataMap.set("cicw0", {
     texture: "cicw0", passable: true, event: [], warp: {
-        mapId: "map10", initialLoc: { mapX: 4, mapY: 4 }
+        mapId: "map10", initialLoc: { mapX: 3, mapY: 4 }
     }
 });
 tileDataMap.set("cicw1", {
     texture: "cicw1", passable: true, event: [], warp: {
-        mapId: "map10", initialLoc: { mapX: 4, mapY: 4 }
+        mapId: "map10", initialLoc: { mapX: 3, mapY: 4 }
     }
 });
 tileDataMap.set("cicw2", {
     texture: "cicw2", passable: true, event: [], warp: {
-        mapId: "map10", initialLoc: { mapX: 4, mapY: 4 }
+        mapId: "map10", initialLoc: { mapX: 3, mapY: 4 }
     }
 });
 

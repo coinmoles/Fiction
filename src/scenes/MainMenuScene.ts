@@ -54,9 +54,6 @@ export default class MainMenuScene extends Phaser.Scene {
                     playerInitLoc: {mapX: 4, mapY: 4}
                 });
             }
-            if (this.choice === 1) {
-                this.scene.start("cutscene")
-            }
         }
     }
 }
