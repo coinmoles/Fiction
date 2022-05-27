@@ -1,6 +1,9 @@
-export type MapStoryEventId = "map1story" | "map2story" | "map3story" | "map4story" |
-    "map5story" | "map6story" | "map7story" | "map8story" | "map9story" |
-    "map10story" | "map11story" | "map12story" | "map13story" | "map14story" |
-    "map15story" | "map16story" | "map17story"
+type ToStringAble = string | number | bigint | boolean | null | undefined
 
-export type EventId = MapStoryEventId | "towerOpenSesame"
+type T<P extends string, L, S extends string> =
+    L extends [infer First, ...infer Rest] ? First extends ToStringAble ? `${P}${First}${S}` | T<P, Rest, S> : never : never;
+
+export type MapStoryEventId = T<"map", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], "story">;
+export type MapCutsceneEventId = T<"map", [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], "cutscene">;
+
+export type EventId = MapStoryEventId | MapCutsceneEventId | "towerOpenSesame" | "portal" | "crossingTheLine";

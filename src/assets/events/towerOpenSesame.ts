@@ -6,10 +6,6 @@ import { mapTextureLoader, normalTextures } from "../map/textureMap";
 
 export const towerOpenSesame = (textArea: TextArea) => {
     map16.tiles = map16NewTiles;
-    map16.textureMap = new Map([
-        ...normalTextures,
-        ...mapTextureLoader(map16.tiles)
-    ])
 
     textArea.appendTexts([
         { text: "아이가 탑에 다가가자, 탑은 기다렸다는 듯이 정문을 열어 보였어요." },

@@ -1,7 +1,9 @@
 import Phaser from 'phaser';
+import { portal } from '~/assets/events/portal';
 import { towerOpenSesame } from '~/assets/events/towerOpenSesame';
 import { mapLoader } from '~/assets/map/mapLoader';
 import { mapMap } from '~/assets/map/mapMap';
+import { mapChanger } from '~/functions/mapChanger';
 import { globals } from '~/globals';
 import { Creature } from '~/objects/Creature';
 import { MapObject } from '~/objects/MapObject';
@@ -14,7 +16,7 @@ import { MapData } from '~/util/interface/MapData';
 import { MapId } from '~/util/interface/MapId';
 import { TileData } from '~/util/interface/TileData';
 import { vector } from '~/util/interface/vector';
-import { COLUMNS, ROWS } from '~/util/scaleConstants';
+import { COLUMNS, ROWS, TILESIZE } from '~/util/scaleConstants';
 
 interface GameComponentsNull {
     created: false
@@ -49,6 +51,7 @@ export default class GameScene extends Phaser.Scene {
     private _moveCounter = 0;
 
     private cutsceneRunning = false;
+    private cutsceneStartTime: number = 0;
 
     constructor() {
         super({ key: "game" });
@@ -103,8 +106,7 @@ export default class GameScene extends Phaser.Scene {
         }
 
         if (this.mapData.cutscene) {
-            this.cutsceneRunning = true;
-            this.gameComponents.player.addMovement(this, this.mapData.cutscene.playerMovement);
+            this.handleWorldEvent(`${this.mapId}cutscene`)
         }
         else {
             this.handleWorldEvent(`${this.mapId}story`);
@@ -166,17 +168,17 @@ export default class GameScene extends Phaser.Scene {
             return;
         if (!this.mapData)
             return;
-
-        this.mapData.textureMap.forEach((value, key) => {
-            this.load.image(key, value);
-        });
+        
         this.gameComponents.tileData = this.mapData.tiles.map((tileRow) =>
             tileRow.map(tile => mapLoader(tile))
         )
+
         for (let i = 0; i < ROWS; i++)
             for (let j = 0; j < COLUMNS; j++)
-                if (this.gameComponents.map[i][j].texture.key !== this.gameComponents.tileData[i][j].texture)
-                    this.gameComponents.map[i][j].setTexture(this.gameComponents.tileData[i][j].texture)
+                if (this.gameComponents.map[i][j].texture.key !== this.gameComponents.tileData[i][j].texture) {
+                    this.gameComponents.map[i][j].setTexture(this.gameComponents.tileData[i][j].texture);
+                    this.gameComponents.map[i][j].setScale(TILESIZE / this.gameComponents.map[i][j].width);
+                }
     }
 
     handleMovement(movement: vector): void {
@@ -257,15 +259,23 @@ export default class GameScene extends Phaser.Scene {
 
 
         const regex = /^map[0-9]+story$/g;
+        const regex2 = /^map[0-9]+cutscene$/g;
         if (regex.test(eventId))
             this.gameComponents.textArea.appendTexts(this.mapData.textData);
+        else if (regex2.test(eventId) && this.mapData.cutscene) {
+            this.cutsceneRunning = true;
+            this.gameComponents.player.addMovement(this, this.mapData.cutscene.playerMovement);
+            this.cutsceneStartTime = 0;
+        }
         if (eventId === "towerOpenSesame") {
             towerOpenSesame(this.gameComponents.textArea);
             this.reloadMap();
         }
+        if (eventId === "portal") {
+            portal(this.gameComponents.textArea);
+            this.reloadMap();
+        }
     };
-
-
 
     timeStopped(): "stop" | "cutscene" | "running" {
 
@@ -275,7 +285,8 @@ export default class GameScene extends Phaser.Scene {
         const textArea = this.gameComponents.textArea;
 
         if (this.cutsceneRunning)
-            if (this._moveCounter >= textArea.lastLimits && textArea.lastStopTime)
+            if (this._moveCounter - this.cutsceneStartTime >= textArea.lastLimits
+                && textArea.lastStopTime)
                 return "stop";
             else
                 return "cutscene";
@@ -296,14 +307,24 @@ export default class GameScene extends Phaser.Scene {
             return;
 
         if (timeStopped === "cutscene" && this.mapData.cutscene) {
-            let filteredScenes = this.mapData.cutscene.textData.filter(textData =>
-                textData.appearsAt === this._moveCounter);
-            this.mapData.cutscene.textData = this.mapData.cutscene.textData.filter(textData =>
-                textData.appearsAt !== this._moveCounter);
+            const cutscene = this.mapData.cutscene;
+
+            const filteredScenes = cutscene.textData.filter(textData =>
+                textData.appearsAt === this._moveCounter - this.cutsceneStartTime);
+            cutscene.textData = cutscene.textData.filter(textData =>
+                textData.appearsAt !== this._moveCounter - this.cutsceneStartTime);
             let added = filteredScenes.length > 0
-                
+
             for (let textData of filteredScenes)
                 this.gameComponents.textArea.appendTexts(textData);
+
+            const filteredMapChange = cutscene.mapChange.filter(mapChange =>
+                mapChange.appearsAt === this._moveCounter - this.cutsceneStartTime)
+            cutscene.mapChange = cutscene.mapChange.filter(mapChange => 
+                mapChange.appearsAt !== this._moveCounter - this.cutsceneStartTime)
+            for (let i = 0; i < filteredMapChange.len; i++)
+                mapChanger(this.mapData);
+            this.reloadMap();
 
             if (added)
                 return;
@@ -311,7 +332,7 @@ export default class GameScene extends Phaser.Scene {
             this.gameComponents.player.turnAction();
         }
 
-        if (this.cutsceneRunning && this._moveCounter >= (this.mapData.cutscene?.endsAt ?? 0)) {
+        if (this.cutsceneRunning && this._moveCounter - this.cutsceneStartTime >= (this.mapData.cutscene?.endsAt ?? 0)) {
             this.cutsceneRunning = false;
         }
 

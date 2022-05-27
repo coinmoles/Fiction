@@ -131,6 +131,9 @@ tileDataMap.set("tw11 ", {
 tileDataMap.set("tw12 ", { texture: "tw12 ", passable: false, event: [], warp: null });
 tileDataMap.set("tw13 ", { texture: "tw13 ", passable: false, event: [], warp: null });
 tileDataMap.set("twfl ", { texture: "twfl ", passable: true, event: [], warp: null });
+tileDataMap.set("twfll", { texture: "twfll", passable: true, event: ["crossingTheLine"], warp: null });
+tileDataMap.set("twpt ", { texture: "twpt ", passable: false, event: [], warp: null });
+tileDataMap.set("twst ", { texture: "twst ", passable: true, event: [], warp: null });
 
 // open sesame
 tileDataMap.set("gf21o", { texture: "gf21o", passable: true, event: ["towerOpenSesame"], warp: null });

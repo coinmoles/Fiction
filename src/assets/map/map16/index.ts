@@ -1,3 +1,4 @@
+import { Queue } from "queue-typescript";
 import { MapData } from "../../../util/interface/MapData";
 import { mapTextureLoader, normalTextures } from "../textureMap";
 import story from "./story";
@@ -10,6 +11,7 @@ export default {
         ...mapTextureLoader(map16NewTiles),
     ]),
     tiles: tiles,
+    newTiles: new Queue(map16NewTiles),
     textData: story,
     creatureData: [],
     distantMaps: {

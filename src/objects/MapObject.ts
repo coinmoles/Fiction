@@ -9,6 +9,7 @@ export class MapObject extends Phaser.GameObjects.Sprite {
 
     constructor(scene: GameScene, mapX: number, mapY: number, 
         texture: string | Phaser.Textures.Texture) {
+        console.log(texture);
         super(scene, 0, 0, texture);
         scene.add.existing(this);
         this.setDepth(5);

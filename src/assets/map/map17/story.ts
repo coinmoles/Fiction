@@ -71,17 +71,17 @@ export const cutsceneStory: CutsceneTextData[] = [
     },
     {
         text: "의미를 알 수 없는 말에 의아해하기도 잠시, 아이는 눈앞에서 공간이 일그러지는 걸 보고는 깜짝 놀랐어요.",
-        appearsAt: 2,
-        limits:2
+        appearsAt: 3,
+        limits: 3
     },
     {
         text: "아마 이 균열 속으로 검을 집어넣으라는 뜻이겠죠.",
-        appearsAt: 2,
-        limits: 2
+        appearsAt: 3,
+        limits: 3
     },
     {
         text: '"그 후에는, 집으로 돌아가도 돼요"',
-        appearsAt: 2,
-        limits: 2
+        appearsAt: 3,
+        limits: 3
     },
 ]
