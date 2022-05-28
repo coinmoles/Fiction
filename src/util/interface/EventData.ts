@@ -1,6 +1,7 @@
 import { CreatureData } from "./CreatureData"
 import { MovementData } from "./MovementData"
 import { TextData } from "./TextData"
+import { WarpData } from "./WarpData"
 
 export interface EventData {
     mapId: string
@@ -9,4 +10,5 @@ export interface EventData {
     textData: TextData[]
     mapChange: { appearsAt: number }[]
     creatures: { creatureData: CreatureData, appearsAt: number }[]
+    warps?: WarpData
 }

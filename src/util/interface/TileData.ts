@@ -11,5 +11,4 @@ export interface TileData {
     texture: string;
     passable: boolean;
     event: EventId[];
-    warp: WarpData | null;
 }

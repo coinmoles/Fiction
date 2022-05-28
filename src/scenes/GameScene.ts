@@ -1,7 +1,5 @@
 import Phaser from 'phaser';
 import { eventMap } from '~/assets/event/eventMap';
-import { portal } from '~/assets/mapChange/portal';
-import { towerOpenSesame } from '~/assets/mapChange/towerOpenSesame';
 import { mapLoader } from '~/assets/map/mapLoader';
 import { mapMap } from '~/assets/map/mapMap';
 import { mapChanger } from '~/functions/mapChanger';
@@ -90,6 +88,7 @@ export default class GameScene extends Phaser.Scene {
         this.props = { initiated: true, mapId, mapData, playerInitLoc };
 
         this._moveCounter = 0;
+        this.eventStuff = { eventRunning: false }
     }
 
     preload() {
@@ -249,18 +248,7 @@ export default class GameScene extends Phaser.Scene {
             return;
         else { // 정상 이동 경우
             const newTile = this.gameStuff.tileData[newVector.mapY][newVector.mapX];
-            const w = newTile.warp;
-
-            if (w && mapMap.get(w.mapId)) {
-                setTimeout(() => {
-                    this.scene.start("game", {
-                        mapId: w.mapId,
-                        playerInitLoc: w.initialLoc
-                    });
-                }, GLOBALTIME);
-            }
-
-            console.log(newTile.event);
+            
             for (const e of newTile.event)
                 setTimeout(() =>
                     this.handleWorldEvent(e)
@@ -278,6 +266,8 @@ export default class GameScene extends Phaser.Scene {
         if (globals.eventsTriggered.includes(eventId))
             return;
 
+        
+        
         globals.eventsTriggered.push(eventId);
 
         const eventData = eventMap.get(eventId)
@@ -293,7 +283,7 @@ export default class GameScene extends Phaser.Scene {
 
         this.gameStuff.textArea.appendTexts
         this.gameStuff.player.addMovement(this, eventData.playerMovement);
-        
+
         // if (eventId === "towerOpenSesame") {
         //     towerOpenSesame(this.gameStuff.textArea);
         //     this.reloadMap();
@@ -337,16 +327,17 @@ export default class GameScene extends Phaser.Scene {
             const eventData = this.eventStuff.eventData;
             const startTime = this.eventStuff.startTime;
 
+            // Adds text
             const filteredScenes = eventData.textData.filter(textData =>
                 !textData.appearsAt || textData.appearsAt === this._moveCounter - startTime);
             eventData.textData = eventData.textData.filter(textData =>
                 textData.appearsAt && textData.appearsAt !== this._moveCounter - startTime);
-            console.log(this.eventStuff.eventData.textData);
             let added = filteredScenes.length > 0
 
             for (let textData of filteredScenes)
                 this.gameStuff.textArea.appendTexts(textData);
 
+            // Changes map
             const filteredMapChange = eventData.mapChange.filter(mapChange =>
                 mapChange.appearsAt === this._moveCounter - startTime
             )
@@ -364,7 +355,10 @@ export default class GameScene extends Phaser.Scene {
 
         if (this.eventStuff.eventRunning &&
             this._moveCounter - this.eventStuff.startTime >= (this.eventStuff.eventData.endsAt ?? 0)) {
-            this.eventStuff = { eventRunning: false };
+            if (this.eventStuff.eventData.warps)
+                this.scene.start("game", this.eventStuff.eventData.warps);
+            else
+                this.eventStuff = { eventRunning: false };
         }
 
         for (let mapObject of this.gameStuff.creatures) {

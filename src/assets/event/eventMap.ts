@@ -1,6 +1,9 @@
 import { EventData } from "~/util/interface/EventData";
 import { EventId } from "~/util/interface/EventId";
 import { crossingTheLine } from "./crossingTheLine";
+import { enterCastle } from "./enterCastle";
+import { enterTower } from "./enterTower";
+import { exitCastle } from "./exitCastle";
 import { map10story } from "./map10story";
 import { map11story } from "./map11story";
 import { map16story } from "./map16story";
@@ -18,4 +21,7 @@ eventMap.set("map11story", map11story);
 // eventMap.set("map16story", map16story);
 // eventMap.set("map17story", map17story);
 eventMap.set("towerOpenSesame", towerOpenSesame);
-eventMap.set("crossingTheLine", crossingTheLine);
+eventMap.set("crossingTheLine", crossingTheLine)
+eventMap.set("enterCastle", enterCastle);
+eventMap.set("exitCastle", exitCastle);
+eventMap.set("enterTower", enterTower);
