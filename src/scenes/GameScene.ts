@@ -69,6 +69,7 @@ export default class GameScene extends Phaser.Scene {
         eventRunning: false
     }
 
+    private logMovementTimer = 0;
     private playerMovementTimer = 0;
     private creatureMovementTimer = 0;
     private damageTimer = 0;
@@ -134,14 +135,35 @@ export default class GameScene extends Phaser.Scene {
             created: true, player, creatures, map, textArea, willPower, tileData, keyW, keyS, keyA, keyD
         }
 
+        this.input.keyboard.on("keydown-ENTER", (event) => {
+            if (this.timeStopped() === "log")
+                return;
+            if (textArea.currentText === null)
+                textArea.nextTexts();
+            else
+                textArea.skipTexts();
+        });
+        this.input.keyboard.on("keydown-SHIFT", () => {
+            textArea.toggleLog(true);
+        })
+        this.input.keyboard.on("keydown-ESC", () => {
+            textArea.toggleLog(false);
+        })
+
         this.handleWorldEvent(`${this.props.mapId}story`);
     }
 
+    // updates
     update(time: number, delta: number): void {
         if (!this.gameStuff.created || !this.props.initiated)
             return;
 
         const timeStopped = this.timeStopped();
+
+        if (timeStopped === "log") {
+            this.logUpdate(delta);
+            return;
+        }
 
         if (timeStopped === "stop")
             return;
@@ -151,37 +173,135 @@ export default class GameScene extends Phaser.Scene {
         if (this.creatureMovementTimer <= 0)
             this.turnAction(timeStopped);
 
-        if (timeStopped === "running") {
-            if (this.playerMovementTimer > 0)
-                this.playerMovementTimer -= delta;
+        if (timeStopped === "running")
+            this.runUpdate(delta);
+    }
 
-            if (this.playerMovementTimer <= 0)
-                if (this.gameStuff.keyW.isDown)
-                    this.handleMovement({ mapX: 0, mapY: -1 });
-                else if (this.gameStuff.keyS.isDown)
-                    this.handleMovement({ mapX: 0, mapY: 1 });
-                else if (this.gameStuff.keyA.isDown)
-                    this.handleMovement({ mapX: -1, mapY: 0 });
-                else if (this.gameStuff.keyD.isDown)
-                    this.handleMovement({ mapX: 1, mapY: 0 });
+    logUpdate(delta: number) {
+        if (!this.gameStuff.created || !this.props.initiated)
+            return;
+
+        if (this.logMovementTimer > 0)
+            this.logMovementTimer -= delta;
+        if (this.logMovementTimer <= 0) {
+            if (this.gameStuff.keyW.isDown)
+                this.gameStuff.textArea.changeLog(-1);
+            else if (this.gameStuff.keyS.isDown)
+                this.gameStuff.textArea.changeLog(1);
+
+            this.logMovementTimer = GLOBALTIME / 2;
+        }
+    }
+
+    runUpdate(delta: number) {
+        if (!this.gameStuff.created || !this.props.initiated)
+            return;
+
+        if (this.playerMovementTimer > 0)
+            this.playerMovementTimer -= delta;
+
+        if (this.playerMovementTimer <= 0)
+            if (this.gameStuff.keyW.isDown)
+                this.handleMovement({ mapX: 0, mapY: -1 });
+            else if (this.gameStuff.keyS.isDown)
+                this.handleMovement({ mapX: 0, mapY: 1 });
+            else if (this.gameStuff.keyA.isDown)
+                this.handleMovement({ mapX: -1, mapY: 0 });
+            else if (this.gameStuff.keyD.isDown)
+                this.handleMovement({ mapX: 1, mapY: 0 });
 
 
-            if (this.damageTimer > 0) {
-                this.gameStuff.player.setAlpha((this.gameStuff.player.alpha + 0.05) % 1)
-                this.damageTimer -= delta;
-            }
+        if (this.damageTimer > 0) {
+            this.gameStuff.player.setAlpha((this.gameStuff.player.alpha + 0.05) % 1)
+            this.damageTimer -= delta;
+        }
 
-            if (this.damageTimer <= 0) {
-                this.gameStuff.player.setAlpha(1)
-                for (let creature of this.gameStuff.creatures) {
-                    if (this.gameStuff.player.collide(creature)) {
-                        globals.playerWill -= 1;
-                        this.gameStuff.willPower.updateWillPower();
-                        this.damageTimer = GLOBALTIME * 5;
-                        break;
-                    }
+        if (this.damageTimer <= 0) {
+            this.gameStuff.player.setAlpha(1)
+            for (let creature of this.gameStuff.creatures) {
+                if (this.gameStuff.player.collide(creature)) {
+                    globals.playerWill -= 1;
+                    this.gameStuff.willPower.updateWillPower();
+                    this.damageTimer = GLOBALTIME * 5;
+                    break;
                 }
             }
+        }
+    }
+
+    turnAction(timeStopped: "event" | "running"): void {
+        if (!this.gameStuff.created || !this.props.initiated)
+            return;
+
+        if (timeStopped === "event" && this.eventStuff.eventRunning)
+            this.eventTurnAction()
+
+        this.checkEventEnd();
+
+        for (let mapObject of this.gameStuff.creatures) {
+            if (mapObject !== this.gameStuff.player)
+                mapObject.turnAction();
+        }
+
+        this._moveCounter += 1;
+        this.creatureMovementTimer = GLOBALTIME;
+    }
+
+    eventTurnAction() {
+        if (!this.gameStuff.created || !this.props.initiated || !this.eventStuff.eventRunning)
+            return;
+
+        const eventData = this.eventStuff.eventData;
+        const startTime = this.eventStuff.startTime;
+
+        // Adds text
+        const filteredScenes = eventData.textData.filter(textData =>
+            !textData.appearsAt || textData.appearsAt === this._moveCounter - startTime);
+        eventData.textData = eventData.textData.filter(textData =>
+            textData.appearsAt && textData.appearsAt !== this._moveCounter - startTime);
+        let added = filteredScenes.length > 0
+
+        for (let textData of filteredScenes)
+            this.gameStuff.textArea.appendTexts(textData);
+
+        // Changes map
+        const filteredMapChange = eventData.mapChange.filter(mapChange =>
+            mapChange.appearsAt === this._moveCounter - startTime
+        )
+        eventData.mapChange = eventData.mapChange.filter(mapChange =>
+            mapChange.appearsAt !== this._moveCounter - startTime)
+        for (let i = 0; i < filteredMapChange.length; i++)
+            mapChanger(this.props.mapData);
+        this.reloadMap();
+
+        // Spawns creatures
+        const filteredCreatures = eventData.creatures.filter(creature =>
+            !creature.appearsAt || creature.appearsAt === this._moveCounter - startTime);
+        eventData.creatures = eventData.creatures.filter(creature =>
+            creature.appearsAt && creature.appearsAt !== this._moveCounter - startTime);
+        for (let { creatureData } of filteredCreatures) {
+            this.gameStuff.creatures.push(new Creature(this, creatureData.mapX, creatureData.mapY, creatureData.texture, creatureData.movements));
+        }
+
+        if (added)
+            return;
+
+        this.gameStuff.player.turnAction();
+    }
+
+    checkEventEnd() {
+        if (this.eventStuff.eventRunning &&
+            this._moveCounter - this.eventStuff.startTime >= (this.eventStuff.eventData.endsAt ?? 0)) {
+            if (this.eventStuff.eventData.warps)
+                this.scene.start("game", this.eventStuff.eventData.warps);
+            else if (this.eventStuff.eventData.end) {
+                if (this.eventStuff.eventData.end === "TrueEnd")
+                    this.scene.start("end", { type: "True" });
+                else if (this.eventStuff.eventData.end === "BadEnd")
+                    this.scene.start("end", { type: "Bad" });
+            }
+            else
+                this.eventStuff = { eventRunning: false };
         }
     }
 
@@ -249,7 +369,7 @@ export default class GameScene extends Phaser.Scene {
             return;
         else { // 정상 이동 경우
             const newTile = this.gameStuff.tileData[newVector.mapY][newVector.mapX];
-            
+
             for (const e of newTile.event)
                 setTimeout(() =>
                     this.handleWorldEvent(e)
@@ -267,8 +387,8 @@ export default class GameScene extends Phaser.Scene {
         if (globals.eventsTriggered.includes(eventId))
             return;
 
-        
-        
+
+
         globals.eventsTriggered.push(eventId);
 
         const eventData = eventMap.get(eventId)
@@ -295,13 +415,14 @@ export default class GameScene extends Phaser.Scene {
         // }
     };
 
-    timeStopped(): "stop" | "event" | "running" {
-
+    timeStopped(): "log" | "stop" | "event" | "running" {
         if (this.gameStuff.created === false)
             return "stop";
 
         const textArea = this.gameStuff.textArea;
 
+        if (textArea.logOn)
+            return "log"
         if (this.eventStuff.eventRunning)
             if (this._moveCounter - this.eventStuff.startTime >= textArea.lastLimits
                 && textArea.lastStopTime)
@@ -318,71 +439,5 @@ export default class GameScene extends Phaser.Scene {
         return this._moveCounter;
     }
 
-    turnAction(timeStopped: "event" | "running"): void {
-        if (this.gameStuff.created === false)
-            return;
-        if (!this.props.initiated)
-            return;
 
-        if (timeStopped === "event" && this.eventStuff.eventRunning) {
-            const eventData = this.eventStuff.eventData;
-            const startTime = this.eventStuff.startTime;
-
-            // Adds text
-            const filteredScenes = eventData.textData.filter(textData =>
-                !textData.appearsAt || textData.appearsAt === this._moveCounter - startTime);
-            eventData.textData = eventData.textData.filter(textData =>
-                textData.appearsAt && textData.appearsAt !== this._moveCounter - startTime);
-            let added = filteredScenes.length > 0
-
-            for (let textData of filteredScenes)
-                this.gameStuff.textArea.appendTexts(textData);
-
-            // Changes map
-            const filteredMapChange = eventData.mapChange.filter(mapChange =>
-                mapChange.appearsAt === this._moveCounter - startTime
-            )
-            eventData.mapChange = eventData.mapChange.filter(mapChange =>
-                mapChange.appearsAt !== this._moveCounter - startTime)
-            for (let i = 0; i < filteredMapChange.length; i++)
-                mapChanger(this.props.mapData);
-            this.reloadMap();
-
-            // Spawns creatures
-            const filteredCreatures = eventData.creatures.filter(creature =>
-                !creature.appearsAt || creature.appearsAt === this._moveCounter - startTime);
-            eventData.creatures = eventData.creatures.filter(creature =>
-                creature.appearsAt && creature.appearsAt !== this._moveCounter - startTime);
-            for (let { creatureData } of filteredCreatures) {
-                this.gameStuff.creatures.push(new Creature(this, creatureData.mapX, creatureData.mapY, creatureData.texture, creatureData.movements));
-            }
-
-            if (added)
-                return;
-
-            this.gameStuff.player.turnAction();
-        }
-
-        if (this.eventStuff.eventRunning &&
-            this._moveCounter - this.eventStuff.startTime >= (this.eventStuff.eventData.endsAt ?? 0)) {
-            if (this.eventStuff.eventData.warps)
-                this.scene.start("game", this.eventStuff.eventData.warps);
-            else if (this.eventStuff.eventData.end) {
-                if (this.eventStuff.eventData.end === "TrueEnd")
-                    this.scene.start("end", { type: "True"} );
-                else if (this.eventStuff.eventData.end === "BadEnd")
-                    this.scene.start("end", { type: "Bad" });
-            }
-            else
-                this.eventStuff = { eventRunning: false };
-        }
-
-        for (let mapObject of this.gameStuff.creatures) {
-            if (mapObject !== this.gameStuff.player)
-                mapObject.turnAction();
-        }
-
-        this._moveCounter += 1;
-        this.creatureMovementTimer = GLOBALTIME;
-    }
 }
