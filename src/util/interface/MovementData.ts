@@ -24,4 +24,9 @@ interface RotateMoveMentData extends BaseMovementData {
     cycleType: "cl" | "ccl"
 }
 
-export type MovementData = ConstantMovementData | CycleMovementData | RotateMoveMentData;
+interface DestroyMovementData extends BaseMovementData {
+    type: "dst"
+}
+
+export type MovementData = ConstantMovementData | CycleMovementData |
+    RotateMoveMentData | DestroyMovementData;

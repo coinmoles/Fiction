@@ -2,7 +2,7 @@
 import { EventData } from "~/util/interface/EventData"
 
 export const enterTower: EventData = {
-    mapId: "map10",
+    mapId: "map16",
     endsAt: 0,
     playerMovement: [],
     textData: [],

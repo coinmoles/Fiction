@@ -15,14 +15,21 @@ export class MovementType {
         this.startTime = scene.moveCounter;
     }
 
+    checkExpired(): boolean {
+        if (this.dur.end !== null && this.scene.moveCounter >= this.startTime + this.dur.end) {
+            if (this.mapObject.movements.front === this)
+                this.mapObject.movements.dequeue()
+            return true;
+        }
+        return false;
+    }
+
     turnAction(): void {
         if (this.dur.start !== null && this.scene.moveCounter < this.startTime +this.dur.start)
             return;
-        if (this.dur.end !== null && this.scene.moveCounter >= this.startTime + this.dur.end) { 
-            if (this.mapObject.movements.front === this)
-                this.mapObject.movements.dequeue()
+        if (this.checkExpired())
             return;
-        }
+        
         this.moveObject();
     }
 

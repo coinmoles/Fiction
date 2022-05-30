@@ -101,20 +101,34 @@ const textureDataMap = new Map<string, string>([
     ["tw01 ", "map/tower/tower01.png"],
     ["tw10 ", "map/tower/tower10.png"],
     ["tw11 ", "map/tower/tower11.png"],
+    ["tw11t", "map/tower/tower11.png"],
     ["tw12 ", "map/tower/tower12.png"],
     ["tw13 ", "map/tower/tower13.png"],
+    ["twc01", "map/tower/towerDoorClosed01.png"],
+    ["twc10", "map/tower/towerDoorClosed10.png"],
+    ["twc11", "map/tower/towerDoorClosed11.png"],
+    ["twc12", "map/tower/towerDoorClosed12.png"],
     ["twfl ", "map/tower/towerFloor.png"],
     ["twfll", "map/tower/towerFloor.png"],
+    ["twfld", "map/tower/towerFloor.png"],
+    ["twflk", "map/tower/towerFloorP.png"],
+    ["twflp", "map/tower/towerFloorP.png"],
+    ["twflf", "map/tower/towerFloorFrame.png"],
+    ["twfls", "map/tower/towerFloorSword.png"],
     ["twpt ", "map/tower/towerPortal.png"],
     ["twst1", "map/tower/towerStairs.png"],
-
+    ["twst2", "map/tower/towerStairs.png"],
+    ["twst3", "map/tower/towerStairs.png"],
+    ["twst4", "map/tower/towerStairs.png"],
+    ["twst5", "map/tower/towerStairs.png"],
     ["gf21o", "map/floor/grassFloor21.png"],
     ["rd00o", "map/road/road00.png"],
     ["rd01o", "map/road/road01.png"],
     ["rd02o", "map/road/road02.png"],
 
     // Creatures
-    ["fa", "creatures/par.png"]
+    ["fa", "creatures/par.png"],
+    ["sol", "creatures/sol.png"]
 ]);
 
 export const normalTextures = new Map([

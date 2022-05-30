@@ -41,7 +41,14 @@ export class Creature extends MapObject {
     }
 
     turnAction(): void {
-        const currentMovement = this.movements.front;
+        let currentMovement = this.movements.front;
+        while (1) {
+            if (currentMovement === null)
+                return;
+            if (!currentMovement.checkExpired())
+                break;
+            currentMovement = this.movements.front
+        }
         if (currentMovement !== null) {
             currentMovement.turnAction();
         }

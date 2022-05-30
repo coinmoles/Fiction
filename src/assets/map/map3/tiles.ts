@@ -1,4 +1,4 @@
-const tiles: string[][] = [
+export default [
     ["ciw01", "ciw01", "ciw01", "ciw01", "ciw01", "ciw01", "ciw01", "ciw01"],
     ["ciw11", "ciw11", "ciw11", "ciw11", "ciw11", "ciw11", "ciw11", "ciw11"],
     ["ciw21", "ciw21", "ciw21", "ciw21", "ciw21", "ciw21", "ciw21", "ciw21"],
@@ -7,5 +7,3 @@ const tiles: string[][] = [
     ["cf   ", "cf   ", "cic10", "cic11", "cic03", "cic21", "cic21", "cic21"],
     ["cf   ", "cf   ", "cic10", "cic11", "cic12", "cf   ", "cf   ", "cf   "],
 ]
-
-export default tiles;

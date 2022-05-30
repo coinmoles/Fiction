@@ -106,12 +106,26 @@ tileDataMap.set("tw00 ", { texture: "tw00 ", passable: false, event: [] });
 tileDataMap.set("tw01 ", { texture: "tw01 ", passable: false, event: [] });
 tileDataMap.set("tw10 ", { texture: "tw10 ", passable: false, event: [] });
 tileDataMap.set("tw11 ", { texture: "tw11 ", passable: true, event: ["enterTower"] });
+tileDataMap.set("tw11t", { texture: "tw11t", passable: true, event: [] });
 tileDataMap.set("tw12 ", { texture: "tw12 ", passable: false, event: [] });
 tileDataMap.set("tw13 ", { texture: "tw13 ", passable: false, event: [] });
-tileDataMap.set("twfl ", { texture: "twfl ", passable: true, event: [] });
-tileDataMap.set("twfll", { texture: "twfll", passable: true, event: ["crossingTheLine"] });
-tileDataMap.set("twpt ", { texture: "twpt ", passable: false, event: [] });
+tileDataMap.set("twc01", { texture: "twc01", passable: false, event: [] });
+tileDataMap.set("twc10", { texture: "twc10", passable: false, event: [] });
+tileDataMap.set("twc11", { texture: "twc11", passable: false, event: [] });
+tileDataMap.set("twc12", { texture: "twc12", passable: false, event: [] });
+tileDataMap.set("twfl ", { texture: "twfl ", passable: true, event: [] }); // tower floor
+tileDataMap.set("twflp", { texture: "twflp", passable: false, event: [] }); // tower floor but not passable
+tileDataMap.set("twfls", { texture: "twfls", passable: false, event: [] }); // tower floor w/ sword
+tileDataMap.set("twflf", { texture: "twflf", passable: false, event: [] }); // tower floor w/ frame
+tileDataMap.set("twflk", { texture: "twflk", passable: true, event: ["killWizard"] }); // tower floor but kill wizard
+tileDataMap.set("twpt ", { texture: "twpt ", passable: false, event: [] }); // tower floor w/portal
 tileDataMap.set("twst1", { texture: "twst1", passable: true, event: ["towerStairs1"] });
+tileDataMap.set("twst2", { texture: "twst2", passable: true, event: ["towerStairs2"] });
+tileDataMap.set("twst3", { texture: "twst3", passable: true, event: ["towerStairs3"] });
+tileDataMap.set("twst4", { texture: "twst4", passable: true, event: ["towerStairs4"] });
+tileDataMap.set("twst5", { texture: "twst5", passable: true, event: ["towerStairs5"] });
+tileDataMap.set("twfll", { texture: "twfll", passable: true, event: ["crossingTheLine"] }); // tower floor but line
+tileDataMap.set("twfld", { texture: "twfld", passable: true, event: ["enterChamber"] }); // tower floor outside the door
 
 // open sesame
 tileDataMap.set("gf21o", { texture: "gf21o", passable: true, event: ["towerOpenSesame"] });

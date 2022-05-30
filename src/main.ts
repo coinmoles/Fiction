@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import EndScene from './scenes/EndScene';
 import GameScene from './scenes/GameScene'
 
 import MainMenuScene from './scenes/MainMenuScene'
@@ -14,7 +15,7 @@ const config: Phaser.Types.Core.GameConfig = {
 			gravity: { y: 200 }
 		}
 	},
-	scene: [MainMenuScene, GameScene]
+	scene: [MainMenuScene, GameScene, EndScene]
 }
 
 export default new Phaser.Game(config);

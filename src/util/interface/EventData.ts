@@ -11,4 +11,5 @@ export interface EventData {
     mapChange: { appearsAt: number }[]
     creatures: { creatureData: CreatureData, appearsAt: number }[]
     warps?: WarpData
+    end?: "TrueEnd" | "BadEnd"
 }

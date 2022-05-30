@@ -85,6 +85,7 @@ export default class GameScene extends Phaser.Scene {
         if (!mapData)
             return;
 
+
         this.props = { initiated: true, mapId, mapData, playerInitLoc };
 
         this._moveCounter = 0;
@@ -347,6 +348,15 @@ export default class GameScene extends Phaser.Scene {
                 mapChanger(this.props.mapData);
             this.reloadMap();
 
+            // Spawns creatures
+            const filteredCreatures = eventData.creatures.filter(creature =>
+                !creature.appearsAt || creature.appearsAt === this._moveCounter - startTime);
+            eventData.creatures = eventData.creatures.filter(creature =>
+                creature.appearsAt && creature.appearsAt !== this._moveCounter - startTime);
+            for (let { creatureData } of filteredCreatures) {
+                this.gameStuff.creatures.push(new Creature(this, creatureData.mapX, creatureData.mapY, creatureData.texture, creatureData.movements));
+            }
+
             if (added)
                 return;
 
@@ -357,6 +367,12 @@ export default class GameScene extends Phaser.Scene {
             this._moveCounter - this.eventStuff.startTime >= (this.eventStuff.eventData.endsAt ?? 0)) {
             if (this.eventStuff.eventData.warps)
                 this.scene.start("game", this.eventStuff.eventData.warps);
+            else if (this.eventStuff.eventData.end) {
+                if (this.eventStuff.eventData.end === "TrueEnd")
+                    this.scene.start("end", { type: "True"} );
+                else if (this.eventStuff.eventData.end === "BadEnd")
+                    this.scene.start("end", { type: "Bad" });
+            }
             else
                 this.eventStuff = { eventRunning: false };
         }
