@@ -100,6 +100,8 @@ export default class GameScene extends Phaser.Scene {
         this.props.mapData.textureMap.forEach((value, key) => {
             this.load.image(key, value);
         });
+
+        this.load.atlas("player", "creatures/player.png", "creatures/player.json");
     }
 
     create() {
