@@ -3,6 +3,7 @@ import EndScene from './scenes/EndScene';
 import GameScene from './scenes/GameScene'
 
 import MainMenuScene from './scenes/MainMenuScene'
+import Map0Scene from './scenes/Map0Scene';
 import { FULLHEIGHT, FULLWIDTH } from './util/scaleConstants';
 
 const config: Phaser.Types.Core.GameConfig = {
@@ -15,7 +16,7 @@ const config: Phaser.Types.Core.GameConfig = {
 			gravity: { y: 200 }
 		}
 	},
-	scene: [MainMenuScene, GameScene, EndScene]
+	scene: [MainMenuScene, GameScene, EndScene, Map0Scene]
 }
 
 export default new Phaser.Game(config);

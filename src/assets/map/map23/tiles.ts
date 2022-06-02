@@ -49,9 +49,9 @@ export const map23NewestTiles = [
 ]
 
 export const map23FinalTiles = [
-    ["twfl ", "twfl ", "twfl ", "twflp", "twfl ", "twfl ", "twfl ", "twfl "],
-    ["twfl ", "twfl ", "twflp", "twfl ", "twflp", "twfl ", "twfl ", "twfl "],
-    ["twfl ", "twfl ", "twfl ", "twflk", "twfl ", "twfl ", "twfl ", "twfl "],
+    ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],
+    ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],
+    ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],
     ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],
     ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],
     ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],
@@ -59,9 +59,9 @@ export const map23FinalTiles = [
 ]
 
 export const map23PortalTiles = [
-    ["twfl ", "twfl ", "twfl ", "twflp", "twfl ", "twfl ", "twfl ", "twfl "],
-    ["twfl ", "twfl ", "twflp", "twfl ", "twflp", "twfl ", "twfl ", "twfl "],
-    ["twfl ", "twfl ", "twfl ", "twflp", "twfl ", "twfl ", "twfl ", "twfl "],
+    ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],
+    ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],
+    ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],
     ["twfl ", "twfl ", "twfl ", "twpt ", "twfl ", "twfl ", "twfl ", "twfl "],
     ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],
     ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],

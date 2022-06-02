@@ -20,6 +20,7 @@ export const enterChamber: EventData = {
     creatures: [],
     warps: {
         mapId: "map23",
-        playerInitLoc: { mapX: 3, mapY: 6 }
+        playerInitLoc: { mapX: 3, mapY: 6 },
+        playerInitAnim: "backIdle"
     }
 }

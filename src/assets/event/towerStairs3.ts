@@ -9,6 +9,7 @@ export const towerStairs3: EventData = {
     creatures: [],
     warps: {
         mapId: "map20",
-        playerInitLoc: { mapX: 7, mapY: 0 }
+        playerInitLoc: { mapX: 7, mapY: 0 },
+        playerInitAnim: "frontIdle"
     }
 };

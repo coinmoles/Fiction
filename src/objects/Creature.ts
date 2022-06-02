@@ -24,7 +24,6 @@ export class Creature extends MapObject {
         let initialAnim: string | undefined
         let movementDatas: MovementData[];
 
-        console.log(arg1);
         if (typeof arg1 !== "number" && ("texture" in arg1) && !arg2) {
             mapX = arg1.mapX;
             mapY = arg1.mapY;
@@ -68,7 +67,7 @@ export class Creature extends MapObject {
                 key: anim.name,
                 frames: this.anims.generateFrameNames(texture, { prefix: anim.name, start: 0, end: anim.frame - 1 }),
                 frameRate: anim.fps,
-                repeat: 1
+                repeat: anim.repeat
             });
         
         this.setAnims(initialAnim ? initialAnim : "frontIdle");

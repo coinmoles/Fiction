@@ -1,5 +1,6 @@
 import { MapData } from "~/util/interface/MapData";
 import { map23story } from "../event/map23story";
+import { map1 } from "./map1";
 import { map10 } from "./map10";
 import { map11 } from "./map11";
 import { map12 } from "./map12";
@@ -26,6 +27,7 @@ import { map9 } from "./map9";
 
 export const mapMap: Map<string, MapData> = new Map();
 
+mapMap.set("map1", map1);
 mapMap.set("map2", map2);
 mapMap.set("map3", map3);
 mapMap.set("map4", map4);

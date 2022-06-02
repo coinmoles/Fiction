@@ -9,6 +9,7 @@ export const enterCastle: EventData = {
     creatures: [],
     warps: {
         mapId: "map8",
-        playerInitLoc: { mapX: 3, mapY: 6 }
+        playerInitLoc: { mapX: 3, mapY: 6 },
+        playerInitAnim: "backIdle"
     }
 }

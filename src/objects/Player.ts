@@ -7,8 +7,8 @@ import { Creature } from "./Creature";
 
 export class Player extends Creature {
 
-    constructor(scene: GameScene, vec: vector, movementDatas: MovementData[]) {
-        super(scene, vec, "player", movementDatas);
+    constructor(scene: GameScene, vec: vector, movementDatas: MovementData[], playerInitAnim: string) {
+        super(scene, vec, "player", movementDatas, playerInitAnim);
     }
 
     move(movement: vector, realmove: boolean): void {

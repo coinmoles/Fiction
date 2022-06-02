@@ -10,6 +10,7 @@ export const enterTower: EventData = {
     creatures: [],
     warps: {
         mapId: "map17",
-        playerInitLoc: { mapX: 4, mapY: 6 }
+        playerInitLoc: { mapX: 4, mapY: 6 },
+        playerInitAnim: "backIdle"
     }
 }

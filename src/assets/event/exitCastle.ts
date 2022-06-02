@@ -9,6 +9,7 @@ export const exitCastle: EventData = {
     creatures: [],
     warps: {
         mapId: "map10", 
-        playerInitLoc: { mapX: 3, mapY: 4 }
+        playerInitLoc: { mapX: 3, mapY: 4 },
+        playerInitAnim: "frontIdle"
     }
 }

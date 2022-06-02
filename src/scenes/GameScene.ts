@@ -27,6 +27,7 @@ interface PropsInitiated {
     mapId: MapId
     mapData: MapData
     playerInitLoc: vector
+    playerInitAnim: string
 }
 
 interface GameStuffNull {
@@ -80,14 +81,14 @@ export default class GameScene extends Phaser.Scene {
         super({ key: "game" });
     }
 
-    init(data: { mapId: MapId, playerInitLoc: vector }) {
-        const { mapId, playerInitLoc } = data;
+    init(data: { mapId: MapId, playerInitLoc: vector, playerInitAnim: string }) {
+        const { mapId, playerInitLoc, playerInitAnim } = data;
         const mapData = mapMap.get(mapId);
         if (!mapData)
             return;
 
 
-        this.props = { initiated: true, mapId, mapData, playerInitLoc };
+        this.props = { initiated: true, mapId, mapData, playerInitLoc, playerInitAnim };
 
         this._moveCounter = 0;
         this.eventStuff = { eventRunning: false }
@@ -113,7 +114,7 @@ export default class GameScene extends Phaser.Scene {
             tileRow.map(tile => mapLoader(tile))
         );
 
-        const player = new Player(this, this.props.playerInitLoc, []);
+        const player = new Player(this, this.props.playerInitLoc, [], this.props.playerInitAnim);
         const creatures: MapObject[] = []
         for (let creatureData of this.props.mapData.creatureData) {
             creatures.push(new Creature(this, creatureData));
@@ -345,7 +346,8 @@ export default class GameScene extends Phaser.Scene {
             if (mapId && mapMap.get(mapId))
                 this.scene.start("game", {
                     mapId,
-                    playerInitLoc: { mapX: COLUMNS - 1, mapY: this.gameStuff.player.mapY }
+                    playerInitLoc: { mapX: COLUMNS - 1, mapY: this.gameStuff.player.mapY },
+                    playerInitAnim: "leftIdle"
                 });
             else
                 this.gameStuff.player.move(movement, false);
@@ -355,7 +357,8 @@ export default class GameScene extends Phaser.Scene {
             if (mapId && mapMap.get(mapId))
                 this.scene.start("game", {
                     mapId,
-                    playerInitLoc: { mapX: 0, mapY: this.gameStuff.player.mapY }
+                    playerInitLoc: { mapX: 0, mapY: this.gameStuff.player.mapY },
+                    playerInitAnim: "rightIdle"
                 });
             else
                 this.gameStuff.player.move(movement, false);
@@ -366,7 +369,8 @@ export default class GameScene extends Phaser.Scene {
             if (mapId && mapMap.get(mapId))
                 this.scene.start("game", {
                     mapId,
-                    playerInitLoc: { mapX: this.gameStuff.player.mapX, mapY: ROWS - 1 }
+                    playerInitLoc: { mapX: this.gameStuff.player.mapX, mapY: ROWS - 1 },
+                    playerInitAnim: "backIdle"
                 });
             else
                 this.gameStuff.player.move(movement, false);
@@ -377,7 +381,8 @@ export default class GameScene extends Phaser.Scene {
             if (mapId && mapMap.get(mapId))
                 this.scene.start("game", {
                     mapId,
-                    playerInitLoc: { mapX: this.gameStuff.player.mapX, mapY: 0 }
+                    playerInitLoc: { mapX: this.gameStuff.player.mapX, mapY: 0 },
+                    playerInitAnim: "frontIdle"
                 });
             else
                 this.gameStuff.player.move(movement, false);
@@ -421,7 +426,6 @@ export default class GameScene extends Phaser.Scene {
             startTime: this._moveCounter
         };
 
-        this.gameStuff.textArea.appendTexts
         this.gameStuff.player.addMovement(this, eventData.playerMovement);
 
         // if (eventId === "towerOpenSesame") {
