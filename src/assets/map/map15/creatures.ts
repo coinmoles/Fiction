@@ -10,7 +10,7 @@ export default [
                 freq: [6, 7, 6, 7],
                 cycleType: "ccl"
             }
-        ], mapX: 7, mapY: 6, texture: 'fa'
+        ], mapX: 7, mapY: 6, texture: 'light'
     },
     {
         movements: [
@@ -21,7 +21,7 @@ export default [
                 freq: [4, 5, 4, 5],
                 cycleType: "cl"
             }
-        ], mapX: 6, mapY: 1, texture: 'fa'
+        ], mapX: 6, mapY: 1, texture: 'light'
     },
     {
         movements: [
@@ -32,6 +32,6 @@ export default [
                 freq: [2, 3, 2, 3],
                 cycleType: "ccl"
             }
-        ], mapX: 5, mapY: 4, texture: 'fa'
+        ], mapX: 5, mapY: 4, texture: 'light'
     },
 ] as CreatureData[];

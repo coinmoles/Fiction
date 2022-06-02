@@ -57,7 +57,7 @@ export default class MainMenuScene extends Phaser.Scene {
         if (this.enterKey?.isDown) {
             if (this.choice === 0) {
                 this.scene.start("game", {
-                    mapId: "map22",
+                    mapId: "map16",
                     playerInitLoc: {mapX: 4, mapY: 4}
                 });
             }

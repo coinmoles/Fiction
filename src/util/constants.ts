@@ -1,1 +1,1 @@
-export const GLOBALTIME = 400
+export const GLOBALTIME = 500

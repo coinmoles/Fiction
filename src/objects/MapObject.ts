@@ -42,7 +42,7 @@ export class MapObject extends Phaser.GameObjects.Sprite {
     turnAction() {
     }
 
-    move(dir: vector) {
+    move(dir: vector, realmove: boolean) {
         const mapX = this.mapX;
         const mapY = this.mapY;
         let i = 0;

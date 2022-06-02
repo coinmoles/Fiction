@@ -27,7 +27,7 @@ export class CycleMovementType extends MovementType {
     }
 
     moveObject(): void {
-        this.mapObject.move(this.dirs[this.dirNum]);
+        this.mapObject.move(this.dirs[this.dirNum], true);
 
         this.count++;
         if (this.count >= this.freq[this.dirNum]) {

@@ -163,10 +163,7 @@ export class TextArea extends Phaser.GameObjects.Group {
     setLogObjects() {
         if (!this.logArea || !this.logObjects)
             return
-
-        console.log(this.oldText);
-        console.log(this.logLoc);
-
+        
         for (let i = 0; i < 3; i++) {
             if (this.logLoc + i - 2 >= 0)
                 this.logObjects[i].setText(this.oldText[this.logLoc + i - 2])

@@ -1,6 +1,6 @@
 import { MapData } from "../../../util/interface/MapData";
 import tiles from "../map2/tiles";
-import { mapTextureLoader, normalTextures } from "../textureMap";
+import { mapTextureLoader, normalTextures } from "../../textureMap";
 
 export const map2: MapData = {
     textureMap: new Map([

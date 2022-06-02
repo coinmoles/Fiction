@@ -1,4 +1,4 @@
-const textureDataMap = new Map<string, string>([
+const textureDataMap = new Map<string, string | string[]>([
     // Castle Interior Carpet
     ["cic00", "map/castleInterior/castleInCarpet00.png"],
     ["cic01", "map/castleInterior/castleInCarpet01.png"],
@@ -127,12 +127,15 @@ const textureDataMap = new Map<string, string>([
     ["rd02o", "map/road/road02.png"],
 
     // Creatures
+    
+    ["towerGuardian", ["creatures/towerGuardian.png", "creatures/towerGuardian.json"]],
+    ["light", ["creatures/light.png", "creatures/light.json"]],
     ["fa", "creatures/par.png"],
     ["sol", "creatures/sol.png"]
 ]);
 
-export const normalTextures = new Map([
-    ["mi", "characters/crazy.png"],
+export const normalTextures = new Map<string, string|string[]>([
+    ["player", ["creatures/player.png", "creatures/player.json"]],
     ["textArea", "ui/text.png"],
     ["wpEmpty", "ui/wpEmpty.png"],
     ["wpFull", "ui/wpFull.png"],
@@ -143,7 +146,7 @@ const flatten = (keys: string[][]) => {
     return x.concat(...keys);
 }
 
-export const textureLoader = (keys: string[]): Map<string, string> => {
+export const textureLoader = (keys: string[]): Map<string, string | string[]> => {
     const keySet = new Set(keys);
 
     return new Map(
@@ -152,7 +155,7 @@ export const textureLoader = (keys: string[]): Map<string, string> => {
     )
 }
 
-export const mapTextureLoader = (keys: string[][]): Map<string, string> => {
+export const mapTextureLoader = (keys: string[][]): Map<string, string | string[]> => {
     const keySet = new Set(flatten(keys));
     
     return new Map(

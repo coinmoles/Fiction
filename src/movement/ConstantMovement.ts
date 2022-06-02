@@ -14,6 +14,6 @@ export class ConstantMovementType extends MovementType {
     }
 
     moveObject(): void {
-        this.mapObject.move(this.dir);
+        this.mapObject.move(this.dir, true);
     }
 }

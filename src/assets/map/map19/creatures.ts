@@ -10,7 +10,7 @@ export const creatures: CreatureData[] = [
                 cycleType: "cl",
                 freq: 3
             }
-        ], mapX: 3, mapY: 6, texture: 'fa'
+        ], mapX: 3, mapY: 6, texture: 'towerGuardian'
     },
     {
         movements: [
@@ -21,7 +21,7 @@ export const creatures: CreatureData[] = [
                 cycleType: "cl",
                 freq: 3
             }
-        ], mapX: 7, mapY: 6, texture: 'fa'
+        ], mapX: 7, mapY: 6, texture: 'towerGuardian'
     },
     {
         movements: [
@@ -32,17 +32,6 @@ export const creatures: CreatureData[] = [
                 cycleType: "cl",
                 freq: 3
             }
-        ], mapX: 3, mapY: 2, texture: 'fa'
-    },
-    {
-        movements: [
-            {
-                type: "rot",
-                dur: { start: null, end: null },
-                initialDir: { mapX: -1, mapY: 0 },
-                cycleType: "cl",
-                freq: 3
-            }
-        ], mapX: 3, mapY: 2, texture: 'fa'
+        ], mapX: 3, mapY: 3, texture: 'towerGuardian'
     },
 ]

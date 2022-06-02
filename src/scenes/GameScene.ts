@@ -98,10 +98,11 @@ export default class GameScene extends Phaser.Scene {
             return;
 
         this.props.mapData.textureMap.forEach((value, key) => {
-            this.load.image(key, value);
+            if (typeof value === "string")
+                this.load.image(key, value);
+            else
+                this.load.atlas(key, ...value)
         });
-
-        this.load.atlas("player", "creatures/player.png", "creatures/player.json");
     }
 
     create() {
@@ -112,10 +113,10 @@ export default class GameScene extends Phaser.Scene {
             tileRow.map(tile => mapLoader(tile))
         );
 
-        const player = new Player(this, this.props.playerInitLoc, "mi", []);
+        const player = new Player(this, this.props.playerInitLoc, []);
         const creatures: MapObject[] = []
         for (let creatureData of this.props.mapData.creatureData) {
-            creatures.push(new Creature(this, creatureData.mapX, creatureData.mapY, creatureData.texture, creatureData.movements));
+            creatures.push(new Creature(this, creatureData, creatureData.texture, creatureData.movements));
         }
         const map: MapObject[][] = []
         for (let i = 0; i < ROWS; i++) {
@@ -235,8 +236,14 @@ export default class GameScene extends Phaser.Scene {
         if (!this.gameStuff.created || !this.props.initiated)
             return;
 
-        if (timeStopped === "event" && this.eventStuff.eventRunning)
-            this.eventTurnAction()
+        if (timeStopped === "event" && this.eventStuff.eventRunning) {
+            const added = this.eventTurnAction()
+            
+            console.log(added)
+
+            if (added) 
+                return;
+        }
 
         this.checkEventEnd();
 
@@ -249,7 +256,7 @@ export default class GameScene extends Phaser.Scene {
         this.creatureMovementTimer = GLOBALTIME;
     }
 
-    eventTurnAction() {
+    eventTurnAction(): void | true {
         if (!this.gameStuff.created || !this.props.initiated || !this.eventStuff.eventRunning)
             return;
 
@@ -282,11 +289,11 @@ export default class GameScene extends Phaser.Scene {
         eventData.creatures = eventData.creatures.filter(creature =>
             creature.appearsAt && creature.appearsAt !== this._moveCounter - startTime);
         for (let { creatureData } of filteredCreatures) {
-            this.gameStuff.creatures.push(new Creature(this, creatureData.mapX, creatureData.mapY, creatureData.texture, creatureData.movements));
+            this.gameStuff.creatures.push(new Creature(this, creatureData, creatureData.texture, creatureData.movements));
         }
 
         if (added)
-            return;
+            return true;
 
         this.gameStuff.player.turnAction();
     }
@@ -342,6 +349,8 @@ export default class GameScene extends Phaser.Scene {
                     mapId,
                     playerInitLoc: { mapX: COLUMNS - 1, mapY: this.gameStuff.player.mapY }
                 });
+            else
+                this.gameStuff.player.move(movement, false);
         }
         else if (newVector.mapX >= COLUMNS) { // 오른쪽 맵으로 이동
             let mapId = this.props.mapData.distantMaps.e;
@@ -350,6 +359,9 @@ export default class GameScene extends Phaser.Scene {
                     mapId,
                     playerInitLoc: { mapX: 0, mapY: this.gameStuff.player.mapY }
                 });
+            else
+                this.gameStuff.player.move(movement, false);
+
         }
         else if (newVector.mapY < 0) { // 위쪽 맵으로 이동
             let mapId = this.props.mapData.distantMaps.n;
@@ -358,6 +370,9 @@ export default class GameScene extends Phaser.Scene {
                     mapId,
                     playerInitLoc: { mapX: this.gameStuff.player.mapX, mapY: ROWS - 1 }
                 });
+            else
+                this.gameStuff.player.move(movement, false);
+
         }
         else if (newVector.mapY >= ROWS) { // 아래쪽 맵으로 이동
             let mapId = this.props.mapData.distantMaps.s;
@@ -366,9 +381,15 @@ export default class GameScene extends Phaser.Scene {
                     mapId,
                     playerInitLoc: { mapX: this.gameStuff.player.mapX, mapY: 0 }
                 });
+            else
+                this.gameStuff.player.move(movement, false);
+
         }
-        else if (!this.gameStuff.tileData[newVector.mapY][newVector.mapX].passable) // 이동 불가능한 경우
-            return;
+
+        else if (!this.gameStuff.tileData[newVector.mapY][newVector.mapX].passable) {
+            this.gameStuff.player.move(movement, false);
+            this.playerMovementTimer = GLOBALTIME;
+        }
         else { // 정상 이동 경우
             const newTile = this.gameStuff.tileData[newVector.mapY][newVector.mapX];
 
@@ -376,7 +397,7 @@ export default class GameScene extends Phaser.Scene {
                 setTimeout(() =>
                     this.handleWorldEvent(e)
                     , GLOBALTIME);
-            this.gameStuff.player.move(movement);
+            this.gameStuff.player.move(movement, true);
             this.playerMovementTimer = GLOBALTIME;
         }
     }
@@ -388,8 +409,6 @@ export default class GameScene extends Phaser.Scene {
             return;
         if (globals.eventsTriggered.includes(eventId))
             return;
-
-
 
         globals.eventsTriggered.push(eventId);
 

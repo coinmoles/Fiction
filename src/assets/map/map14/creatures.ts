@@ -9,7 +9,7 @@ export default [
                 dirs: [{ mapX: 0, mapY: -1 }, { mapX: 0, mapY: 1 }],
                 freq: 6
             }
-        ], mapX: 1, mapY: 6, texture: 'fa'
+        ], mapX: 1, mapY: 6, texture: 'light'
     },
     {
         movements: [
@@ -19,7 +19,7 @@ export default [
                 dirs: [{ mapX: 0, mapY: -1 }, { mapX: 0, mapY: 1 }],
                 freq: 6
             }
-        ], mapX: 3, mapY: 6, texture: 'fa'
+        ], mapX: 3, mapY: 6, texture: 'light'
     },
     {
         movements: [
@@ -29,7 +29,7 @@ export default [
                 dirs: [{ mapX: 0, mapY: -1 }, { mapX: 0, mapY: 1 }],
                 freq: 6
             }
-        ], mapX: 5, mapY: 6, texture: 'fa'
+        ], mapX: 5, mapY: 6, texture: 'light'
     },
     {
         movements: [
@@ -39,6 +39,6 @@ export default [
                 dirs: [{ mapX: 0, mapY: -1 }, { mapX: 0, mapY: 1 }],
                 freq: 6
             }
-        ], mapX: 7, mapY: 6, texture: 'fa'
+        ], mapX: 7, mapY: 6, texture: 'light'
     },
 ] as CreatureData[];

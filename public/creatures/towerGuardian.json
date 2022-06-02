@@ -1,8 +1,48 @@
 {
     "frames": {
-        "frontIdle0": {
+        "patrol0.png": {
             "frame": {
                 "x": 0,
+                "y": 0,
+                "w": 32,
+                "h": 32
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 32,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 32,
+                "h": 32
+            }
+        },
+        "patrol1.png": {
+            "frame": {
+                "x": 32,
+                "y": 0,
+                "w": 32,
+                "h": 32
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 32,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 32,
+                "h": 32
+            }
+        },
+        "frontIdle0": {
+            "frame": {
+                "x": 64,
                 "y": 0,
                 "w": 32,
                 "h": 32
@@ -22,46 +62,6 @@
         },
         "frontIdle1": {
             "frame": {
-                "x": 32,
-                "y": 0,
-                "w": 32,
-                "h": 32
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 32,
-                "h": 32
-            },
-            "sourceSize": {
-                "w": 32,
-                "h": 32
-            }
-        },
-        "frontWalk0": {
-            "frame": {
-                "x": 64,
-                "y": 0,
-                "w": 32,
-                "h": 32
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 32,
-                "h": 32
-            },
-            "sourceSize": {
-                "w": 32,
-                "h": 32
-            }
-        },
-        "frontWalk1": {
-            "frame": {
                 "x": 96,
                 "y": 0,
                 "w": 32,
@@ -80,49 +80,9 @@
                 "h": 32
             }
         },
-        "frontWalk2": {
-            "frame": {
-                "x": 128,
-                "y": 0,
-                "w": 32,
-                "h": 32
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 32,
-                "h": 32
-            },
-            "sourceSize": {
-                "w": 32,
-                "h": 32
-            }
-        },
-        "frontWalk3": {
-            "frame": {
-                "x": 0,
-                "y": 32,
-                "w": 32,
-                "h": 32
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 32,
-                "h": 32
-            },
-            "sourceSize": {
-                "w": 32,
-                "h": 32
-            }
-        },
         "backIdle0": {
             "frame": {
-                "x": 32,
+                "x": 0,
                 "y": 32,
                 "w": 32,
                 "h": 32
@@ -142,6 +102,26 @@
         },
         "backIdle1": {
             "frame": {
+                "x": 32,
+                "y": 32,
+                "w": 32,
+                "h": 32
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 32,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 32,
+                "h": 32
+            }
+        },
+        "rightIdle0": {
+            "frame": {
                 "x": 64,
                 "y": 32,
                 "w": 32,
@@ -160,7 +140,7 @@
                 "h": 32
             }
         },
-        "backWalk0": {
+        "rightIdle1": {
             "frame": {
                 "x": 96,
                 "y": 32,
@@ -180,69 +160,9 @@
                 "h": 32
             }
         },
-        "backWalk1": {
-            "frame": {
-                "x": 128,
-                "y": 32,
-                "w": 32,
-                "h": 32
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 32,
-                "h": 32
-            },
-            "sourceSize": {
-                "w": 32,
-                "h": 32
-            }
-        },
-        "backWalk2": {
-            "frame": {
-                "x": 0,
-                "y": 64,
-                "w": 32,
-                "h": 32
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 32,
-                "h": 32
-            },
-            "sourceSize": {
-                "w": 32,
-                "h": 32
-            }
-        },
-        "backWalk3": {
-            "frame": {
-                "x": 32,
-                "y": 64,
-                "w": 32,
-                "h": 32
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 32,
-                "h": 32
-            },
-            "sourceSize": {
-                "w": 32,
-                "h": 32
-            }
-        },
         "leftIdle0": {
             "frame": {
-                "x": 64,
+                "x": 0,
                 "y": 64,
                 "w": 32,
                 "h": 32
@@ -262,68 +182,8 @@
         },
         "leftIdle1": {
             "frame": {
-                "x": 96,
-                "y": 64,
-                "w": 32,
-                "h": 32
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 32,
-                "h": 32
-            },
-            "sourceSize": {
-                "w": 32,
-                "h": 32
-            }
-        },
-        "leftWalk0": {
-            "frame": {
-                "x": 128,
-                "y": 64,
-                "w": 32,
-                "h": 32
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 32,
-                "h": 32
-            },
-            "sourceSize": {
-                "w": 32,
-                "h": 32
-            }
-        },
-        "leftWalk1": {
-            "frame": {
-                "x": 0,
-                "y": 96,
-                "w": 32,
-                "h": 32
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 32,
-                "h": 32
-            },
-            "sourceSize": {
-                "w": 32,
-                "h": 32
-            }
-        },
-        "leftWalk2": {
-            "frame": {
                 "x": 32,
-                "y": 96,
+                "y": 64,
                 "w": 32,
                 "h": 32
             },
@@ -340,10 +200,10 @@
                 "h": 32
             }
         },
-        "leftWalk3": {
+        "frontWalk0": {
             "frame": {
                 "x": 64,
-                "y": 96,
+                "y": 64,
                 "w": 32,
                 "h": 32
             },
@@ -360,9 +220,29 @@
                 "h": 32
             }
         },
-        "rightIdle0": {
+        "frontWalk1": {
             "frame": {
                 "x": 96,
+                "y": 64,
+                "w": 32,
+                "h": 32
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 32,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 32,
+                "h": 32
+            }
+        },
+        "backWalk0": {
+            "frame": {
+                "x": 0,
                 "y": 96,
                 "w": 32,
                 "h": 32
@@ -380,9 +260,9 @@
                 "h": 32
             }
         },
-        "rightIdle1": {
+        "backWalk1": {
             "frame": {
-                "x": 128,
+                "x": 32,
                 "y": 96,
                 "w": 32,
                 "h": 32
@@ -402,8 +282,8 @@
         },
         "rightWalk0": {
             "frame": {
-                "x": 0,
-                "y": 128,
+                "x": 64,
+                "y": 96,
                 "w": 32,
                 "h": 32
             },
@@ -422,47 +302,47 @@
         },
         "rightWalk1": {
             "frame": {
-                "x": 32,
-                "y": 128,
-                "w": 32,
-                "h": 32
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 32,
-                "h": 32
-            },
-            "sourceSize": {
-                "w": 32,
-                "h": 32
-            }
-        },
-        "rightWalk2": {
-            "frame": {
-                "x": 64,
-                "y": 128,
-                "w": 32,
-                "h": 32
-            },
-            "rotated": false,
-            "trimmed": false,
-            "spriteSourceSize": {
-                "x": 0,
-                "y": 0,
-                "w": 32,
-                "h": 32
-            },
-            "sourceSize": {
-                "w": 32,
-                "h": 32
-            }
-        },
-        "rightWalk3": {
-            "frame": {
                 "x": 96,
+                "y": 96,
+                "w": 32,
+                "h": 32
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 32,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 32,
+                "h": 32
+            }
+        },
+        "leftWalk0": {
+            "frame": {
+                "x": 0,
+                "y": 128,
+                "w": 32,
+                "h": 32
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 32,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 32,
+                "h": 32
+            }
+        },
+        "leftWalk1": {
+            "frame": {
+                "x": 32,
                 "y": 128,
                 "w": 32,
                 "h": 32
@@ -484,10 +364,10 @@
     "meta": {
         "app": "https://github.com/piskelapp/piskel/",
         "version": "1.0",
-        "image": "i.png",
+        "image": "patrol.png",
         "format": "RGBA8888",
         "size": {
-            "w": 160,
+            "w": 128,
             "h": 160
         }
     }

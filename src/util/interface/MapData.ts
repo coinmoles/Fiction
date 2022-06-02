@@ -1,6 +1,5 @@
 import { Queue } from "queue-typescript";
 import { CreatureData } from "./CreatureData";
-import { EventData } from "./EventData";
 import { MapId } from "./MapId";
 
 interface DistantMaps {
@@ -11,10 +10,9 @@ interface DistantMaps {
 }
 
 export interface MapData {
-    textureMap: Map<string, string>
+    textureMap: Map<string, string | string[]>
     tiles: string[][]
     newTiles?: Queue<string[][]>
     creatureData: CreatureData[]
     distantMaps: DistantMaps
 }
-

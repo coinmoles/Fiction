@@ -9,7 +9,7 @@ export const creatures: CreatureData[] = [
                 dirs: [{ mapX: -2, mapY: 0 }, { mapX: 2, mapY: 0 }],
                 freq: 3
             }
-        ], mapX: 7, mapY: 2, texture: 'fa'
+        ], mapX: 7, mapY: 2, texture: 'towerGuardian'
     },
     {
         movements: [
@@ -19,7 +19,7 @@ export const creatures: CreatureData[] = [
                 dirs: [{ mapX: 2, mapY: 0 }, { mapX: -2, mapY: 0 }],
                 freq: 3
             }
-        ], mapX: 0, mapY: 3, texture: 'fa'
+        ], mapX: 0, mapY: 3, texture: 'towerGuardian'
     },
     {
         movements: [
@@ -29,7 +29,7 @@ export const creatures: CreatureData[] = [
                 dirs: [{ mapX: -2, mapY: 0 }, { mapX: 2, mapY: 0 }],
                 freq: 3
             }
-        ], mapX: 7, mapY: 4, texture: 'fa'
+        ], mapX: 7, mapY: 4, texture: 'towerGuardian'
     },
     {
         movements: [
@@ -39,6 +39,6 @@ export const creatures: CreatureData[] = [
                 dirs: [{ mapX: 2, mapY: 0 }, { mapX: -2, mapY: 0 }],
                 freq: 3
             }
-        ], mapX: 0, mapY: 5, texture: 'fa'
+        ], mapX: 0, mapY: 5, texture: 'towerGuardian'
     }
 ]
