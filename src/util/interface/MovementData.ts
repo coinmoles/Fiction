@@ -28,5 +28,10 @@ interface DestroyMovementData extends BaseMovementData {
     type: "dst"
 }
 
+interface AnimMovementData extends BaseMovementData {
+    type: "anm"
+    animName: string
+}
+
 export type MovementData = ConstantMovementData | CycleMovementData |
-    RotateMoveMentData | DestroyMovementData;
+    RotateMoveMentData | DestroyMovementData | AnimMovementData;

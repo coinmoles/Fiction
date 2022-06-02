@@ -130,6 +130,8 @@ const textureDataMap = new Map<string, string | string[]>([
     
     ["towerGuardian", ["creatures/towerGuardian.png", "creatures/towerGuardian.json"]],
     ["light", ["creatures/light.png", "creatures/light.json"]],
+    ["wizard", ["creatures/wizard.png", "creatures/wizard.json"]],
+    ["fireball", ["creatures/fireball.png", "creatures/fireball.json"]],
     ["fa", "creatures/par.png"],
     ["sol", "creatures/sol.png"]
 ]);

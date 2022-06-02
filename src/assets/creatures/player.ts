@@ -1,8 +1,44 @@
 import { AnimData } from "~/util/interface/AnimData";
 
-export const playerAnimData: AnimData = {
-    walkFrame: 4,
-    walkFPS: 8,
-    idleFrame: 2,
-    idleFPS: 3
-}
+export const playerAnimData: AnimData[] = [
+    {
+        name: "frontWalk",
+        frame: 4,
+        fps: 8
+    },
+    {
+        name: "backWalk",
+        frame: 4,
+        fps: 8
+    },
+    {
+        name: "leftWalk",
+        frame: 4,
+        fps: 8
+    },
+    {
+        name: "rightWalk",
+        frame: 4,
+        fps: 8
+    },
+    {
+        name: "frontIdle",
+        frame: 2,
+        fps: 3
+    },
+    {
+        name: "backIdle",
+        frame: 2,
+        fps: 3
+    },
+    {
+        name: "leftIdle",
+        frame: 2,
+        fps: 3
+    },
+    {
+        name: "rightIdle",
+        frame: 2,
+        fps: 3
+    }
+];

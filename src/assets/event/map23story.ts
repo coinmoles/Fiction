@@ -198,9 +198,19 @@ export const map23story: EventData = {
     ],
     creatures: [
         {
+            appearsAt: 0,
+            creatureData: {
+                texture: "wizard",
+                movements: [
+                    { type: "anm", dur: { start: 0, end: 1 }, animName: "frontIdle" }
+                ],
+                mapX: 3, mapY: 1
+            }
+        },
+        {
             appearsAt: 4,
             creatureData: {
-                texture: "fa",
+                texture: "fireball",
                 movements: [
                     { type: "cnst", dir: { mapX: 0, mapY: 2 }, dur: { start: 0, end: 2 } },
                     { type: "dst", dur: { start: 2, end: null } }
@@ -211,7 +221,7 @@ export const map23story: EventData = {
         {
             appearsAt: 8,
             creatureData: {
-                texture: "fa",
+                texture: "towerGuardian",
                 movements: [
                     { type: "rot", initialDir: { mapX: 2, mapY: 0 }, dur: { start: 0, end: 3 }, freq: 1, cycleType: "cl" },
                     { type: "cnst", dir: { mapX: 0, mapY: 2 }, dur: { start: 3, end: 5 } },
@@ -223,7 +233,7 @@ export const map23story: EventData = {
         {
             appearsAt: 8,
             creatureData: {
-                texture: "fa",
+                texture: "towerGuardian",
                 movements: [
                     { type: "rot", initialDir: { mapX: -2, mapY: 0 }, dur: { start: 0, end: 3 }, freq: 1, cycleType: "ccl" },
                     { type: "cnst", dir: { mapX: 0, mapY: 2 }, dur: { start: 3, end: 5 } },
@@ -235,67 +245,74 @@ export const map23story: EventData = {
         {
             appearsAt: 9,
             creatureData: {
-                texture: "fa",
+                texture: "fireball",
                 movements: [
                     { type: "cnst", dir: { mapX: 1, mapY: 2 }, dur: { start: 0, end: 2 } },
                     { type: "dst", dur: { start: 2, end: null } }
                 ],
-                mapX: 0, mapY: 0
-            }
+                mapX: 0, mapY: 0,
+                initialAnim: "altFireball"
+            },
         },
         {
             appearsAt: 10,
             creatureData: {
-                texture: "fa",
+                texture: "fireball",
                 movements: [
                     { type: "cnst", dir: { mapX: -1, mapY: 2 }, dur: { start: 0, end: 2 } },
                     { type: "dst", dur: { start: 2, end: null } }
                 ],
-                mapX: 6, mapY: 0
+                mapX: 6, mapY: 0,
+
+                initialAnim: "fireball"
             }
         },
         {
             appearsAt: 11,
             creatureData: {
-                texture: "fa",
+                texture: "fireball",
                 movements: [
                     { type: "cnst", dir: { mapX: 1, mapY: 2 }, dur: { start: 0, end: 2 } },
                     { type: "dst", dur: { start: 2, end: null } }
                 ],
-                mapX: 1, mapY: 0
+                mapX: 1, mapY: 0,
+                initialAnim: "altFireball"
             }
         },
         {
             appearsAt: 12,
             creatureData: {
-                texture: "fa",
+                texture: "fireball",
                 movements: [
                     { type: "cnst", dir: { mapX: -1, mapY: 2 }, dur: { start: 0, end: 2 } },
                     { type: "dst", dur: { start: 2, end: null } }
                 ],
-                mapX: 5, mapY: 0
+                mapX: 5, mapY: 0,
+                initialAnim: "fireball"
             }
         },
         {
             appearsAt: 13,
             creatureData: {
-                texture: "fa",
+                texture: "fireball",
                 movements: [
                     { type: "cnst", dir: { mapX: 1, mapY: 2 }, dur: { start: 0, end: 2 } },
                     { type: "dst", dur: { start: 2, end: null } }
                 ],
-                mapX: 2, mapY: 0
+                mapX: 2, mapY: 0,
+                initialAnim: "altFireball"
             }
         },
         {
             appearsAt: 14,
             creatureData: {
-                texture: "fa",
+                texture: "fireball",
                 movements: [
                     { type: "cnst", dir: { mapX: -1, mapY: 2 }, dur: { start: 0, end: 2 } },
                     { type: "dst", dur: { start: 2, end: null } }
                 ],
-                mapX: 4, mapY: 0
+                mapX: 4, mapY: 0,
+                initialAnim: "fireball"
             }
         },
     ]

@@ -116,7 +116,7 @@ export default class GameScene extends Phaser.Scene {
         const player = new Player(this, this.props.playerInitLoc, []);
         const creatures: MapObject[] = []
         for (let creatureData of this.props.mapData.creatureData) {
-            creatures.push(new Creature(this, creatureData, creatureData.texture, creatureData.movements));
+            creatures.push(new Creature(this, creatureData));
         }
         const map: MapObject[][] = []
         for (let i = 0; i < ROWS; i++) {
@@ -239,8 +239,6 @@ export default class GameScene extends Phaser.Scene {
         if (timeStopped === "event" && this.eventStuff.eventRunning) {
             const added = this.eventTurnAction()
             
-            console.log(added)
-
             if (added) 
                 return;
         }
@@ -289,7 +287,7 @@ export default class GameScene extends Phaser.Scene {
         eventData.creatures = eventData.creatures.filter(creature =>
             creature.appearsAt && creature.appearsAt !== this._moveCounter - startTime);
         for (let { creatureData } of filteredCreatures) {
-            this.gameStuff.creatures.push(new Creature(this, creatureData, creatureData.texture, creatureData.movements));
+            this.gameStuff.creatures.push(new Creature(this, creatureData));
         }
 
         if (added)

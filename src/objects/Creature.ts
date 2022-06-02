@@ -5,41 +5,51 @@ import { MovementType } from "~/movement/MovementType";
 import GameScene from "~/scenes/GameScene";
 import { GLOBALTIME } from "~/util/constants";
 import { AnimData } from "~/util/interface/AnimData";
+import { CreatureData } from "~/util/interface/CreatureData";
 import { MovementData } from "~/util/interface/MovementData";
 import { vector } from "~/util/interface/vector";
 import { MapObject } from "./MapObject";
 
-type AnimTypes = "frontWalk" | "backWalk" | "leftWalk" | "rightWalk" | "frontIdle" | "backIdle" | "rightIdle" | "leftIdle";
-
 export class Creature extends MapObject {
     public movements = new Queue<MovementType>();
-    private playingAnimation: AnimTypes = "frontIdle";
+    private playingAnimation: string = "frontIdle";
+    private animNameList: string[] = [];
 
-    constructor(scene: GameScene, vec: vector, texture: string, movementDatas: MovementData[])
-    constructor(scene: GameScene, mapX: number, mapY: number, texture: string, movementDatas: MovementData[])
-    constructor(scene: GameScene, arg1: vector | number, arg2: string | number, arg3: MovementData[] | string, arg4?: MovementData[]) {
+    constructor(scene: GameScene, data: CreatureData)
+    constructor(scene: GameScene, vec: vector, texture: string, movementDatas: MovementData[], initialAnim?: string)
+    constructor(scene: GameScene, mapX: number, mapY: number, texture: string, movementDatas: MovementData[], initialAnim?: string)
+    constructor(scene: GameScene, arg1: vector | number | CreatureData, arg2?: string | number, arg3?: MovementData[] | string, arg4?: string | MovementData[], arg5?: string) {
         let mapX: number, mapY: number
         let texture: string
-        
-        
+        let initialAnim: string | undefined
         let movementDatas: MovementData[];
-        if (typeof arg1 === "number" && typeof arg2 === "number" && typeof arg3 === "string" && arg4) {
+
+        console.log(arg1);
+        if (typeof arg1 !== "number" && ("texture" in arg1) && !arg2) {
+            mapX = arg1.mapX;
+            mapY = arg1.mapY;
+            texture = arg1.texture
+            movementDatas = arg1.movements;
+            initialAnim = arg1.initialAnim
+        }
+        else if (typeof arg1 === "number" && typeof arg2 === "number" && typeof arg3 === "string" && Array.isArray(arg4)) {
             mapX = arg1;
             mapY = arg2;
             texture = arg3;
             movementDatas = arg4;
+            initialAnim = arg5;
         }
-        else if (typeof arg1 !== "number" && typeof arg2 === "string" && Array.isArray(arg3) && !arg4) {
+        else if (typeof arg1 !== "number" && typeof arg2 === "string" && Array.isArray(arg3) && !Array.isArray(arg4)) {
             mapX = arg1.mapX;
             mapY = arg1.mapY;
             texture = arg2;
             movementDatas = arg3;
+            initialAnim = arg4;
         }
         else
             return;
 
         const animData = creatureAnimMap.get(texture);
-
         if (!animData)
             return;
 
@@ -52,61 +62,23 @@ export class Creature extends MapObject {
                 this.movements.enqueue(movement);
         }
 
-        this.anims.create({
-            key: `frontWalk`,
-            frames: this.anims.generateFrameNames(texture, { prefix: "frontWalk", start: 0, end: animData.walkFrame - 1 }),
-            frameRate: animData.walkFPS,
-            repeat: 1
-        });
-        this.anims.create({
-            key: "backWalk",
-            frames: this.anims.generateFrameNames(texture, { prefix: "backWalk", start: 0, end: animData.walkFrame - 1 }),
-            frameRate: animData.walkFPS,
-            repeat: 1
-        });
-        this.anims.create({
-            key: "leftWalk",
-            frames: this.anims.generateFrameNames(texture, { prefix: "leftWalk", start: 0, end: animData.walkFrame - 1 }),
-            frameRate: animData.walkFPS,
-            repeat: 1
-        });
-        this.anims.create({
-            key: "rightWalk",
-            frames: this.anims.generateFrameNames(texture, { prefix: "rightWalk", start: 0, end: animData.walkFrame - 1 }),
-            frameRate: animData.walkFPS,
-            repeat: 1
-        });
-
-        this.anims.create({
-            key: "frontIdle",
-            frames: this.anims.generateFrameNames(texture, { prefix: "frontIdle", start: 0, end: animData.idleFrame - 1 }),
-            frameRate: animData.idleFPS,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "backIdle",
-            frames: this.anims.generateFrameNames(texture, { prefix: "backIdle", start: 0, end: animData.idleFrame - 1 }),
-            frameRate: animData.idleFPS,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "leftIdle",
-            frames: this.anims.generateFrameNames(texture, { prefix: "leftIdle", start: 0, end: animData.idleFrame - 1 }),
-            frameRate: animData.idleFPS,
-            repeat: -1
-        });
-        this.anims.create({
-            key: "rightIdle",
-            frames: this.anims.generateFrameNames(texture, { prefix: "rightIdle", start: 0, end: animData.idleFrame - 1 }),
-            frameRate: animData.idleFPS,
-            repeat: -1
-        });
-
-        this.setAnims("frontIdle")
+        this.animNameList = animData.map(anim => anim.name)
+        for (let anim of animData)
+            this.anims.create({
+                key: anim.name,
+                frames: this.anims.generateFrameNames(texture, { prefix: anim.name, start: 0, end: anim.frame - 1 }),
+                frameRate: anim.fps,
+                repeat: 1
+            });
+        
+        this.setAnims(initialAnim ? initialAnim : "frontIdle");
     }
 
 
-    setAnims(anim: AnimTypes) {
+    setAnims(anim: string) {
+        if (!this.animNameList.includes(anim))
+            return;
+
         if (this.playingAnimation !== anim)
             this.playingAnimation = anim;
         this.play(anim)

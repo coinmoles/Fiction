@@ -1,6 +1,7 @@
 import { Creature } from "~/objects/Creature"
 import GameScene from "~/scenes/GameScene"
 import { MovementData } from "../util/interface/MovementData"
+import { AnimMovementType } from "./AnimMovement"
 import { ConstantMovementType } from "./ConstantMovement"
 import { CycleMovementType } from "./CycleMovementType"
 import { DestroyMovementType } from "./DestroyMovementType"
@@ -19,6 +20,9 @@ export const createMovement = (mapObject: Creature, scene: GameScene, movementDa
             movementData.initialDir, movementData.freq, movementData.cycleType);
     else if(movementData.type === "dst")
         return new DestroyMovementType(mapObject, scene, movementData.dur);
+    else if (movementData.type === "anm")
+        return new AnimMovementType(mapObject, scene, movementData.dur,
+            movementData.animName)
     else
         return null;
 }

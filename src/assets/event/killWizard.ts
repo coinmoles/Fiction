@@ -39,7 +39,7 @@ export const killWizard: EventData = {
             limits: 4
         },
         {
-            text: "네, 그녀는 마왕이라는 칭호에 걸맞는 강력한 마법사였답니다.",
+            text: "마왕 이야기를 하면 빠질 수 없는 게 바로 그녀의 가장 강력한 마법인데,",
             appearsAt: 4,
             limits: 4
         },
@@ -79,7 +79,7 @@ export const killWizard: EventData = {
             limits: 4
         },
         {
-            text: "또, 아무리 강력한 마법사라고 해도 저 정도의 마법을 죽음의 경계에서 유지할 수는 없었어요.",
+            text: "그런데 아무리 강력한 마법사라고 해도 저 정도의 마법을 죽음의 경계에서 유지할 수는 없었나 봐요.",
             appearsAt: 4,
             limits: 6,
         },
@@ -139,12 +139,12 @@ export const killWizard: EventData = {
             limits: 6,
         },
         {
-            text: "아니면 무엇이 미안하냐고 물어야 할까요? 고마워해야 할까요? 미안해해야 할까요? 화를 내야 할까요?",
+            text: "무엇이 미안하냐고 물어야 할까요? 고마워해야 할까요? 미안해해야 할까요? 화를 내야 할까요?",
             appearsAt: 6,
             limits: 6,
         },
         {
-            text: "왕은 알 수 없었어요. 하지만 어느새 왕의 눈에선 눈물이 멈추지 않고 흘러내리고 있었어요.",
+            text: "왕은 알 수 없었어요. 하지만 어느새 왕의 눈에선 눈물이 멈추지 않고 흘러내리고 있었지요.",
             appearsAt: 6,
             limits: 6,
         },

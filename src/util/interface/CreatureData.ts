@@ -6,4 +6,5 @@ export interface CreatureData {
     mapX: number;
     mapY: number;
     texture: string;
+    initialAnim?: string;
 }
