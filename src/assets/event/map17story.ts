@@ -8,7 +8,7 @@ export const map17story: EventData = {
     ],
     textData: [
         {
-            text: "아이가 넉넉하게 통과할 수 있을 정도의 구멍은, 아이가 탑에 들어가자마자 열렸을 대와 마찬가지로 스르르 닫혀 버렸어요.",
+            text: "아이가 넉넉하게 통과할 수 있을 정도의 구멍은, 아이가 탑에 들어가자마자 열렸을 때와 마찬가지로 스르르 닫혀 버렸어요.",
             appearsAt: 0,
             limits: 0,
         },
@@ -73,7 +73,7 @@ export const map17story: EventData = {
             limits: 3
         },
         {
-            text: '"그 후에는, 집으로 돌아가도 돼요"',
+            text: '"그 후에는, 집으로 돌아가도 돼요," 목소리는 말했어요.',
             appearsAt: 3,
             limits: 3
         },

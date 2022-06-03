@@ -12,7 +12,7 @@ export const enterChamber: EventData = {
             limits: 0
         },
         {
-            text: "그는 닫힌 문을 열었어요.",
+            text: "아이는 닫힌 문을 열었습니다.",
             limits: 1
         }
     ],

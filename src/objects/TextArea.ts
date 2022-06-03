@@ -131,7 +131,7 @@ export class TextArea extends Phaser.GameObjects.Group {
                 ++i
             },
             repeat: length - 1,
-            delay: 100
+            delay: 20
         });
     }
 
