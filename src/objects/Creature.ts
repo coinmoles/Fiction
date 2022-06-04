@@ -14,6 +14,7 @@ export class Creature extends MapObject {
     public movements = new Queue<MovementType>();
     private playingAnimation: string = "frontIdle";
     private animNameList: string[] = [];
+    public alive: boolean = true;
 
     constructor(scene: GameScene, data: CreatureData)
     constructor(scene: GameScene, vec: vector, texture: string, movementDatas: MovementData[], initialAnim?: string)
@@ -139,5 +140,10 @@ export class Creature extends MapObject {
             if (movement !== null)
                 this.movements.enqueue(movement);
         }
+    }
+
+    destroy(fromScene?: boolean): void {
+        super.destroy(fromScene);
+        this.alive = false;
     }
 }

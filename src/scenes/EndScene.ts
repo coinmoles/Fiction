@@ -6,14 +6,14 @@ const MAXCHOICE = 3;
 export default class EndScene extends Phaser.Scene {
     private enterKey: Phaser.Input.Keyboard.Key | null = null;
     private creditsObject: Phaser.GameObjects.Group | null = null;
-    private endingType: "True" | "Bad" | "Wizard" | null = null;
+    private endingType: "True" | "Bad" | null = null;
     private timer: number = 1000;
 
     constructor() {
         super({ key: "end" });
     }
 
-    init(data: { type: "True" | "Bad" | "Wizard"}) {
+    init(data: { type: "True" | "Bad"}) {
         this.endingType = data.type
         this.timer = 1000;
     }
@@ -38,7 +38,7 @@ export default class EndScene extends Phaser.Scene {
                 this, 
                 FULLWIDTH / 2,
                 3 *TILESIZE,
-                "Now you can play through the wizard's tale",
+                "Now you can see more trivias from title!",
                 {
                     fontSize: `${TILESIZE/4}pt`
                 }
@@ -58,7 +58,7 @@ export default class EndScene extends Phaser.Scene {
                 this, 
                 FULLWIDTH / 2,
                 3 *TILESIZE,
-                "If the game is too hard for you(It is for me)\nPressing Q ingame heals you completely",
+                "Although it is impossible to avoid everything\nTry not getting hit too many times",
                 {
                     fontSize: `${TILESIZE/4}pt`,
                     align: "center"

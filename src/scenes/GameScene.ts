@@ -37,7 +37,7 @@ interface GameStuffNull {
 interface GameStuffLoaded {
     created: true
     player: Player
-    creatures: MapObject[]
+    creatures: Creature[]
     map: MapObject[][]
     textArea: TextArea
     willPower: WillPower
@@ -115,7 +115,7 @@ export default class GameScene extends Phaser.Scene {
         );
 
         const player = new Player(this, this.props.playerInitLoc, [], this.props.playerInitAnim);
-        const creatures: MapObject[] = []
+        const creatures: Creature[] = []
         for (let creatureData of this.props.mapData.creatureData) {
             creatures.push(new Creature(this, creatureData));
         }
@@ -222,7 +222,7 @@ export default class GameScene extends Phaser.Scene {
 
         if (this.damageTimer <= 0) {
             this.gameStuff.player.setAlpha(1)
-            for (let creature of this.gameStuff.creatures) {
+            for (let creature of this.gameStuff.creatures.filter(creature => creature.alive)) {
                 if (this.gameStuff.player.collide(creature)) {
                     globals.playerWill -= 1;
                     this.gameStuff.willPower.updateWillPower();
@@ -303,8 +303,10 @@ export default class GameScene extends Phaser.Scene {
             if (this.eventStuff.eventData.warps)
                 this.scene.start("game", this.eventStuff.eventData.warps);
             else if (this.eventStuff.eventData.end) {
-                if (this.eventStuff.eventData.end === "TrueEnd")
+                if (this.eventStuff.eventData.end === "TrueEnd") {
+                    globals.clear = true;
                     this.scene.start("end", { type: "True" });
+                }
                 else if (this.eventStuff.eventData.end === "BadEnd")
                     this.scene.start("end", { type: "Bad" });
             }
@@ -419,6 +421,11 @@ export default class GameScene extends Phaser.Scene {
 
         if (!eventData)
             return;
+
+        if (eventData?.badEndCheck && globals.playerWill <= 0) {
+            this.handleWorldEvent("cantgo");
+            return;
+        }
 
         this.eventStuff = {
             eventRunning: true,

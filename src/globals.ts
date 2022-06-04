@@ -1,9 +1,11 @@
 interface Globals {
-    playerWill: number;
+    playerWill: number
     eventsTriggered: string[]
+    clear: boolean
 }
 
 export const globals: Globals = {
-    playerWill: 3,
-    eventsTriggered: []
+    playerWill: 10,
+    eventsTriggered: [],
+    clear: false
 }

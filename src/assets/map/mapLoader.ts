@@ -118,7 +118,7 @@ tileDataMap.set("twflp", { texture: "twflp", passable: false, event: [] }); // t
 tileDataMap.set("twfls", { texture: "twfls", passable: false, event: [] }); // tower floor w/ sword
 tileDataMap.set("twflf", { texture: "twflf", passable: false, event: [] }); // tower floor w/ frame
 tileDataMap.set("twflk", { texture: "twflk", passable: true, event: ["killWizard"] }); // tower floor but kill wizard
-tileDataMap.set("twpt ", { texture: "twpt ", passable: false, event: [] }); // tower floor w/portal
+tileDataMap.set("twpt ", { texture: "twpt ", passable: true, event: ["badend"] }); // tower floor w/portal
 tileDataMap.set("twst1", { texture: "twst1", passable: true, event: ["towerStairs1"] });
 tileDataMap.set("twst2", { texture: "twst2", passable: true, event: ["towerStairs2"] });
 tileDataMap.set("twst3", { texture: "twst3", passable: true, event: ["towerStairs3"] });

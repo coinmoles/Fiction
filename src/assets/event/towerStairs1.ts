@@ -63,6 +63,7 @@ export const towerStairs1: EventData = {
     ],
     mapChange: [{ appearsAt: 3 }],
     creatures: [],
+    badEndCheck: true,
     warps: {
         mapId: "map18",
         playerInitLoc: { mapX: 4, mapY: 0 },

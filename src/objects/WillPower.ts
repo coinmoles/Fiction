@@ -3,23 +3,19 @@ import { globals } from "~/globals";
 import { GAMEWIDTH, ORIGINX, ORIGINY, ROWS, TILESIZE } from "../util/scaleConstants";
 
 export class WillPower extends Phaser.GameObjects.Group {
-    protected wills: Phaser.GameObjects.Image[] | null = null;
+    protected wills: Phaser.GameObjects.Image[] = [];
 
     constructor(scene: Phaser.Scene) {
         super(scene);
 
-        const will1 = new Phaser.GameObjects.Image(this.scene, ORIGINX + 1/20 * TILESIZE, ORIGINY + 1/4 * TILESIZE, "wpFull").setOrigin(0, 0).setDepth(5)
-        will1.setScale(TILESIZE / 2 / will1.width)
-        const will2 = new Phaser.GameObjects.Image(this.scene, ORIGINX + 3/5 * TILESIZE, ORIGINY + 1/4 * TILESIZE, "wpFull").setOrigin(0, 0).setDepth(5);
-        will2.setScale(TILESIZE / 2 / will2.width)
-        const will3 = new Phaser.GameObjects.Image(this.scene, ORIGINX + 23/20 * TILESIZE, ORIGINY + 1/4 * TILESIZE, "wpFull").setOrigin(0, 0).setDepth(5);
-        will3.setScale(TILESIZE / 2 / will3.width)
-
-        this.wills = [will1, will2, will3];
-        this.add(will1, true);
-        this.add(will2, true);
-        this.add(will3, true);
-
+        for (let i = 0; i < 10; i++) {
+            const will = new Phaser.GameObjects.Image(this.scene, ORIGINX + (1/20 + 11/20 * i) * TILESIZE, ORIGINY + 1/4 * TILESIZE, "wpFull")
+            .setOrigin(0, 0)
+            .setDepth(30)
+            will.setScale(TILESIZE / 2 / will.width);
+            this.wills.push(will)
+            this.add(will, true);
+        }
         this.updateWillPower();
     }
 
@@ -27,7 +23,7 @@ export class WillPower extends Phaser.GameObjects.Group {
         if (this.wills === null)
             return;
             
-        for (let i = 0; i < 3; i++){
+        for (let i = 0; i < 10; i++){
             if (i < globals.playerWill)
                 this.wills[i].setTexture("wpFull")
             else

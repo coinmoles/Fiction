@@ -1,6 +1,6 @@
 import { EventData } from "~/util/interface/EventData";
 
-export const map24story: EventData = {
+export const map25story: EventData = {
     mapId: "map24",
     endsAt: 5,
     playerMovement: [
@@ -44,5 +44,5 @@ export const map24story: EventData = {
     ],
     mapChange: [],
     creatures: [],
-    end: "TrueEnd"
+    end: "BadEnd"
 };

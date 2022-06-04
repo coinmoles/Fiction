@@ -18,6 +18,7 @@ export const enterChamber: EventData = {
     ],
     mapChange: [{ appearsAt: 1 }],
     creatures: [],
+    badEndCheck: true,
     warps: {
         mapId: "map23",
         playerInitLoc: { mapX: 3, mapY: 6 },
