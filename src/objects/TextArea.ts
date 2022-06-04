@@ -1,6 +1,9 @@
 import { GAMEHEIGHT, GAMEWIDTH, ORIGINX, ORIGINY, ROWS, TILESIZE } from "../util/scaleConstants";
 import { Queue } from "queue-typescript";
 import { TextData } from "~/util/interface/TextData";
+import { globals } from "~/util/globals";
+
+const DEFAULTTEXT = "이동 - WASD\n텍스트 넘김/스킵 - ENTER\n이전 텍스트 보기 - SHIFT, 취소 - ESC"
 
 export class TextArea extends Phaser.GameObjects.Group {
     protected textDataQueue: Queue<TextData>;
@@ -13,7 +16,6 @@ export class TextArea extends Phaser.GameObjects.Group {
 
     private logArea: Phaser.GameObjects.Rectangle | null = null;
     private logObjects: Phaser.GameObjects.Text[] | null = null;
-    private oldText: string[];
     private _logOn: boolean = false;
     private logLoc: number = 0;
 
@@ -21,9 +23,10 @@ export class TextArea extends Phaser.GameObjects.Group {
         super(scene);
 
         this.textDataQueue = new Queue(...textDataList);
-        this.oldText = [];
 
-        this.textArea = new Phaser.GameObjects.Image(this.scene, ORIGINX, TILESIZE * ROWS + ORIGINY, "textArea").setOrigin(0, 0);
+        this.textArea = new Phaser.GameObjects.Image(this.scene, ORIGINX, TILESIZE * ROWS + ORIGINY, "textArea")
+            .setOrigin(0, 0)
+            .setDepth(8);
         this.textArea.setScale(GAMEWIDTH / this.textArea.width);
         this.add(this.textArea, true);
 
@@ -31,13 +34,13 @@ export class TextArea extends Phaser.GameObjects.Group {
             this.scene,
             ORIGINX + TILESIZE / 2,
             TILESIZE * ROWS + ORIGINY + TILESIZE / 3,
-            "...",
+            DEFAULTTEXT,
             {
                 color: "000000",
                 fontSize: `${TILESIZE * 1 / 4 - 2}pt`,
                 wordWrap: { width: GAMEWIDTH - TILESIZE * 2 / 3 - 10 }
             }
-        ).setDepth(5).setPadding(3, 3, 3, 3);
+        ).setDepth(9).setPadding(3, 3, 3, 3);
         this.textObject.setLineSpacing(TILESIZE / 6);
         this.add(this.textObject, true);
 
@@ -46,7 +49,7 @@ export class TextArea extends Phaser.GameObjects.Group {
             ORIGINX, ORIGINY,
             GAMEWIDTH, GAMEHEIGHT - 2 * TILESIZE,
             0, 0.7)
-            .setDepth(15).setOrigin(0, 0).setVisible(false);
+            .setDepth(6).setOrigin(0, 0).setVisible(false);
         this.add(this.logArea, true);
 
         this.logObjects = []
@@ -60,7 +63,7 @@ export class TextArea extends Phaser.GameObjects.Group {
                     fontSize: `${TILESIZE * 1 / 4 - 2}pt`,
                     wordWrap: { width: GAMEWIDTH - TILESIZE * 2 / 3 - 10 }
                 }
-            ).setPadding(3, 3, 3, 3).setVisible(false).setDepth(20));
+            ).setPadding(3, 3, 3, 3).setVisible(false).setDepth(7));
             this.logObjects[i].setLineSpacing(TILESIZE / 6);
             this.add(this.logObjects[i], true);
         }
@@ -118,8 +121,8 @@ export class TextArea extends Phaser.GameObjects.Group {
         let i = 0;
 
         this.textObject.setText("");
-        this.oldText.push(this.currentText.text);
-        this.logLoc = this.oldText.length - 1;
+        globals.logTexts.push(this.currentText.text);
+        this.logLoc = globals.logTexts.length - 1;
         this.scene.time.addEvent({
             callback: () => {
                 if (this.currentText !== textData)
@@ -131,7 +134,7 @@ export class TextArea extends Phaser.GameObjects.Group {
                 ++i
             },
             repeat: length - 1,
-            delay: 20
+            delay: 10
         });
     }
 
@@ -150,7 +153,7 @@ export class TextArea extends Phaser.GameObjects.Group {
 
     changeLog(num: 1 | -1) {        
         if (num === 1) {
-            if (this.logLoc < this.oldText.length - 1)
+            if (this.logLoc < globals.logTexts.length - 1)
                 this.logLoc += 1;
         }
         else
@@ -166,7 +169,7 @@ export class TextArea extends Phaser.GameObjects.Group {
         
         for (let i = 0; i < 3; i++) {
             if (this.logLoc + i - 2 >= 0)
-                this.logObjects[i].setText(this.oldText[this.logLoc + i - 2])
+                this.logObjects[i].setText(globals.logTexts[this.logLoc + i - 2])
             else
                 this.logObjects[i].setText("...")
         }

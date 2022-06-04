@@ -9,6 +9,7 @@ export class Player extends Creature {
 
     constructor(scene: GameScene, vec: vector, movementDatas: MovementData[], playerInitAnim: string) {
         super(scene, vec, "player", movementDatas, playerInitAnim);
+        this.setDepth(3);
     }
 
     move(movement: vector, realmove: boolean): void {

@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { randomTrivia } from '~/assets/trivia/trivia';
 import { AlarmObject } from '~/objects/AlarmObject';
 import { GLOBALTIME } from '~/util/constants';
+import { resetGlobals } from '~/util/globals';
 import { AlarmData } from '~/util/interface/AlarmData';
 import { FULLHEIGHT, FULLWIDTH, TILESIZE } from '~/util/scaleConstants';
 
@@ -41,16 +42,34 @@ export default class MainMenuScene extends Phaser.Scene {
         this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
 
         this.title = this.add.text(
-            FULLWIDTH / 2,
-            FULLHEIGHT * 1 / 3,
+            FULLWIDTH / 2, FULLHEIGHT * 1 / 3,
             "마법 나라의 왕 이야기",
-            {
-                fontSize: `${TILESIZE / 2}pt`
-            },
+            { fontSize: `${TILESIZE / 2}pt` },
         ).setOrigin(0.5).setPadding(TILESIZE / 10, TILESIZE / 10, TILESIZE / 10, TILESIZE / 10)
-        this.choices[0] = this.add.text(FULLWIDTH * 4 / 5, FULLHEIGHT * 4 / 6, "새 게임").setFill("#ffff00");
-        this.choices[1] = this.add.text(FULLWIDTH * 4 / 5, FULLHEIGHT * 9 / 12, "이어하기");
-        this.choices[2] = this.add.text(FULLWIDTH * 4 / 5, FULLHEIGHT * 5 / 6, "트리비아");
+
+        this.add.text(
+            FULLWIDTH / 2,
+            FULLHEIGHT * 1 / 2,
+            "선택-십자키, 확인-ENTER",
+            { fontSize:`${TILESIZE / 4}pt` }
+        ).setOrigin(0.5).setPadding(TILESIZE / 10, TILESIZE / 10, TILESIZE / 10, TILESIZE / 10)
+
+        this.choices[0] = this.add.text(
+            FULLWIDTH * 8 / 9, FULLHEIGHT * 4 / 6, 
+            "새 게임", 
+            { fontSize:`${TILESIZE / 4}pt` }
+        ).setOrigin(1).setPadding(TILESIZE / 10, TILESIZE / 10, TILESIZE / 10, TILESIZE / 10);
+        this.choices[1] = this.add.text(
+            FULLWIDTH * 8 / 9, FULLHEIGHT * 9 / 12, 
+            "이어하기", 
+            { fontSize:`${TILESIZE / 4}pt` }
+        ).setOrigin(1).setPadding(TILESIZE / 10, TILESIZE / 10, TILESIZE / 10, TILESIZE / 10);
+        this.choices[2] = this.add.text(
+            FULLWIDTH * 8 /9, FULLHEIGHT * 5 / 6, 
+            "트리비아", { fontSize:`${TILESIZE / 4}pt` }
+        ).setOrigin(1).setPadding(TILESIZE / 10, TILESIZE / 10, TILESIZE / 10, TILESIZE / 10);
+
+        this.adjustFill();
     }
 
     update(time: number, delta: number): void {
@@ -64,17 +83,14 @@ export default class MainMenuScene extends Phaser.Scene {
                         this.choice += 1
                     this.choice %= this.choices.length;
                     this.timer = 0;
-                    for (let i = 0; i < this.choices.length; i++) {
-                        if (i === this.choice)
-                            this.choices[i]?.setFill("#ffff00");
-                        else
-                            this.choices[i]?.setFill("#ffffff");
-                    }
+                    this.adjustFill()
                 }
 
                 if (this.enterKey?.isDown) {
-                    if (this.choice === 0)
+                    if (this.choice === 0){
+                        resetGlobals();
                         this.scene.start("start");
+                    }
                     else if (this.choice === 1)
                         this.showAlarm("그런 건 업따!", "세이브 기능 만들 시간이 없었어요ㅠ\n원래 옛날 게임들은 다 세이브 없었대요\n대신 난이도를 쉽게 했으니까 괜찮지 않을까요?\nF5 누르면 날아가니까 조심하세요");
                     else if (this.choice === 2)
@@ -90,6 +106,15 @@ export default class MainMenuScene extends Phaser.Scene {
                 this.destroyAlarm()
                 this.timer = 0
             }
+        }
+    }
+
+    adjustFill() {
+        for (let i = 0; i < this.choices.length; i++) {
+            if (i === this.choice)
+                this.choices[i]?.setFill("#ffff00");
+            else
+                this.choices[i]?.setFill("#ffffff");
         }
     }
 

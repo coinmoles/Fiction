@@ -2,7 +2,7 @@ import { EventData } from "~/util/interface/EventData";
 
 export const towerStairs1: EventData = {
     mapId: "map17",
-    endsAt: 6,
+    endsAt: 7,
     playerMovement: [
         { type: "cnst", dir: { mapX: 0, mapY: 1 }, dur: { start: 0, end: 2 } },
         { type: "cnst", dir: { mapX: 0, mapY: -1 }, dur: { start: 3, end: 5 } },
@@ -61,7 +61,7 @@ export const towerStairs1: EventData = {
             limits: 4
         },
     ],
-    mapChange: [{ appearsAt: 3 }],
+    mapChange: [{ appearsAt: 3 }, {appearsAt: 6}],
     creatures: [],
     badEndCheck: true,
     warps: {

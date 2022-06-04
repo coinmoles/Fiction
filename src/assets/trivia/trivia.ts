@@ -1,4 +1,4 @@
-import { globals } from "~/globals";
+import { globals } from "~/util/globals"; 
 import { AlarmData, TriviaData } from "~/util/interface/AlarmData";
 
 export const trivia: TriviaData[] = [
@@ -58,11 +58,6 @@ export const trivia: TriviaData[] = [
         afterClear: false
     },
     {
-        title: "서술 트릭?",
-        body: "등장인물들이 이름이 아닌 호칭으로만 불리는 건\n그림자 자국이라는 소설의 영향을 받았어요!\n사실 의도하고 한 건 아니었는데\n그게 서술 트릭에 쓰인다는 것도 닮았네요",
-        afterClear: true
-    },
-    {
         title: "도대체 뭐가...",
         body: "도대체 뭐가 어떻게 된 거냐는 말은 참 이상해요\n라는 말에 대한 서술이 있었는데\n이건 퓨쳐 워커라는 소설에서 가져왔어요\n너무 맘에 드는 부분이라 그대로 가져왔는데\n교육 목적이니까 고소당하진 않겠죠?",
         afterClear: false
@@ -72,7 +67,7 @@ export const trivia: TriviaData[] = [
         body: "작중 등장하는 현실 조작 마법은\n페르소나 5라는 게임의 영향을 받았어요\n거기서는 비슷한 마법으로\n자신이 사고로 죽게 된 여동생이라고 믿게 된\n캐릭터가 등장해요",
         afterClear: true
     },
-];
+]
 
 export const randomTrivia = (): AlarmData => {
     let i = 0;

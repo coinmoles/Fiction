@@ -54,7 +54,7 @@ export class Creature extends MapObject {
             return;
 
         super(scene, mapX, mapY, texture)
-        this.setDepth(10);
+        this.setDepth(2);
 
         for (let movementData of movementDatas) {
             const movement = createMovement(this, scene, movementData)

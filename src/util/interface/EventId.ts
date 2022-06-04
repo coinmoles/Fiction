@@ -10,6 +10,6 @@ type MapStoryEventId = T<"map", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1
 type TowerStairsEventId = T2<"towerStairs", [1, 2, 3, 4, 5]>
 
 export type EventId = MapStoryEventId | TowerStairsEventId
-    | "towerOpenSesame" | "portal" | "crossingTheLine" | "exitCastle"
-    | "enterCastle" | "enterTower" | "enterChamber" | "killWizard"
-    | "badend" | "cantgo" ;
+    | "towerOpenSesame" | "crossingTheLine" | "exitCastle"
+    | "enterCastle" | "enterTower" | "enterChamber"  | "badend"
+    | "cantgo" | "falldown" | "fireball";

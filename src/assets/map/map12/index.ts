@@ -14,5 +14,6 @@ export const map12: MapData = {
     distantMaps: {
         n: "map11",
         e: "map13"
-    }
+    },
+    darkness: true
 }

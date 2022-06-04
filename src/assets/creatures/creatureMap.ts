@@ -1,4 +1,5 @@
 import { AnimData } from "~/util/interface/AnimData";
+import { alternaAnimData } from "./alterna";
 import { fireballAnimData } from "./fireball";
 import { lightAnimData } from "./light";
 import { playerAnimData } from "./player";
@@ -11,4 +12,5 @@ export const creatureAnimMap = new Map<string, AnimData[]>([
     ["light", lightAnimData],
     ["wizard", wizardAnimData],
     ["fireball", fireballAnimData],
+    ["alterna", alternaAnimData]
 ])

@@ -5,7 +5,7 @@ export default [
     ["twfl ", "twfl ", "twfl ", "twfl ", "twfld", "twfl ", "twfl ", "twfl "],
     ["twfll", "twfll", "twfll", "twfll", "twfll", "twfll", "twfll", "twfll"],
     ["twfl ", "twfl ", "twfl ", "twflf", "twfl ", "twfl ", "twfl ", "twfl "],
-    ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],
+    ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twflh", "twfl ", "twfl "],
 ]
 
 export const map22NewTiles = [
@@ -15,7 +15,7 @@ export const map22NewTiles = [
     ["twfl ", "twfl ", "twfl ", "twfl ", "twfld", "twfl ", "twfl ", "twfl "],
     ["twfll", "twfll", "twfll", "twfll", "twfll", "twfll", "twfll", "twfll"],
     ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],
-    ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],
+    ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twflh", "twfl ", "twfl "],
 ]
 
 export const map22NewerTiles = [
@@ -25,7 +25,7 @@ export const map22NewerTiles = [
     ["twfl ", "twfl ", "twfl ", "twfl ", "twfld", "twfl ", "twfl ", "twfl "],
     ["twfll", "twfll", "twfll", "twfll", "twfll", "twfll", "twfll", "twfll"],
     ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],
-    ["twfl ", "twfl ", "twfl ", "twfl ", "twpt ", "twfl ", "twfl ", "twfl "],
+    ["twfl ", "twfl ", "twfl ", "twfl ", "twpt ", "twflh", "twfl ", "twfl "],
 ]
 
 export const map22NewestTiles = [
@@ -35,5 +35,5 @@ export const map22NewestTiles = [
     ["twfl ", "twfl ", "twfl ", "twfl ", "twfld", "twfl ", "twfl ", "twfl "],
     ["twfll", "twfll", "twfll", "twfll", "twfll", "twfll", "twfll", "twfll"],
     ["twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl ", "twfl "],
-    ["twfl ", "twfl ", "twfl ", "twfl ", "twpt ", "twfl ", "twfl ", "twfl "],
+    ["twfl ", "twfl ", "twfl ", "twfl ", "twpt ", "twflh", "twfl ", "twfl "],
 ]

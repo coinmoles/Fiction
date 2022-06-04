@@ -10,15 +10,15 @@ export const map22story: EventData = {
     textData: [
         {
             text: "수많은 장애물들을 헤치며 뒤돌아보지 않고 걸은 지 얼마나 되었을까, 아이는 더 이상 오를 계단이 없다는 것을 깨닫았어요.",
-            limits: 0
+            limits: 1
         },
         {
             text: "어느새 탑의 맨 위층에 도착한 것이었죠.",
-            limits: 0
+            limits: 1
         },
         {
             text: "아이는 주변을 둘러봤어요.",
-            limits: 0
+            limits: 1
         },
         {
             text: "커다란, 닫힌 문이 가장 먼저 눈앞에 들어왔지만, 아이의 주의를 끈 것은 문 앞에 뒤집힌 채로 떨어져 있는 액자였어요.",
@@ -30,7 +30,7 @@ export const map22story: EventData = {
             limits: 2
         },
         {
-            text: "아이는 조심스럽게 액자를 집어 들었어요. 그러자 그 안에 있는 그림이 들어났어요.",
+            text: "아이는 조심스럽게 액자를 집어 들었어요. 그러자 그 안에 있는 그림이 드러났어요.",
             appearsAt: 3,
             limits: 3
         },
@@ -47,6 +47,6 @@ export const map22story: EventData = {
             appearsAt: 3
         }
     ],
-    mapChange: [{ appearsAt: 2 }],
+    mapChange: [{ appearsAt: 3 }],
     creatures: []
 };

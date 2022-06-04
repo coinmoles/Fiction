@@ -41,7 +41,7 @@ export class AlarmObject extends Phaser.GameObjects.Group {
                 fontSize: `${TILESIZE * 1 / 3 - 2}pt`,
                 align: "center"
             }
-        ).setDepth(5).setPadding(6, 6, 6, 6).setOrigin(0.5, 0);
+        ).setDepth(8).setPadding(6, 6, 6, 6).setOrigin(0.5, 0);
         this.titleObject.setLineSpacing(TILESIZE / 6),
             this.add(this.titleObject, true);
 
@@ -55,7 +55,7 @@ export class AlarmObject extends Phaser.GameObjects.Group {
                 fontSize: `${TILESIZE * 1 / 6 - 2}pt`,
                 align: "center"
             }
-        ).setDepth(5).setPadding(3, 3, 3, 3).setOrigin(0.5, 0);
+        ).setDepth(9).setPadding(3, 3, 3, 3).setOrigin(0.5, 0);
         this.textObject.setLineSpacing(TILESIZE / 6);
         this.add(this.textObject, true);
     }

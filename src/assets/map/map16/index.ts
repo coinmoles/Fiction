@@ -14,5 +14,6 @@ export const map16: MapData = {
     creatureData: [],
     distantMaps: {
         s: "map15"
-    }
+    },
+    darkness: true
 }

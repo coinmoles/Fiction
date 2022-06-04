@@ -5,6 +5,7 @@ import tiles from "./tiles";
 
 export const map19: MapData =  {
     textureMap: new Map([
+        ...textureLoader(["fireball"]),
         ...normalTextures,
         ...textureLoader(creatures.map(creature => creature.texture)),
         ...mapTextureLoader(tiles),

@@ -2,7 +2,7 @@ import { EventData } from "~/util/interface/EventData";
 
 export const map23story: EventData = {
     mapId: "map23",
-    endsAt: 36,
+    endsAt: 37,
     playerMovement: [
         { type: "cnst", dir: { mapX: 0, mapY: -1 }, dur: { start: 23, end: 27 } },
         { type: "cnst", dir: { mapX: 0, mapY: 1 }, dur: { start: 27, end: 31 } },
@@ -280,7 +280,7 @@ export const map23story: EventData = {
             limits: 31
         },
         {
-            text: "그런데 아무리 강력한 마법사라고 해도 죽음의 경계에서 저 정도의 마법을 유지할 수는 없었나 봐요.",
+            text: "하지만 아무리 강력한 마법사라고 해도 죽음의 경계에서 저 정도의 마법을 유지할 수는 없었나 봐요.",
             appearsAt: 31,
             limits: 33,
         },
@@ -305,7 +305,12 @@ export const map23story: EventData = {
             limits: 33
         },
         {
-            text: "저주를 풀기 위해 필요한 것은 왕의 목숨이었으니까요.",
+            text: "저주를 풀기 위해 필요한 것은, 왕의 목숨이었으니까요.",
+            appearsAt: 33,
+            limits: 33
+        },
+        {
+            text: "이쯤에서 이 옛날 이야기를 다시 한 번 시작해 볼까요?",
             appearsAt: 33,
             limits: 33
         },
@@ -385,6 +390,11 @@ export const map23story: EventData = {
             limits: 33
         },
         {
+            text: "아름드리를 지키기 위해, 왕은 스스로 목숨을 내놓기로 결심했답니다.",
+            appearsAt: 33,
+            limits: 33
+        },
+        {
             text: "마법사는 왕의 절친한 친구이기도 했어요. 왕이 죽게 내버려 둘 생각은 없었죠.",
             appearsAt: 33,
             limits: 33
@@ -400,12 +410,17 @@ export const map23story: EventData = {
             limits: 33
         },
         {
-            text: "하지만 그녀는 결국 .",
+            text: "하지만 그녀는 결국 방법을 찾아냈어요.",
             appearsAt: 33,
             limits: 33
         },
         {
             text: "왕의 목숨이 필요하다면, 마법사 그녀가 왕이 된다면 해결될 일이었어요.",
+            appearsAt: 33,
+            limits: 33
+        },
+        {
+            text: "그리고 그녀는 자신을 왕으로 만들 수 있는 마법을 하나 알았죠.",
             appearsAt: 33,
             limits: 33
         },
@@ -440,10 +455,16 @@ export const map23story: EventData = {
             limits: 33
         },
         {
-            text: "왕은 알 수 없었어요. 하지만 어느새 왕의 눈에선 눈물이 멈추지 않고 흘러내리고 있었지요.",
+            text: "왕은 알 수 없었어요.",
             appearsAt: 33,
             limits: 33
         },
+        {
+            text: "하지만 어느새 왕의 눈에선 눈물이 멈추지 않고 흘러내리고 있었지요.",
+            appearsAt: 33,
+            limits: 33
+        },
+
         {
             text: "마법사는 울고 있는 왕을 바라보았어요. 그리고 그녀는 마지막 힘을 쥐어짜, 왕의 뒤에 공간의 균열을 만들었어요.",
             appearsAt: 33,
@@ -470,7 +491,8 @@ export const map23story: EventData = {
             limits: 35
         },
         {
-            text: "탑 밖으로 밀려나는 왕의 눈에는 마법사가 다시 한번, 그리고 아마도 마지막으로, 그녀의 가장 강한 마법을 쓰고 있는 모습이 비쳤어요."
+            text: "탑 밖으로 밀려나는 왕의 눈에는 마법사가 다시 한번, 그리고 아마도 마지막으로, 그녀의 가장 강한 마법을 쓰고 있는 모습이 비쳤어요.",
+            appearsAt: 35,
         }
     ],
     mapChange: [
@@ -498,13 +520,14 @@ export const map23story: EventData = {
         {
             appearsAt: 4,
             creatureData: {
-                texture: "fireball",
+                texture: "alterna",
                 movements: [
                     { type: "cnst", dir: { mapX: 0, mapY: 2 }, dur: { start: 0, end: 2 } },
                     { type: "dst", dur: { start: 2, end: null } }
                 ],
-                mapX: 3, mapY: 1
-            }
+                mapX: 3, mapY: 1,
+                initialAnim: "alterna"
+            },
         },
         {
             appearsAt: 8,

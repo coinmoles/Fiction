@@ -6,7 +6,7 @@ import tiles, { map23FinalTiles, map23FrameTiles, map23NewerTiles, map23NewestTi
 export const map23: MapData =  {
     textureMap: new Map([
         ...normalTextures,
-        ...textureLoader(["sol", "fa", "twflk", "twpt ", "wizard", "towerGuardian", "fireball"]),
+        ...textureLoader(["sol", "fa", "twpt ", "wizard", "towerGuardian", "fireball", "alterna"]),
         ...mapTextureLoader(tiles),
         ...mapTextureLoader(map23NewTiles)
     ]),

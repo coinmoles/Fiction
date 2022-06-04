@@ -524,7 +524,7 @@
     "meta": {
         "app": "https://github.com/piskelapp/piskel/",
         "version": "1.0",
-        "image": "i.png",
+        "image": "player.png",
         "format": "RGBA8888",
         "size": {
             "w": 160,

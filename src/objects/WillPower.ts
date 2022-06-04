@@ -1,5 +1,5 @@
 import tiles from "~/assets/map/map12/tiles";
-import { globals } from "~/globals";
+import { globals } from "~/util/globals";
 import { GAMEWIDTH, ORIGINX, ORIGINY, ROWS, TILESIZE } from "../util/scaleConstants";
 
 export class WillPower extends Phaser.GameObjects.Group {
@@ -8,10 +8,10 @@ export class WillPower extends Phaser.GameObjects.Group {
     constructor(scene: Phaser.Scene) {
         super(scene);
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 8; i++) {
             const will = new Phaser.GameObjects.Image(this.scene, ORIGINX + (1/20 + 11/20 * i) * TILESIZE, ORIGINY + 1/4 * TILESIZE, "wpFull")
             .setOrigin(0, 0)
-            .setDepth(30)
+            .setDepth(5)
             will.setScale(TILESIZE / 2 / will.width);
             this.wills.push(will)
             this.add(will, true);
@@ -23,7 +23,7 @@ export class WillPower extends Phaser.GameObjects.Group {
         if (this.wills === null)
             return;
             
-        for (let i = 0; i < 10; i++){
+        for (let i = 0; i < 8; i++){
             if (i < globals.playerWill)
                 this.wills[i].setTexture("wpFull")
             else

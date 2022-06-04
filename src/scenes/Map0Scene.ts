@@ -1,22 +1,10 @@
 import Phaser from 'phaser';
 import { eventMap } from '~/assets/event/eventMap';
-import { mapLoader } from '~/assets/map/mapLoader';
-import { mapMap } from '~/assets/map/mapMap';
-import { mapChanger } from '~/functions/mapChanger';
-import { globals } from '~/globals';
-import { Creature } from '~/objects/Creature';
-import { MapObject } from '~/objects/MapObject';
-import { Player } from '~/objects/Player';
+import { globals } from '~/util/globals';
 import { TextArea } from '~/objects/TextArea';
-import { WillPower } from '~/objects/WillPower';
 import { GLOBALTIME } from '~/util/constants';
 import { EventData } from '~/util/interface/EventData';
 import { EventId } from '~/util/interface/EventId';
-import { MapData } from '~/util/interface/MapData';
-import { MapId } from '~/util/interface/MapId';
-import { TileData } from '~/util/interface/TileData';
-import { vector } from '~/util/interface/vector';
-import { COLUMNS, ROWS, TILESIZE } from '~/util/scaleConstants';
 
 interface GameStuffNull {
     created: false

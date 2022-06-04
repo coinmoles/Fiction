@@ -97,7 +97,7 @@ export default class EndScene extends Phaser.Scene {
             this, 
             FULLWIDTH / 2,
             6 * TILESIZE,
-            "Art by: https://opengameart.org/\nDunno educational purpose so it's fine\nRight?",
+            "Art by: coinmoles(aka Jiho)\n& https://opengameart.org/\nDunno educational purpose so it's fine\nRight?\n",
             {
                 fontSize: `${TILESIZE / 4}pt`,
                 align: "center"

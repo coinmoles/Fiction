@@ -15,4 +15,5 @@ export interface MapData {
     newTiles?: Queue<string[][]>
     creatureData: CreatureData[]
     distantMaps: DistantMaps
+    darkness?: boolean
 }

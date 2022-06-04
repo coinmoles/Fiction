@@ -111,10 +111,12 @@ const textureDataMap = new Map<string, string | string[]>([
     ["twfl ", "map/tower/towerFloor.png"],
     ["twfll", "map/tower/towerFloor.png"],
     ["twfld", "map/tower/towerFloor.png"],
-    ["twflk", "map/tower/towerFloorP.png"],
     ["twflp", "map/tower/towerFloorP.png"],
+    ["twflh", "map/tower/towerFloorH.png"],
+    ["twflH", "map/tower/towerFloorH.png"],
     ["twflf", "map/tower/towerFloorFrame.png"],
     ["twfls", "map/tower/towerFloorSword.png"],
+    ["twflF", "map/tower/towerFloor.png"],
     ["twpt ", "map/tower/towerPortal.png"],
     ["twst1", "map/tower/towerStairs.png"],
     ["twst2", "map/tower/towerStairs.png"],
@@ -132,6 +134,7 @@ const textureDataMap = new Map<string, string | string[]>([
     ["light", ["creatures/light.png", "creatures/light.json"]],
     ["wizard", ["creatures/wizard.png", "creatures/wizard.json"]],
     ["fireball", ["creatures/fireball.png", "creatures/fireball.json"]],
+    ["alterna", ["creatures/alterna.png", "creatures/alterna.json"]],
 ]);
 
 export const normalTextures = new Map<string, string|string[]>([

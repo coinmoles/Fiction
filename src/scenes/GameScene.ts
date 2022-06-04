@@ -3,7 +3,7 @@ import { eventMap } from '~/assets/event/eventMap';
 import { mapLoader } from '~/assets/map/mapLoader';
 import { mapMap } from '~/assets/map/mapMap';
 import { mapChanger } from '~/functions/mapChanger';
-import { globals } from '~/globals';
+import { globals } from '~/util/globals';
 import { Creature } from '~/objects/Creature';
 import { MapObject } from '~/objects/MapObject';
 import { Player } from '~/objects/Player';
@@ -16,7 +16,8 @@ import { MapData } from '~/util/interface/MapData';
 import { MapId } from '~/util/interface/MapId';
 import { TileData } from '~/util/interface/TileData';
 import { vector } from '~/util/interface/vector';
-import { COLUMNS, ROWS, TILESIZE } from '~/util/scaleConstants';
+import { COLUMNS, GAMEHEIGHT, GAMEWIDTH, ORIGINX, ORIGINY, ROWS, TILESIZE } from '~/util/scaleConstants';
+import { cloneDeep } from "lodash"
 
 interface PropsNull {
     initiated: false
@@ -39,6 +40,7 @@ interface GameStuffLoaded {
     player: Player
     creatures: Creature[]
     map: MapObject[][]
+    darkArea: Phaser.GameObjects.Rectangle | null
     textArea: TextArea
     willPower: WillPower
     tileData: TileData[][]
@@ -127,6 +129,18 @@ export default class GameScene extends Phaser.Scene {
             }
             map.push(blockRow);
         }
+
+        let darkArea: Phaser.GameObjects.Rectangle | null = null;
+        if (this.props.mapData.darkness) {
+            darkArea = new Phaser.GameObjects.Rectangle(
+                this,
+                ORIGINX, ORIGINY,
+                GAMEWIDTH, GAMEHEIGHT - 2 * TILESIZE,
+                0, 0.7)
+                .setDepth(4).setOrigin(0, 0);
+            this.add.existing(darkArea);
+        }
+        
         const textArea = new TextArea(this, []);
         const willPower = new WillPower(this);
 
@@ -136,7 +150,7 @@ export default class GameScene extends Phaser.Scene {
         const keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
         this.gameStuff = {
-            created: true, player, creatures, map, textArea, willPower, tileData, keyW, keyS, keyA, keyD
+            created: true, player, creatures, map, darkArea, textArea, willPower, tileData, keyW, keyS, keyA, keyD
         }
 
         this.input.keyboard.on("keydown-ENTER", (event) => {
@@ -193,7 +207,7 @@ export default class GameScene extends Phaser.Scene {
             else if (this.gameStuff.keyS.isDown)
                 this.gameStuff.textArea.changeLog(1);
 
-            this.logMovementTimer = GLOBALTIME / 2;
+            this.logMovementTimer = GLOBALTIME / 4;
         }
     }
 
@@ -239,8 +253,8 @@ export default class GameScene extends Phaser.Scene {
 
         if (timeStopped === "event" && this.eventStuff.eventRunning) {
             const added = this.eventTurnAction()
-            
-            if (added) 
+
+            if (added)
                 return;
         }
 
@@ -401,7 +415,7 @@ export default class GameScene extends Phaser.Scene {
             for (const e of newTile.event)
                 setTimeout(() =>
                     this.handleWorldEvent(e)
-                    , GLOBALTIME);
+                    , GLOBALTIME - 10);
             this.gameStuff.player.move(movement, true);
             this.playerMovementTimer = GLOBALTIME;
         }
@@ -412,12 +426,14 @@ export default class GameScene extends Phaser.Scene {
             return;
         if (!this.props.initiated)
             return;
-        if (globals.eventsTriggered.includes(eventId))
-            return;
+        if (globals.eventsTriggered.includes(eventId)) {
+            if (eventId !== "enterCastle" && eventId !== "exitCastle" && eventId !== "fireball")
+                return;
+        }
+        else
+            globals.eventsTriggered.push(eventId);
 
-        globals.eventsTriggered.push(eventId);
-
-        const eventData = eventMap.get(eventId)
+        const eventData = cloneDeep(eventMap.get(eventId));
 
         if (!eventData)
             return;
@@ -434,15 +450,6 @@ export default class GameScene extends Phaser.Scene {
         };
 
         this.gameStuff.player.addMovement(this, eventData.playerMovement);
-
-        // if (eventId === "towerOpenSesame") {
-        //     towerOpenSesame(this.gameStuff.textArea);
-        //     this.reloadMap();
-        // }
-        // if (eventId === "portal") {
-        //     portal(this.gameStuff.textArea);
-        //     this.reloadMap();
-        // }
     };
 
     timeStopped(): "log" | "stop" | "event" | "running" {

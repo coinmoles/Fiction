@@ -5,10 +5,11 @@ export const map0story: EventData = {
     endsAt: 1,
     playerMovement: [],
     textData: [
+        { text: "텍스트 넘김/스킵 - ENTER\n이전 텍스트 보기 - SHIFT, 취소 - ESC" },
         { text: "먼 옛날, 아름드리라는 나라가 있었습니다." },
         { text: "하지만 사람들에게 이 나라는 이름보다는 마법 나라라는 별명으로 더 자주 불렸지요." },
         { text: "여느 나라와 마찬가지로, 아름드리에는 왕이 있었어요." },
-        { text: "하지만 마법 나라가 마법 나라라고 불리는 이유는 따로 있었어요. 바로 마법 나라의 왕이 강력한 마법사였기 떄문이였지요." },
+        { text: "하지만 마법 나라가 마법 나라라고 불리는 이유는 따로 있었어요. 바로 마법 나라의 왕이 강력한 마법사였기 떄문이었지요." },
         { text: "그는 마법사이면서 왕이었고, 왕이었으며 마법사였어요." },
         { text: "마법사로서 그는, 나라에 위기가 닥칠 때마다 마법으로 그 위기를 헤쳐 나갔어요." },
         { text: "또 왕으로서 그는, 선대 왕들의 지혜를 빌려 슬기롭게 나라를 통치했습니다." },
@@ -32,7 +33,7 @@ export const map0story: EventData = {
     mapChange: [],
     creatures: [],
     warps: {
-        mapId: "map17",
+        mapId: "map1",
         playerInitLoc: { mapX: 4, mapY: 4 },
         playerInitAnim: "frontIdle"
     }

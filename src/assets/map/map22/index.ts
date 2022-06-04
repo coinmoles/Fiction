@@ -1,6 +1,6 @@
 import { Queue } from "queue-typescript";
 import { MapData } from "../../../util/interface/MapData";
-import { mapTextureLoader, normalTextures } from "../../textureMap";
+import { mapTextureLoader, normalTextures, textureLoader } from "../../textureMap";
 import tiles, { map22NewerTiles, map22NewestTiles, map22NewTiles } from "./tiles";
 
 export const map22: MapData =  {
