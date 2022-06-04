@@ -77,7 +77,7 @@ Production files will be placed in the `dist` folder. Then upload those files to
     │   ├── scenes
     │   │   ├── HelloWorldScene.ts
     │   ├── index.html
-    │   ├── main.ts
+    │   ├── index.ts
     ├── package.json
 ```
 
@@ -85,7 +85,7 @@ The contents of this template is the basic [Phaser 3 getting started example](ht
 
 This template assumes you will want to organize your code into multiple files and use TypeScript.
 
-TypeScript files are intended for the `src` folder. `main.ts` is the entry point referenced by `index.html`.
+TypeScript files are intended for the `src` folder. `index.ts` is the entry point referenced by `index.html`.
 
 Other than that there is no opinion on how you should structure your project. There is a `scenes` folder in `src` where the `HelloWorldScene.ts` lives but you can do whatever you want.
 
