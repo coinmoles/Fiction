@@ -10,12 +10,6 @@ const config: Phaser.Types.Core.GameConfig = {
 	type: Phaser.AUTO,
 	width: FULLWIDTH,
 	height: FULLHEIGHT,
-	physics: {
-		default: 'arcade',
-		arcade: {
-			gravity: { y: 200 }
-		}
-	},
 	scene: [MainMenuScene, GameScene, EndScene, Map0Scene]
 }
 

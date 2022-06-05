@@ -5,7 +5,7 @@ import { AlarmObject } from '~/objects/AlarmObject';
 import { Controls } from '~/objects/Controls';
 import { resetGlobals } from '~/util/globals';
 import { AlarmData } from '~/util/interface/AlarmData';
-import { FULLHEIGHT, FULLWIDTH, TILESIZE } from '~/util/scaleConstants';
+import { FULLHEIGHT, FULLWIDTH, ORIGINX, ORIGINY, TILESIZE } from '~/util/scaleConstants';
 
 const MAXCHOICE = 3;
 
@@ -38,30 +38,29 @@ export default class MainMenuScene extends Phaser.Scene {
         this.controls = new Controls(this, false);
 
         this.title = this.add.text(
-            FULLWIDTH / 2, FULLHEIGHT * 1 / 3,
+            FULLWIDTH / 2, ORIGINY + TILESIZE * 5/2,
             "마법 나라의 왕 이야기",
             { fontSize: `${TILESIZE / 2}pt` },
         ).setOrigin(0.5).setPadding(TILESIZE / 10, TILESIZE / 10, TILESIZE / 10, TILESIZE / 10)
 
         this.add.text(
-            FULLWIDTH / 2,
-            FULLHEIGHT * 5 / 12,
+            FULLWIDTH / 2, ORIGINY + TILESIZE * 13/4,
             "(선택-십자키/WASD, 확인-ENTER)",
             { fontSize: `${TILESIZE / 6}pt` }
         ).setOrigin(0.5).setPadding(TILESIZE / 10, TILESIZE / 10, TILESIZE / 10, TILESIZE / 10)
 
         this.choices[0] = this.add.text(
-            FULLWIDTH * 8 / 9, FULLHEIGHT * 4 / 6,
+            ORIGINX + TILESIZE * 15/2, ORIGINY + TILESIZE * 6,
             "새 게임",
             { fontSize: `${TILESIZE / 4}pt` }
         ).setOrigin(1).setPadding(TILESIZE / 10, TILESIZE / 10, TILESIZE / 10, TILESIZE / 10);
         this.choices[1] = this.add.text(
-            FULLWIDTH * 8 / 9, FULLHEIGHT * 9 / 12,
+            ORIGINX + TILESIZE * 15/2, ORIGINY + TILESIZE * 27/4,
             "이어하기",
             { fontSize: `${TILESIZE / 4}pt` }
         ).setOrigin(1).setPadding(TILESIZE / 10, TILESIZE / 10, TILESIZE / 10, TILESIZE / 10);
         this.choices[2] = this.add.text(
-            FULLWIDTH * 8 / 9, FULLHEIGHT * 5 / 6,
+            ORIGINX + TILESIZE * 15/2, ORIGINY + TILESIZE * 15/2,
             "트리비아", { fontSize: `${TILESIZE / 4}pt` }
         ).setOrigin(1).setPadding(TILESIZE / 10, TILESIZE / 10, TILESIZE / 10, TILESIZE / 10);
 

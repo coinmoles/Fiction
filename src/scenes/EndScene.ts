@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { globals } from '~/util/globals';
 import { Controls } from '~/objects/Controls';
-import { FULLWIDTH, TILESIZE } from '~/util/scaleConstants';
+import { FULLWIDTH, ORIGINY, TILESIZE } from '~/util/scaleConstants';
 
 const MAXCHOICE = 3;
 
@@ -30,7 +30,7 @@ export default class EndScene extends Phaser.Scene {
             this.creditsObject.add(new Phaser.GameObjects.Text(
                 this,
                 FULLWIDTH / 2,
-                3 / 2 * TILESIZE,
+                ORIGINY + 3 / 2 * TILESIZE,
                 "True End!",
                 {
                     fontSize: `${TILESIZE}pt`
@@ -39,7 +39,7 @@ export default class EndScene extends Phaser.Scene {
             this.creditsObject.add(new Phaser.GameObjects.Text(
                 this,
                 FULLWIDTH / 2,
-                3 * TILESIZE,
+                ORIGINY + 3 * TILESIZE,
                 "Now you can see more trivias from title!",
                 {
                     fontSize: `${TILESIZE / 4}pt`
@@ -50,7 +50,7 @@ export default class EndScene extends Phaser.Scene {
             this.creditsObject.add(new Phaser.GameObjects.Text(
                 this,
                 FULLWIDTH / 2,
-                3 / 2 * TILESIZE,
+                ORIGINY + 3 / 2 * TILESIZE,
                 "Bad End!",
                 {
                     fontSize: `${TILESIZE}pt`
@@ -60,7 +60,7 @@ export default class EndScene extends Phaser.Scene {
                 this.creditsObject.add(new Phaser.GameObjects.Text(
                     this,
                     FULLWIDTH / 2,
-                    3 * TILESIZE,
+                    ORIGINY + 3 * TILESIZE,
                     "Although it is impossible to avoid everything\nTry not getting hit too many times",
                     {
                         fontSize: `${TILESIZE / 4}pt`,
@@ -71,7 +71,7 @@ export default class EndScene extends Phaser.Scene {
                 this.creditsObject.add(new Phaser.GameObjects.Text(
                     this,
                     FULLWIDTH / 2,
-                    3 * TILESIZE,
+                    ORIGINY + 3 * TILESIZE,
                     "Think for yourself\nDon't be sheep",
                     {
                         fontSize: `${TILESIZE / 4}pt`,
@@ -83,7 +83,7 @@ export default class EndScene extends Phaser.Scene {
         this.creditsObject.add(new Phaser.GameObjects.Text(
             this,
             FULLWIDTH / 2,
-            4 * TILESIZE,
+            ORIGINY + 4 * TILESIZE,
             "Credits:",
             {
                 fontSize: `${TILESIZE / 2}pt`
@@ -92,7 +92,7 @@ export default class EndScene extends Phaser.Scene {
         this.creditsObject.add(new Phaser.GameObjects.Text(
             this,
             FULLWIDTH / 2,
-            5 * TILESIZE,
+            ORIGINY + 5 * TILESIZE,
             "Story by: coinmoles(aka Jiho)",
             {
                 fontSize: `${TILESIZE / 4}pt`
@@ -101,7 +101,7 @@ export default class EndScene extends Phaser.Scene {
         this.creditsObject.add(new Phaser.GameObjects.Text(
             this,
             FULLWIDTH / 2,
-            11 / 2 * TILESIZE,
+            ORIGINY + 11 / 2 * TILESIZE,
             "Development by: coinmoles(aka Jiho)",
             {
                 fontSize: `${TILESIZE / 4}pt`
@@ -110,7 +110,7 @@ export default class EndScene extends Phaser.Scene {
         this.creditsObject.add(new Phaser.GameObjects.Text(
             this,
             FULLWIDTH / 2,
-            6 * TILESIZE,
+            ORIGINY + 6 * TILESIZE,
             "Art by: coinmoles(aka Jiho)\n& https://opengameart.org/\nDunno educational purpose so it's fine\nRight?\n",
             {
                 fontSize: `${TILESIZE / 4}pt`,
