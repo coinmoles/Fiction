@@ -18,6 +18,7 @@ import { TileData } from '~/util/interface/TileData';
 import { vector } from '~/util/interface/vector';
 import { COLUMNS, GAMEHEIGHT, GAMEWIDTH, ORIGINX, ORIGINY, ROWS, TILESIZE } from '~/util/scaleConstants';
 import { cloneDeep } from "lodash"
+import { Controls } from '~/objects/Controls';
 
 interface PropsNull {
     initiated: false
@@ -44,6 +45,7 @@ interface GameStuffLoaded {
     textArea: TextArea
     willPower: WillPower
     tileData: TileData[][]
+    controls: Controls
     keyW: Phaser.Input.Keyboard.Key
     keyS: Phaser.Input.Keyboard.Key
     keyA: Phaser.Input.Keyboard.Key
@@ -149,8 +151,10 @@ export default class GameScene extends Phaser.Scene {
         const keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         const keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
 
+        const controls = new Controls(this);
+        
         this.gameStuff = {
-            created: true, player, creatures, map, darkArea, textArea, willPower, tileData, keyW, keyS, keyA, keyD
+            created: true, player, creatures, map, darkArea, textArea, willPower, tileData, keyW, keyS, keyA, keyD, controls
         }
 
         this.input.keyboard.on("keydown-ENTER", (event) => {
