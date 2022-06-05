@@ -140,7 +140,7 @@ export default class GameScene extends Phaser.Scene {
                 .setDepth(4).setOrigin(0, 0);
             this.add.existing(darkArea);
         }
-        
+
         const textArea = new TextArea(this, []);
         const willPower = new WillPower(this);
 
@@ -353,11 +353,13 @@ export default class GameScene extends Phaser.Scene {
         if (!this.props.initiated)
             return;
 
+        console.log(this.gameStuff.player.mapX, movement.mapX);
+        console.log(this.gameStuff.player.mapY, movement.mapY);
 
         this.playerMovementTimer = GLOBALTIME;
         const newVector: vector = {
-            mapX: this.gameStuff.player.mapX + movement.mapX,
-            mapY: this.gameStuff.player.mapY + movement.mapY
+            mapX: Math.floor(this.gameStuff.player.mapX + movement.mapX),
+            mapY: Math.floor(this.gameStuff.player.mapY + movement.mapY)
         }
         if (newVector.mapX < 0) { // 왼쪽 맵으로 이동
             let mapId = this.props.mapData.distantMaps.w;
@@ -406,7 +408,6 @@ export default class GameScene extends Phaser.Scene {
                 this.gameStuff.player.move(movement, false);
 
         }
-
         else if (!this.gameStuff.tileData[newVector.mapY][newVector.mapX].passable) {
             this.gameStuff.player.move(movement, false);
             this.playerMovementTimer = GLOBALTIME;
