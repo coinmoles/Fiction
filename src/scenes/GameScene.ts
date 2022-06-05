@@ -415,7 +415,7 @@ export default class GameScene extends Phaser.Scene {
             for (const e of newTile.event)
                 setTimeout(() =>
                     this.handleWorldEvent(e)
-                    , GLOBALTIME - 10);
+                    , GLOBALTIME - 50);
             this.gameStuff.player.move(movement, true);
             this.playerMovementTimer = GLOBALTIME;
         }
