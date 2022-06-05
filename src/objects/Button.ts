@@ -23,8 +23,6 @@ export class Button extends Phaser.GameObjects.Container {
                 this.buttonClick(false);
             });
 
-        console.log(this.button.fillColor);
-
         this.text = new Phaser.GameObjects.Text(
             scene,
             x, y,

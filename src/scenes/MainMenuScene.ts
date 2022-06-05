@@ -88,7 +88,6 @@ export default class MainMenuScene extends Phaser.Scene {
                     if (this.choice === 0) {
                         resetGlobals();
                         resetMap();
-                        console.log("hmm");
                         this.scene.start("start");
                     }
                     else if (this.choice === 1)
