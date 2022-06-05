@@ -3,7 +3,7 @@ import { Queue } from "queue-typescript";
 import { TextData } from "~/util/interface/TextData";
 import { globals } from "~/util/globals";
 
-const DEFAULTTEXT = "이동 - WASD\n텍스트 넘김/스킵 - ENTER\n이전 텍스트 보기 - SHIFT, 취소 - ESC"
+const DEFAULTTEXT = "이동 - WASD/십자키\n텍스트 넘김/스킵 - ENTER\n이전 텍스트 보기 - SHIFT, 취소 - ESC"
 
 export class TextArea extends Phaser.GameObjects.Group {
     protected textDataQueue: Queue<TextData>;

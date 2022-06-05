@@ -1,11 +1,12 @@
 import Phaser from 'phaser';
 import { globals } from '~/util/globals';
-import { FULLHEIGHT, FULLWIDTH, ORIGINX, TILESIZE } from '~/util/scaleConstants';
+import { Controls } from '~/objects/Controls';
+import { FULLWIDTH, TILESIZE } from '~/util/scaleConstants';
 
 const MAXCHOICE = 3;
 
 export default class EndScene extends Phaser.Scene {
-    private enterKey: Phaser.Input.Keyboard.Key | null = null;
+    private controls: Controls | null = null;
     private creditsObject: Phaser.GameObjects.Group | null = null;
     private endingType: "True" | "Bad" | null = null;
     private timer: number = 1000;
@@ -22,7 +23,7 @@ export default class EndScene extends Phaser.Scene {
     create() {
         if (this.endingType === null)
             return;
-        this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        this.controls = new Controls(this, false);
 
         this.creditsObject = new Phaser.GameObjects.Group(this);
         if (this.endingType === "True") {
@@ -119,8 +120,11 @@ export default class EndScene extends Phaser.Scene {
     }
 
     update(time: number, delta: number): void {
+        if (!this.controls)
+            return;
+        
         this.timer -= delta;
-        if (this.timer <= 0 && this.enterKey?.isDown)
+        if (this.timer <= 0 && this.controls.checkEnter()) 
             this.scene.start("main");
     }
 }
