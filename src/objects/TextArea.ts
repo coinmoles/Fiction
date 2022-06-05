@@ -127,11 +127,12 @@ export class TextArea extends Phaser.GameObjects.Group {
             callback: () => {
                 if (this.currentText !== textData)
                     return;
-                if (i == 0)
-                    this.textObject?.setText(this.textObject.text + textData.text[0])
-                else
-                    this.textObject?.setText(this.textObject.text + textData.text[i]);
+                
+                this.textObject?.setText(this.textObject.text + textData.text[i]);
                 ++i
+
+                if(i === length)
+                    this.currentText = null;
             },
             repeat: length - 1,
             delay: 10
