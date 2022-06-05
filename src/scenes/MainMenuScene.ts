@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import { resetMap } from '~/assets/map/mapMap';
 import { randomTrivia } from '~/assets/trivia/trivia';
 import { AlarmObject } from '~/objects/AlarmObject';
 import { GLOBALTIME } from '~/util/constants';
@@ -89,6 +90,8 @@ export default class MainMenuScene extends Phaser.Scene {
                 if (this.enterKey?.isDown) {
                     if (this.choice === 0){
                         resetGlobals();
+                        resetMap();
+                        console.log("hmm");
                         this.scene.start("start");
                     }
                     else if (this.choice === 1)

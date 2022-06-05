@@ -1,11 +1,11 @@
 import { EventData } from "~/util/interface/EventData";
 
 export const map0story: EventData = {
-    mapId: "map1",
+    mapId: "map0",
     endsAt: 1,
     playerMovement: [],
     textData: [
-        { text: "텍스트 넘김/스킵 - ENTER\n이전 텍스트 보기 - SHIFT, 취소 - ESC" },
+        { text: "텍스트 넘김/스킵 - ENTER\n꾹 누르면 스킵이 되지만 스토리 읽어주세요ㅠ\n이전 텍스트 보기 - SHIFT, 취소 - ESC" },
         { text: "먼 옛날, 아름드리라는 나라가 있었습니다." },
         { text: "하지만 사람들에게 이 나라는 이름보다는 마법 나라라는 별명으로 더 자주 불렸지요." },
         { text: "여느 나라와 마찬가지로, 아름드리에는 왕이 있었어요." },

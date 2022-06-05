@@ -5,6 +5,7 @@ import { TextArea } from '~/objects/TextArea';
 import { GLOBALTIME } from '~/util/constants';
 import { EventData } from '~/util/interface/EventData';
 import { EventId } from '~/util/interface/EventId';
+import { cloneDeep } from 'lodash';
 
 interface GameStuffNull {
     created: false
@@ -184,7 +185,7 @@ export default class Map0Scene extends Phaser.Scene {
 
         globals.eventsTriggered.push(eventId);
 
-        const eventData = eventMap.get(eventId)
+        const eventData = cloneDeep(eventMap.get(eventId))
 
         if (!eventData)
             return;
