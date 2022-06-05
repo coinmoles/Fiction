@@ -46,10 +46,6 @@ interface GameStuffLoaded {
     willPower: WillPower
     tileData: TileData[][]
     controls: Controls
-    keyW: Phaser.Input.Keyboard.Key
-    keyS: Phaser.Input.Keyboard.Key
-    keyA: Phaser.Input.Keyboard.Key
-    keyD: Phaser.Input.Keyboard.Key
 }
 
 
@@ -75,6 +71,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     private logMovementTimer = 0;
+    private textTimer = 0;
     private playerMovementTimer = 0;
     private creatureMovementTimer = 0;
     private damageTimer = 0;
@@ -142,35 +139,22 @@ export default class GameScene extends Phaser.Scene {
                 .setDepth(4).setOrigin(0, 0);
             this.add.existing(darkArea);
         }
-        
+
         const textArea = new TextArea(this, []);
         const willPower = new WillPower(this);
+        const controls = new Controls(this, true);
 
-        const keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        const keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        const keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        const keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-
-        const controls = new Controls(this);
-        
         this.gameStuff = {
-            created: true, player, creatures, map, darkArea, textArea, willPower, tileData, keyW, keyS, keyA, keyD, controls
+            created: true,
+            player,
+            creatures,
+            map,
+            darkArea,
+            textArea,
+            willPower,
+            tileData,
+            controls
         }
-
-        this.input.keyboard.on("keydown-ENTER", (event) => {
-            if (this.timeStopped() === "log")
-                return;
-            if (textArea.currentText === null)
-                textArea.nextTexts();
-            else
-                textArea.skipTexts();
-        });
-        this.input.keyboard.on("keydown-SHIFT", () => {
-            textArea.toggleLog(true);
-        })
-        this.input.keyboard.on("keydown-ESC", () => {
-            textArea.toggleLog(false);
-        })
 
         this.handleWorldEvent(`${this.props.mapId}story`);
     }
@@ -182,9 +166,25 @@ export default class GameScene extends Phaser.Scene {
 
         const timeStopped = this.timeStopped();
 
+
+        if (this.gameStuff.controls.checkShift())
+            this.gameStuff.textArea.toggleLog(true);
+
         if (timeStopped === "log") {
             this.logUpdate(delta);
             return;
+        }
+
+        if (this.textTimer > 0)
+            this.textTimer -= delta;
+        if (this.textTimer <= 0) {
+            if (this.gameStuff.controls.checkEnter()) {
+                if (this.gameStuff.textArea.currentText !== null)
+                    this.gameStuff.textArea.skipTexts()
+                else if (this.gameStuff.textArea.currentText === null)
+                    this.gameStuff.textArea.nextTexts()
+            }
+            this.textTimer = GLOBALTIME / 4
         }
 
         if (timeStopped === "stop")
@@ -203,12 +203,15 @@ export default class GameScene extends Phaser.Scene {
         if (!this.gameStuff.created || !this.props.initiated)
             return;
 
+        if (this.gameStuff.controls.checkEsc())
+            this.gameStuff.textArea.toggleLog(false);
+
         if (this.logMovementTimer > 0)
             this.logMovementTimer -= delta;
         if (this.logMovementTimer <= 0) {
-            if (this.gameStuff.keyW.isDown)
+            if (this.gameStuff.controls.checkUp())
                 this.gameStuff.textArea.changeLog(-1);
-            else if (this.gameStuff.keyS.isDown)
+            else if (this.gameStuff.controls.checkDown())
                 this.gameStuff.textArea.changeLog(1);
 
             this.logMovementTimer = GLOBALTIME / 4;
@@ -219,17 +222,24 @@ export default class GameScene extends Phaser.Scene {
         if (!this.gameStuff.created || !this.props.initiated)
             return;
 
+        if (this.gameStuff.controls.checkEnter()) {
+            if (this.gameStuff.textArea.currentText === null)
+                this.gameStuff.textArea.nextTexts();
+            else
+                this.gameStuff.textArea.skipTexts();
+        }
+
         if (this.playerMovementTimer > 0)
             this.playerMovementTimer -= delta;
 
         if (this.playerMovementTimer <= 0)
-            if (this.gameStuff.keyW.isDown)
+            if (this.gameStuff.controls.checkUp())
                 this.handleMovement({ mapX: 0, mapY: -1 });
-            else if (this.gameStuff.keyS.isDown)
+            else if (this.gameStuff.controls.checkDown())
                 this.handleMovement({ mapX: 0, mapY: 1 });
-            else if (this.gameStuff.keyA.isDown)
+            else if (this.gameStuff.controls.checkLeft())
                 this.handleMovement({ mapX: -1, mapY: 0 });
-            else if (this.gameStuff.keyD.isDown)
+            else if (this.gameStuff.controls.checkRight())
                 this.handleMovement({ mapX: 1, mapY: 0 });
 
 

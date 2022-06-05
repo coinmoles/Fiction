@@ -5,6 +5,7 @@ import { TextArea } from '~/objects/TextArea';
 import { GLOBALTIME } from '~/util/constants';
 import { EventData } from '~/util/interface/EventData';
 import { EventId } from '~/util/interface/EventId';
+import { Controls } from '~/objects/Controls';
 
 interface GameStuffNull {
     created: false
@@ -13,10 +14,7 @@ interface GameStuffNull {
 interface GameStuffLoaded {
     created: true
     textArea: TextArea
-    keyW: Phaser.Input.Keyboard.Key
-    keyS: Phaser.Input.Keyboard.Key
-    keyA: Phaser.Input.Keyboard.Key
-    keyD: Phaser.Input.Keyboard.Key
+    controls: Controls
 }
 
 
@@ -40,6 +38,7 @@ export default class Map0Scene extends Phaser.Scene {
 
     private logMovementTimer = 0;
     private creatureMovementTimer = 0;
+    private textTimer = 0;
 
     private _moveCounter = 0;
 
@@ -58,29 +57,11 @@ export default class Map0Scene extends Phaser.Scene {
 
     create() {
         const textArea = new TextArea(this, []);
-        const keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        const keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-        const keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        const keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        const controls = new Controls(this, true);
 
         this.gameStuff = {
-            created: true, textArea, keyW, keyA, keyS, keyD
+            created: true, textArea, controls
         };
-
-        this.input.keyboard.on("keydown-ENTER", (event) => {
-            if (this.timeStopped() === "log")
-                return;
-            if (textArea.currentText === null)
-                textArea.nextTexts();
-            else
-                textArea.skipTexts();
-        });
-        this.input.keyboard.on("keydown-SHIFT", () => {
-            textArea.toggleLog(true);
-        })
-        this.input.keyboard.on("keydown-ESC", () => {
-            textArea.toggleLog(false);
-        })
 
         this.handleWorldEvent(`map0story`);
     }
@@ -92,9 +73,24 @@ export default class Map0Scene extends Phaser.Scene {
 
         const timeStopped = this.timeStopped();
 
+        if (this.gameStuff.controls.checkShift())
+            this.gameStuff.textArea.toggleLog(true);
+
         if (timeStopped === "log") {
             this.logUpdate(delta);
             return;
+        }
+
+        if (this.textTimer > 0)
+            this.textTimer -= delta;
+        if (this.textTimer <= 0) {
+            if (this.gameStuff.controls.checkEnter()) {
+                if (this.gameStuff.textArea.currentText !== null)
+                    this.gameStuff.textArea.skipTexts()
+                else if (this.gameStuff.textArea.currentText === null)
+                    this.gameStuff.textArea.nextTexts()
+            }
+            this.textTimer = GLOBALTIME / 4
         }
 
         if (timeStopped === "stop")
@@ -110,26 +106,29 @@ export default class Map0Scene extends Phaser.Scene {
         if (!this.gameStuff.created)
             return;
 
+        if (this.gameStuff.controls.checkEsc())
+            this.gameStuff.textArea.toggleLog(false);
+        
         if (this.logMovementTimer > 0)
             this.logMovementTimer -= delta;
         if (this.logMovementTimer <= 0) {
-            if (this.gameStuff.keyW.isDown)
+            if (this.gameStuff.controls.checkUp())
                 this.gameStuff.textArea.changeLog(-1);
-            else if (this.gameStuff.keyS.isDown)
+            else if (this.gameStuff.controls.checkDown())
                 this.gameStuff.textArea.changeLog(1);
 
             this.logMovementTimer = GLOBALTIME / 2;
         }
     }
-    
+
     turnAction(timeStopped: "event" | "running"): void {
         if (!this.gameStuff.created)
             return;
 
         if (timeStopped === "event" && this.eventStuff.eventRunning) {
             const added = this.eventTurnAction()
-            
-            if (added) 
+
+            if (added)
                 return;
         }
 

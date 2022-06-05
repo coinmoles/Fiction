@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { randomTrivia } from '~/assets/trivia/trivia';
 import { AlarmObject } from '~/objects/AlarmObject';
-import { GLOBALTIME } from '~/util/constants';
+import { Controls } from '~/objects/Controls';
 import { resetGlobals } from '~/util/globals';
 import { AlarmData } from '~/util/interface/AlarmData';
 import { FULLHEIGHT, FULLWIDTH, TILESIZE } from '~/util/scaleConstants';
@@ -19,11 +19,8 @@ interface AlarmStuffActive {
 }
 
 export default class MainMenuScene extends Phaser.Scene {
-    private upKey: Phaser.Input.Keyboard.Key | null = null;
-    private downKey: Phaser.Input.Keyboard.Key | null = null;
-    private enterKey: Phaser.Input.Keyboard.Key | null = null;
+    private controls: Controls | null = null
     private alarmStuff: AlarmStuffActive | AlarmStuffNull = { alarm: false }
-
     private title: Phaser.GameObjects.Text | null = null;
     private choices: (Phaser.GameObjects.Text | null)[] = [null, null, null];
     private choice: number = 0;
@@ -37,9 +34,7 @@ export default class MainMenuScene extends Phaser.Scene {
         this.load.image("textwoArea", "ui/textwo.png")
     }
     create() {
-        this.upKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
-        this.downKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
-        this.enterKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+        this.controls = new Controls(this, false);
 
         this.title = this.add.text(
             FULLWIDTH / 2, FULLHEIGHT * 1 / 3,
@@ -49,45 +44,48 @@ export default class MainMenuScene extends Phaser.Scene {
 
         this.add.text(
             FULLWIDTH / 2,
-            FULLHEIGHT * 1 / 2,
-            "선택-십자키, 확인-ENTER",
-            { fontSize:`${TILESIZE / 4}pt` }
+            FULLHEIGHT * 5 / 12,
+            "(선택-십자키/WASD, 확인-ENTER)",
+            { fontSize: `${TILESIZE / 6}pt` }
         ).setOrigin(0.5).setPadding(TILESIZE / 10, TILESIZE / 10, TILESIZE / 10, TILESIZE / 10)
 
         this.choices[0] = this.add.text(
-            FULLWIDTH * 8 / 9, FULLHEIGHT * 4 / 6, 
-            "새 게임", 
-            { fontSize:`${TILESIZE / 4}pt` }
+            FULLWIDTH * 8 / 9, FULLHEIGHT * 4 / 6,
+            "새 게임",
+            { fontSize: `${TILESIZE / 4}pt` }
         ).setOrigin(1).setPadding(TILESIZE / 10, TILESIZE / 10, TILESIZE / 10, TILESIZE / 10);
         this.choices[1] = this.add.text(
-            FULLWIDTH * 8 / 9, FULLHEIGHT * 9 / 12, 
-            "이어하기", 
-            { fontSize:`${TILESIZE / 4}pt` }
+            FULLWIDTH * 8 / 9, FULLHEIGHT * 9 / 12,
+            "이어하기",
+            { fontSize: `${TILESIZE / 4}pt` }
         ).setOrigin(1).setPadding(TILESIZE / 10, TILESIZE / 10, TILESIZE / 10, TILESIZE / 10);
         this.choices[2] = this.add.text(
-            FULLWIDTH * 8 /9, FULLHEIGHT * 5 / 6, 
-            "트리비아", { fontSize:`${TILESIZE / 4}pt` }
+            FULLWIDTH * 8 / 9, FULLHEIGHT * 5 / 6,
+            "트리비아", { fontSize: `${TILESIZE / 4}pt` }
         ).setOrigin(1).setPadding(TILESIZE / 10, TILESIZE / 10, TILESIZE / 10, TILESIZE / 10);
 
         this.adjustFill();
     }
 
     update(time: number, delta: number): void {
+        if (this.controls === null)
+            return;
+
         if (!this.alarmStuff.alarm) {
             this.timer += delta;
             if (this.timer > 300) {
-                if (this.upKey?.isDown || this.downKey?.isDown) {
-                    if (this.upKey?.isDown)
+                if (this.controls.checkUp() || this.controls.checkDown()) {
+                    if (this.controls.checkUp())
                         this.choice += this.choices.length - 1;
-                    else if (this.downKey?.isDown)
+                    else if (this.controls.checkDown())
                         this.choice += 1
                     this.choice %= this.choices.length;
                     this.timer = 0;
                     this.adjustFill()
                 }
 
-                if (this.enterKey?.isDown) {
-                    if (this.choice === 0){
+                if (this.controls.checkEnter()) {
+                    if (this.choice === 0) {
                         resetGlobals();
                         this.scene.start("start");
                     }
@@ -102,7 +100,7 @@ export default class MainMenuScene extends Phaser.Scene {
         else {
             if (this.alarmStuff.alarmTimer > 0)
                 this.alarmStuff.alarmTimer -= delta;
-            if (this.enterKey?.isDown && this.alarmStuff.alarmTimer <= 0) {
+            if (this.controls.checkEnter() && this.alarmStuff.alarmTimer <= 0) {
                 this.destroyAlarm()
                 this.timer = 0
             }
@@ -119,8 +117,8 @@ export default class MainMenuScene extends Phaser.Scene {
     }
 
     showAlarm(message: AlarmData)
-    showAlarm(title: string, body: string) 
-    showAlarm(arg1: AlarmData | string, arg2?: string){
+    showAlarm(title: string, body: string)
+    showAlarm(arg1: AlarmData | string, arg2?: string) {
         let title, body;
         if (typeof arg1 === "string" && typeof arg2 === "string") {
             title = arg1;
