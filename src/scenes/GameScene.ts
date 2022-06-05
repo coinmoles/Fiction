@@ -353,6 +353,8 @@ export default class GameScene extends Phaser.Scene {
         if (!this.props.initiated)
             return;
 
+
+        this.playerMovementTimer = GLOBALTIME;
         const newVector: vector = {
             mapX: this.gameStuff.player.mapX + movement.mapX,
             mapY: this.gameStuff.player.mapY + movement.mapY
