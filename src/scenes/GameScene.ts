@@ -179,7 +179,6 @@ export default class GameScene extends Phaser.Scene {
             this.textTimer -= delta;
         if (this.textTimer <= 0) {
             if (this.gameStuff.controls.checkEnter()) {
-                console.log('hmm')
                 if (this.gameStuff.textArea.currentText !== null)
                     this.gameStuff.textArea.skipTexts()
                 else if (this.gameStuff.textArea.currentText === null)
@@ -367,9 +366,6 @@ export default class GameScene extends Phaser.Scene {
             return;
         if (!this.props.initiated)
             return;
-
-        console.log(this.gameStuff.player.mapX, movement.mapX);
-        console.log(this.gameStuff.player.mapY, movement.mapY);
 
         this.playerMovementTimer = GLOBALTIME;
         const newVector: vector = {
